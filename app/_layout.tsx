@@ -16,6 +16,8 @@ if (!publishableKey) {
   );
 }
 
+// yo 
+
 const tamaguiConfig = createTamagui(config);
 
 // make TypeScript type everything based on your config

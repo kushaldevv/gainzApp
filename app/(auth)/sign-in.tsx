@@ -1,8 +1,11 @@
-import { useSignIn } from "@clerk/clerk-expo";
+import { useOAuth, useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { useState } from "react";
+
+import * as WebBrowser from "expo-web-browser"
+import { useWarmUpBrowser } from '@/app/hooks/useWarmUpBrowser';
 
 import {
   AnimatePresence,
@@ -18,14 +21,24 @@ import {
   Label,
 } from "tamagui";
 import { FormCard } from "@/components/layoutParts";
+import { TouchableOpacity } from "react-native";
+
+WebBrowser.maybeCompleteAuthSession()
+
+enum Strategy {
+  Google = 'oauth_google',
+}
 
 export default function SignInScreen() {
+  useWarmUpBrowser();
   const [loading, setLoading] = useState(false);
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
+
+  const { startOAuthFlow: googleAuth } = useOAuth({ strategy: 'oauth_google' })
 
   const onSignInPress = React.useCallback(async () => {
     setLoading(true);
@@ -53,6 +66,53 @@ export default function SignInScreen() {
     }
     setLoading(false);
   }, [isLoaded, emailAddress, password]);
+
+  const onSelectAuth = async (strategy: Strategy) => {
+
+    const selectedAuth = {
+      [Strategy.Google]: googleAuth,
+    }[strategy];
+
+    try {
+      const { createdSessionId, setActive } = await selectedAuth();
+
+      if (createdSessionId) {
+        setActive!({ session: createdSessionId });
+        router.back();
+      }
+    } catch (err) {
+      console.error('OAuth error', err);
+    }
+  };
+
+  // async function onGoogleSignIn() {
+  //   const [isLoading, setIsLoading] = useState(false)
+  //   const googleOAuth = useOAuth({ strategy: "oauth_google" })
+
+  //   try {
+  //     const oAuthFlow = await googleOAuth.startOAuthFlow()
+
+  //     if (oAuthFlow.authSessionResult?.type === "success") {
+  //       if (oAuthFlow.setActive) {
+  //         await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId })
+  //       }
+  //     } else {
+
+  //     }
+
+  //   } catch (error) {
+  //     console.log(error)
+  //     // setIsLoading(false)
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   WebBrowser.warmUpAsync()
+
+  //   return () => {
+  //     WebBrowser.coolDownAsync()
+  //   }
+  // }, [])
 
   return (
     <YStack
@@ -166,12 +226,16 @@ export default function SignInScreen() {
                 <Separator />
               </View>
               <View flexDirection="row" flexWrap="wrap" gap="$3">
-                <Button flex={1} minWidth="100%">
+                <Button flex={1} minWidth="100%" onPress={() => onSelectAuth(Strategy.Google)}>
                   <Button.Icon>
                     <AntDesign name="google" size={24} />
                   </Button.Icon>
                   <Button.Text>Continue with Google</Button.Text>
                 </Button>
+                {/* <TouchableOpacity onPress={() => onSelectAuth(Strategy.Google)}>
+                    <AntDesign name="google" size={24} />
+                    <Button.Text>Continue with Google</Button.Text>
+                </TouchableOpacity> */}
               </View>
             </View>
             <SignUpLink />

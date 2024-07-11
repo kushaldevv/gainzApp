@@ -1,12 +1,9 @@
-import { useOAuth, useSignIn } from "@clerk/clerk-expo";
+import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
-import React, { useEffect } from "react";
+import React, { useCallback } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { useState } from "react";
-
-import * as WebBrowser from "expo-web-browser"
-import { useWarmUpBrowser } from '@/app/hooks/useWarmUpBrowser';
-
+import { useAuth, useOAuth } from "@clerk/clerk-expo";
 import {
   AnimatePresence,
   Button,
@@ -21,24 +18,56 @@ import {
   Label,
 } from "tamagui";
 import { FormCard } from "@/components/layoutParts";
-import { TouchableOpacity } from "react-native";
-
-WebBrowser.maybeCompleteAuthSession()
-
-enum Strategy {
-  Google = 'oauth_google',
-}
 
 export default function SignInScreen() {
-  useWarmUpBrowser();
   const [loading, setLoading] = useState(false);
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const { startOAuthFlow: startAppleOAuthFlow } = useOAuth({ strategy: 'oauth_apple' });
+  const { startOAuthFlow: startGoogleOAuthFlow } = useOAuth({ strategy: 'oauth_google' });
 
-  const { startOAuthFlow: googleAuth } = useOAuth({ strategy: 'oauth_google' })
+  // sign in with apple
+  const onApplePress = useCallback(async () => {
+    if (!setActive) {
+      console.log("setActive is not available");
+      return;
+    }
+
+    try {
+      const { createdSessionId } = await startAppleOAuthFlow();
+
+      if (createdSessionId) {
+        setActive({ session: createdSessionId });
+      } else {
+        console.log("sign in with apple failed :(");
+      }
+    } catch (error) {
+      throw error;
+    }
+  }, []);
+
+  // sign in with google
+  const onGooglePress = useCallback(async () => {
+    if (!setActive) {
+      console.log("setActive is not available");
+      return;
+    }
+
+    try {
+      const { createdSessionId } = await startGoogleOAuthFlow();
+
+      if (createdSessionId) {
+        setActive({ session: createdSessionId });
+      } else {
+        console.log("sign in with apple failed :(");
+      }
+    } catch (error) {
+      throw error;
+    }
+  }, []);
 
   const onSignInPress = React.useCallback(async () => {
     setLoading(true);
@@ -66,53 +95,6 @@ export default function SignInScreen() {
     }
     setLoading(false);
   }, [isLoaded, emailAddress, password]);
-
-  const onSelectAuth = async (strategy: Strategy) => {
-
-    const selectedAuth = {
-      [Strategy.Google]: googleAuth,
-    }[strategy];
-
-    try {
-      const { createdSessionId, setActive } = await selectedAuth();
-
-      if (createdSessionId) {
-        setActive!({ session: createdSessionId });
-        router.back();
-      }
-    } catch (err) {
-      console.error('OAuth error', err);
-    }
-  };
-
-  // async function onGoogleSignIn() {
-  //   const [isLoading, setIsLoading] = useState(false)
-  //   const googleOAuth = useOAuth({ strategy: "oauth_google" })
-
-  //   try {
-  //     const oAuthFlow = await googleOAuth.startOAuthFlow()
-
-  //     if (oAuthFlow.authSessionResult?.type === "success") {
-  //       if (oAuthFlow.setActive) {
-  //         await oAuthFlow.setActive({ session: oAuthFlow.createdSessionId })
-  //       }
-  //     } else {
-
-  //     }
-
-  //   } catch (error) {
-  //     console.log(error)
-  //     // setIsLoading(false)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   WebBrowser.warmUpAsync()
-
-  //   return () => {
-  //     WebBrowser.coolDownAsync()
-  //   }
-  // }, [])
 
   return (
     <YStack
@@ -226,16 +208,18 @@ export default function SignInScreen() {
                 <Separator />
               </View>
               <View flexDirection="row" flexWrap="wrap" gap="$3">
-                <Button flex={1} minWidth="100%" onPress={() => onSelectAuth(Strategy.Google)}>
+                <Button flex={1} minWidth="100%" onPress={onGooglePress}>
                   <Button.Icon>
                     <AntDesign name="google" size={24} />
                   </Button.Icon>
                   <Button.Text>Continue with Google</Button.Text>
                 </Button>
-                {/* <TouchableOpacity onPress={() => onSelectAuth(Strategy.Google)}>
-                    <AntDesign name="google" size={24} />
-                    <Button.Text>Continue with Google</Button.Text>
-                </TouchableOpacity> */}
+                <Button flex={1} minWidth="100%" onPress={onApplePress}>
+                  <Button.Icon>
+                    <AntDesign name="apple1" size={24} />
+                  </Button.Icon>
+                  <Button.Text>Continue with Apple</Button.Text>
+                </Button>
               </View>
             </View>
             <SignUpLink />

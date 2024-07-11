@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useSignUp } from "@clerk/clerk-expo";
+import { useSignUp, useAuth, useOAuth } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
 import {
   AnimatePresence,
@@ -18,7 +18,7 @@ import {
 } from "tamagui";
 import { FormCard } from "@/components/layoutParts";
 import { AntDesign } from "@expo/vector-icons";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -32,6 +32,27 @@ export default function SignUpScreen() {
   const [code, setCode] = React.useState("");
   const [values, setValues] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef<(Input | null)[]>([]);
+  const { startOAuthFlow } = useOAuth({ strategy: 'oauth_apple' });
+
+  // sign in with apple
+  const onApplePress = useCallback(async () => {
+    if (!setActive) {
+      console.log("setActive is not available");
+      return;
+    }
+    
+    try {
+      const { createdSessionId} = await startOAuthFlow();
+
+      if (createdSessionId) {
+        setActive({ session: createdSessionId });
+      } else {
+        console.log("sign in with apple failed :(");
+      }
+    } catch (error) {
+      throw error;
+    }
+  }, []);
 
   const onSignUpPress = async () => {
     setLoading(true);
@@ -56,6 +77,7 @@ export default function SignUpScreen() {
     setLoading(false);
   };
 
+  
   const handleChange = (text: string, index: number) => {
     const newValues = [...values];
     newValues[index] = text.replace(/[^0-9]/g, "").slice(0, 1);
@@ -224,7 +246,14 @@ export default function SignUpScreen() {
                       </Button.Icon>
                       <Button.Text>Continue with Google</Button.Text>
                     </Button>
+                    <Button flex={1} minWidth="100%" onPress={onApplePress}>
+                      <Button.Icon>
+                        <AntDesign name="apple1" size={24} />
+                      </Button.Icon>
+                      <Button.Text>Continue with Apple</Button.Text>
+                    </Button>
                   </View>
+                  
                 </View>
                 <SignInLink />
               </View>

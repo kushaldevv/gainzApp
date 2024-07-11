@@ -26,7 +26,8 @@ export default function SignInScreen() {
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const { startOAuthFlow } = useOAuth({ strategy: 'oauth_apple' });
+  const { startOAuthFlow: startAppleOAuthFlow } = useOAuth({ strategy: 'oauth_apple' });
+  const { startOAuthFlow: startGoogleOAuthFlow } = useOAuth({ strategy: 'oauth_google' });
 
   // sign in with apple
   const onApplePress = useCallback(async () => {
@@ -36,7 +37,27 @@ export default function SignInScreen() {
     }
 
     try {
-      const { createdSessionId} = await startOAuthFlow();
+      const { createdSessionId } = await startAppleOAuthFlow();
+
+      if (createdSessionId) {
+        setActive({ session: createdSessionId });
+      } else {
+        console.log("sign in with apple failed :(");
+      }
+    } catch (error) {
+      throw error;
+    }
+  }, []);
+
+  // sign in with google
+  const onGooglePress = useCallback(async () => {
+    if (!setActive) {
+      console.log("setActive is not available");
+      return;
+    }
+
+    try {
+      const { createdSessionId } = await startGoogleOAuthFlow();
 
       if (createdSessionId) {
         setActive({ session: createdSessionId });
@@ -187,7 +208,7 @@ export default function SignInScreen() {
                 <Separator />
               </View>
               <View flexDirection="row" flexWrap="wrap" gap="$3">
-                <Button flex={1} minWidth="100%">
+                <Button flex={1} minWidth="100%" onPress={onGooglePress}>
                   <Button.Icon>
                     <AntDesign name="google" size={24} />
                   </Button.Icon>

@@ -16,7 +16,6 @@ if (!publishableKey) {
   );
 }
 
-// yo 
 
 const tamaguiConfig = createTamagui(config);
 

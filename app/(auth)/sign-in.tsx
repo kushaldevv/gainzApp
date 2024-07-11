@@ -1,9 +1,9 @@
 import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
-import React from "react";
+import React, { useCallback } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { useState } from "react";
-
+import { useAuth, useOAuth } from "@clerk/clerk-expo";
 import {
   AnimatePresence,
   Button,
@@ -26,6 +26,27 @@ export default function SignInScreen() {
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const { startOAuthFlow } = useOAuth({ strategy: 'oauth_apple' });
+
+  // sign in with apple
+  const onApplePress = useCallback(async () => {
+    if (!setActive) {
+      console.log("setActive is not available");
+      return;
+    }
+
+    try {
+      const { createdSessionId} = await startOAuthFlow();
+
+      if (createdSessionId) {
+        setActive({ session: createdSessionId });
+      } else {
+        console.log("sign in with apple failed :(");
+      }
+    } catch (error) {
+      throw error;
+    }
+  }, []);
 
   const onSignInPress = React.useCallback(async () => {
     setLoading(true);
@@ -171,6 +192,12 @@ export default function SignInScreen() {
                     <AntDesign name="google" size={24} />
                   </Button.Icon>
                   <Button.Text>Continue with Google</Button.Text>
+                </Button>
+                <Button flex={1} minWidth="100%" onPress={onApplePress}>
+                  <Button.Icon>
+                    <AntDesign name="apple1" size={24} />
+                  </Button.Icon>
+                  <Button.Text>Continue with Apple</Button.Text>
                 </Button>
               </View>
             </View>

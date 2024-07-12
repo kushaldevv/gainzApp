@@ -2,6 +2,7 @@ import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 import { useState, useCallback } from "react";
+import { useAuth, useOAuth } from "@clerk/clerk-expo";
 import {
   Button,
   H1,
@@ -31,6 +32,48 @@ export default function SignInScreen() {
   const [error, setError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const shake = useShakeAnimation(error);
+  const { startOAuthFlow: startAppleOAuthFlow } = useOAuth({ strategy: 'oauth_apple' });
+  const { startOAuthFlow: startGoogleOAuthFlow } = useOAuth({ strategy: 'oauth_google' });
+
+  // sign in with apple
+  const onApplePress = useCallback(async () => {
+    if (!setActive) {
+      console.log("setActive is not available");
+      return;
+    }
+
+    try {
+      const { createdSessionId } = await startAppleOAuthFlow();
+
+      if (createdSessionId) {
+        setActive({ session: createdSessionId });
+      } else {
+        console.log("sign in with apple failed :(");
+      }
+    } catch (error) {
+      throw error;
+    }
+  }, []);
+
+  // sign in with google
+  const onGooglePress = useCallback(async () => {
+    if (!setActive) {
+      console.log("setActive is not available");
+      return;
+    }
+
+    try {
+      const { createdSessionId } = await startGoogleOAuthFlow();
+
+      if (createdSessionId) {
+        setActive({ session: createdSessionId });
+      } else {
+        console.log("sign in with apple failed :(");
+      }
+    } catch (error) {
+      throw error;
+    }
+  }, []);
 
   const onSignInPress = useCallback(async () => {
     setError(false);
@@ -211,13 +254,19 @@ export default function SignInScreen() {
                   <Separator />
                 </View>
                 <View flexDirection="row" flexWrap="wrap" gap="$3">
-                  <Button flex={1} minWidth="100%">
+                  <Button flex={1} minWidth="100%" onPress={onGooglePress}>
                     <Button.Icon>
                       <AntDesign name="google" size={24} />
                     </Button.Icon>
                     <Button.Text>Continue with Google</Button.Text>
                   </Button>
-                </View>
+                  <Button flex={1} minWidth="100%" onPress={onApplePress}>
+                  <Button.Icon>
+                    <AntDesign name="apple1" size={24} />
+                  </Button.Icon>
+                  <Button.Text>Continue with Apple</Button.Text>
+                </Button>
+              </View>
               </View>
               <SignUpLink />
             </View>

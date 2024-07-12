@@ -1,11 +1,8 @@
 import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
-import React from "react";
 import { AntDesign } from "@expo/vector-icons";
-import { useState } from "react";
-
+import { useState, useCallback } from "react";
 import {
-  AnimatePresence,
   Button,
   H1,
   Input,
@@ -15,21 +12,29 @@ import {
   Spinner,
   View,
   YStack,
+  XStack,
   Label,
 } from "tamagui";
+import { Mail, Key, Eye, EyeOff } from "@tamagui/lucide-icons";
 import { FormCard } from "@/components/layoutParts";
+import { useShakeAnimation } from "@/components/shakeAnimation";
+import Animated from "react-native-reanimated";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function SignInScreen() {
   const [loading, setLoading] = useState(false);
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
 
-  const [emailAddress, setEmailAddress] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [emailAddress, setEmailAddress] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const shake = useShakeAnimation(error);
 
-  const onSignInPress = React.useCallback(async () => {
+  const onSignInPress = useCallback(async () => {
+    setError(false);
     setLoading(true);
-    console.log(setLoading);
     if (!isLoaded) {
       setLoading(false);
       return;
@@ -44,149 +49,190 @@ export default function SignInScreen() {
         await setActive({ session: signInAttempt.createdSessionId });
         router.replace("/");
       } else {
-        // See https://clerk.com/docs/custom-flows/error-handling
-        // for more info on error handling
-        console.error(JSON.stringify(signInAttempt, null, 2));
+        console.log(JSON.stringify(signInAttempt, null, 2));
+        await new Promise((resolve) => setTimeout(resolve, 250));
+        setError(true);
       }
     } catch (err: any) {
-      console.error(JSON.stringify(err, null, 2));
+      console.log(err.errors[0].longMessage);
+      await new Promise((resolve) => setTimeout(resolve, 250));
+      setError(true);
     }
     setLoading(false);
   }, [isLoaded, emailAddress, password]);
 
+  useFocusEffect(
+    useCallback(() => {
+      return async () => {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        setEmailAddress("");
+        setPassword("");
+        setShowPassword(false);
+        setError(false);
+      };
+    }, [])
+  );
   return (
-    <YStack
-      flex={1}
-      justifyContent="center"
-      alignItems="center"
-      backgroundColor={"$background"}
-    >
-      <FormCard>
-        <View
-          flexDirection="column"
-          alignItems="stretch"
-          justifyContent="center"
-          minWidth="100%"
-          maxWidth="100%"
-          gap="$4"
-          padding="$4"
-          paddingVertical="$6"
-          $gtSm={{
-            paddingVertical: "$4",
-            width: 400,
-          }}
-        >
-          <H1
-            alignSelf="center"
-            size="$8"
-            $xs={{
-              size: "$7",
-            }}
-          >
-            Sign in to your account
-          </H1>
-          <View flexDirection="column" gap="$3">
-            <View flexDirection="column">
-              <Label>Email</Label>
-              <Input
-                textContentType="emailAddress"
-                placeholder="email@example.com"
-                borderWidth={1}
-                onChangeText={(text) => setEmailAddress(text)}
-              ></Input>
-              <View
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Label>Password</Label>
-                <ForgotPasswordLink />
-              </View>
-              <Input
-                borderWidth={1}
-                textContentType="password"
-                secureTextEntry
-                id="password"
-                placeholder="Enter password"
-                onChangeText={(text) => setPassword(text)}
-              ></Input>
-            </View>
-            <View flexDirection="column" gap="$1"></View>
-          </View>
-          <Button
-            themeInverse
-            disabled={!isLoaded}
-            onPress={onSignInPress}
-            width="100%"
-            iconAfter={
-              <AnimatePresence>
-                {loading && (
-                  <Spinner
-                    key="loading-spinner"
-                    opacity={1}
-                    scale={1}
-                    position="absolute"
-                    left="60%"
-                    enterStyle={{
-                      opacity: 0,
-                      scale: 0.5,
-                    }}
-                    exitStyle={{
-                      opacity: 0,
-                      scale: 0.5,
-                    }}
-                  />
-                )}
-              </AnimatePresence>
-            }
-          >
-            <Button.Text>Sign In</Button.Text>
-          </Button>
+    <Animated.View style={[{ flex: 1 }, shake]}>
+      <YStack
+        flex={1}
+        justifyContent="center"
+        alignItems="center"
+        backgroundColor={"$background"}
+      >
+        <FormCard>
           <View
             flexDirection="column"
-            gap="$3"
-            width="100%"
-            alignItems="center"
+            alignItems="stretch"
+            justifyContent="center"
+            minWidth="100%"
+            maxWidth="100%"
+            gap="$4"
+            padding="$4"
+            paddingVertical="$6"
+            $gtSm={{
+              paddingVertical: "$4",
+              width: 400,
+            }}
           >
+            <H1
+              alignSelf="center"
+              size="$8"
+              $xs={{
+                size: "$7",
+              }}
+            >
+              Sign in to your account
+            </H1>
+            <View flexDirection="column" gap="$3">
+              <View flexDirection="column">
+                <Label>Email</Label>
+                <XStack>
+                  <Input
+                    flex={1}
+                    pl="$7"
+                    textContentType="emailAddress"
+                    placeholder="email@example.com"
+                    borderColor={error ? "$red10" : "$borderColor"}
+                    focusStyle={{
+                      borderColor: error ? "$red10" : "$borderColor",
+                    }}
+                    onChangeText={(text) => setEmailAddress(text)}
+                  />
+                  <Mail
+                    size={"$1"}
+                    alignSelf="center"
+                    pos={"absolute"}
+                    ml="$3"
+                  />
+                </XStack>
+                <View
+                  flexDirection="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Label>Password</Label>
+                  <ForgotPasswordLink />
+                </View>
+                <XStack>
+                  <Input
+                    flex={1}
+                    pl="$7"
+                    pr="$7"
+                    borderColor={error ? "$red10" : "$borderColor"}
+                    focusStyle={{
+                      borderColor: error ? "$red10" : "$borderColorFocus",
+                    }}
+                    textContentType="password"
+                    secureTextEntry={!showPassword}
+                    placeholder="Enter password"
+                    onChangeText={(text) => setPassword(text)}
+                  />
+                  <Key
+                    size={"$1"}
+                    alignSelf="center"
+                    pos={"absolute"}
+                    ml="$3"
+                  />
+                  {!showPassword && (
+                    <Eye
+                      size={"$1"}
+                      alignSelf="center"
+                      right='$0'
+                      pos={"absolute"}
+                      mr="$3"
+                      onPress={() => setShowPassword(true)}
+                    />
+                  )}
+                  {showPassword && (
+                    <EyeOff
+                      size={"$1"}
+                      alignSelf="center"
+                      right='$0'
+                      pos={"absolute"}
+                      mr="$3"
+                      onPress={() => setShowPassword(false)}
+                    />
+                  )}
+                </XStack>
+              </View>
+              <View flexDirection="column" gap="$1"></View>
+            </View>
+            <Button
+              themeInverse
+              disabled={!isLoaded}
+              onPress={onSignInPress}
+              width="100%"
+            >
+              <Button.Text>Sign In</Button.Text>
+              {loading && <Spinner size="small" color="$accentColor" />}
+            </Button>
             <View
               flexDirection="column"
               gap="$3"
               width="100%"
-              alignSelf="center"
               alignItems="center"
             >
               <View
-                flexDirection="row"
+                flexDirection="column"
+                gap="$3"
                 width="100%"
+                alignSelf="center"
                 alignItems="center"
-                gap="$4"
               >
-                <Separator />
-                <Paragraph>Or</Paragraph>
-                <Separator />
+                <View
+                  flexDirection="row"
+                  width="100%"
+                  alignItems="center"
+                  gap="$4"
+                >
+                  <Separator />
+                  <Paragraph>Or</Paragraph>
+                  <Separator />
+                </View>
+                <View flexDirection="row" flexWrap="wrap" gap="$3">
+                  <Button flex={1} minWidth="100%">
+                    <Button.Icon>
+                      <AntDesign name="google" size={24} />
+                    </Button.Icon>
+                    <Button.Text>Continue with Google</Button.Text>
+                  </Button>
+                </View>
               </View>
-              <View flexDirection="row" flexWrap="wrap" gap="$3">
-                <Button flex={1} minWidth="100%">
-                  <Button.Icon>
-                    <AntDesign name="google" size={24} />
-                  </Button.Icon>
-                  <Button.Text>Continue with Google</Button.Text>
-                </Button>
-              </View>
+              <SignUpLink />
             </View>
-            <SignUpLink />
           </View>
-        </View>
-      </FormCard>
-    </YStack>
+        </FormCard>
+      </YStack>
+    </Animated.View>
   );
 }
 
 const SignUpLink = () => {
   return (
-    <Link href={"/sign-up"}>
-      <Paragraph textDecorationStyle="unset">
-        Don&apos;t have an account?{" "}
+    <Paragraph textDecorationStyle="unset">
+      Don&apos;t have an account?{" "}
+      <Link href={"/sign-up"}>
         <SizableText
           hoverStyle={{
             color: "$colorHover",
@@ -195,8 +241,8 @@ const SignUpLink = () => {
         >
           Sign Up
         </SizableText>
-      </Paragraph>
-    </Link>
+      </Link>
+    </Paragraph>
   );
 };
 

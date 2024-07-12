@@ -9,6 +9,7 @@ import tokenCache from "../services/tokenCache";
 import { TamaguiProvider, createTamagui } from "@tamagui/core";
 import { config } from "@tamagui/config/v3";
 import { Theme } from "tamagui";
+
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 if (!publishableKey) {
   throw new Error(
@@ -65,7 +66,7 @@ export default function RootLayout() {
 function RootLayoutNav() {
   return (
     <TamaguiProvider config={tamaguiConfig} disableRootThemeClass>
-      <Theme name={'dark'}>
+      <Theme name={"dark"}>
         <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
           <ClerkLoaded>
             <Slot />

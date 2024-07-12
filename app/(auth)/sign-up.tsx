@@ -129,7 +129,9 @@ export default function SignUpScreen() {
 
   const onPressVerify = async () => {
     setError("");
+    setLoading(true);
     if (!isLoaded) {
+      setLoading(false);
       return;
     }
 
@@ -147,9 +149,10 @@ export default function SignUpScreen() {
     } catch (err: any) {
       console.error(JSON.stringify(err, null, 2));
       setError("Verification");
-      setValues(['', '', '', '', '', ''])
+      setValues(["", "", "", "", "", ""]);
       inputRefs.current[0]?.focus();
     }
+    setLoading(false);
   };
 
   useFocusEffect(
@@ -330,7 +333,7 @@ export default function SignUpScreen() {
                           ? "$red10"
                           : progress < 60
                           ? "$orange10"
-                          : progress < 80
+                          : progress <= 99
                           ? "$yellow10"
                           : "$green10"
                       }
@@ -394,10 +397,11 @@ export default function SignUpScreen() {
                 >
                   Enter your Verification code
                 </H1>
-                <Text alignSelf="center" 
-                scale={pressedInResendCode ? 1.15 : 1.0}
-                fontWeight={pressedInResendCode ? 'bold' : '$1'}
-                animation={'quick'}
+                <Text
+                  alignSelf="center"
+                  scale={pressedInResendCode ? 1.15 : 1.0}
+                  fontWeight={pressedInResendCode ? "bold" : "$1"}
+                  animation={"quick"}
                 >
                   We sent a verification code to your email!
                 </Text>
@@ -413,7 +417,9 @@ export default function SignUpScreen() {
                       maxLength={1}
                       keyboardType="numeric"
                       borderColor={
-                        error.includes("Verification") ? "$red10" : "$borderColor"
+                        error.includes("Verification")
+                          ? "$red10"
+                          : "$borderColor"
                       }
                       focusStyle={{
                         borderColor: error.includes("Verification")
@@ -424,10 +430,13 @@ export default function SignUpScreen() {
                   ))}
                 </XStack>
 
-                <Button onPress={onPressVerify}>Verify</Button>
+                <Button onPress={onPressVerify}>
+                  <Button.Text>Verify</Button.Text>
+                  {loading && <Spinner size="small" color="$white" />}
+                </Button>
 
                 <Paragraph textDecorationStyle="unset" textAlign="center">
-                 {"Didn't receive code? "}
+                  {"Didn't receive code? "}
                   <SizableText
                     alignSelf="center"
                     color={pressedInResendCode ? "$colorHover" : "$color"}

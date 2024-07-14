@@ -1,18 +1,30 @@
 import { Tabs } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useColorScheme } from "react-native";
+
 export default function Layout() {
+  const colorScheme = useColorScheme();
+  const backgroundColor =
+    colorScheme == "dark" ? "rgb(15,15,15)" : "rgb(250,250,250)";
+  const tabBarTintColor =
+    colorScheme == "dark" ? "rgb(255,255,255)" : "rgb(18,18,18)";
   return (
     <Tabs
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: "rgb(18,22,29)",
+          backgroundColor: backgroundColor,
+          borderTopWidth: 0,
         },
-        tabBarInactiveTintColor: "rgb(200,200,200)",
-        tabBarActiveTintColor: "rgb(53, 132, 249)",
+        tabBarInactiveTintColor: tabBarTintColor,
+        tabBarActiveTintColor: '#00cccc',
 
         headerStyle: {
-          backgroundColor: "rgb(18,22,29)",
+          backgroundColor: backgroundColor,
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
         },
+        headerTitleStyle: { color: tabBarTintColor },
         headerTintColor: "#ffffff",
       }}
     >

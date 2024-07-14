@@ -9,12 +9,6 @@ import tokenCache from "../services/tokenCache";
 import { TamaguiProvider, createTamagui } from "@tamagui/core";
 import { config } from "@tamagui/config/v3";
 import { useColorScheme } from "react-native";
-import { Theme } from "tamagui";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 if (!publishableKey) {
@@ -73,13 +67,11 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
   return (
     <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
-      <Theme name={'blue'}>
         <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
           <ClerkLoaded>
             <Slot />
           </ClerkLoaded>
         </ClerkProvider>
-      </Theme>
     </TamaguiProvider>
   );
 }

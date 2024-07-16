@@ -136,7 +136,6 @@ export const Card = ({ session }: Types.CardProps) => {
               <ThumbsUp
                 size={"$2"}
                 fill={like ? "#00cccc" : "none"}
-                scale={like ? 1.15 : 1}
               />
             </View>
           </YStack>

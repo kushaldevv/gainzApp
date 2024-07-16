@@ -9,6 +9,7 @@ import tokenCache from "../services/tokenCache";
 import { TamaguiProvider, createTamagui } from "@tamagui/core";
 import { config } from "@tamagui/config/v3";
 import { useColorScheme } from "react-native";
+import * as SystemUI from "expo-system-ui";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 if (!publishableKey) {
@@ -51,9 +52,13 @@ export default function RootLayout() {
   }, [error]);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    async function prepare() {
+      if (loaded) {
+        await SystemUI.setBackgroundColorAsync("$background");
+        await SplashScreen.hideAsync();
+      }
     }
+    prepare();
   }, [loaded]);
 
   if (!loaded) {
@@ -67,11 +72,11 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
   return (
     <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
-        <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-          <ClerkLoaded>
-            <Slot />
-          </ClerkLoaded>
-        </ClerkProvider>
+      <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+        <ClerkLoaded>
+          <Slot />
+        </ClerkLoaded>
+      </ClerkProvider>
     </TamaguiProvider>
   );
 }

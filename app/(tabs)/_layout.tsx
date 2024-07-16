@@ -1,8 +1,22 @@
 import { Tabs } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useColorScheme } from "react-native";
+import { SignedIn, useAuth } from "@clerk/clerk-expo";
+import { Redirect } from "expo-router";
 
 export default function Layout() {
+  const { isSignedIn } = useAuth();
+  if (!isSignedIn) {
+    return <Redirect href="/(auth)/sign-in" />;
+  }
+  return (
+    <SignedIn>
+      <TabsProvider />
+    </SignedIn>
+  );
+}
+
+function TabsProvider() {
   const colorScheme = useColorScheme();
   const backgroundColor =
     colorScheme == "dark" ? "rgb(15,15,15)" : "rgb(250,250,250)";
@@ -16,7 +30,7 @@ export default function Layout() {
           borderTopWidth: 0,
         },
         tabBarInactiveTintColor: tabBarTintColor,
-        tabBarActiveTintColor: '#00cccc',
+        tabBarActiveTintColor: "#00cccc",
 
         headerStyle: {
           backgroundColor: backgroundColor,

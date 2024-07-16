@@ -11,8 +11,9 @@ import {
   Separator,
   SizableText,
   Spinner,
-  View, XStack,
-  Label
+  View,
+  XStack,
+  Label,
 } from "tamagui";
 import { Mail, Key, Eye, EyeOff } from "@tamagui/lucide-icons";
 import { FormCard } from "@/components/layoutParts";
@@ -118,20 +119,20 @@ export default function SignInScreen() {
     }, [])
   );
   return (
-    <Animated.View style={[{ flex: 1 }, shake]}>
-      <FormCard error = {error}>
-        <H1
-          alignSelf="center"
-          size="$8"
-          $xs={{
-            size: "$7",
-          }}
-        >
-          Sign in to your account
-        </H1>
-        <View flexDirection="column" gap="$3">
-          <View flexDirection="column">
-            <Label>Email</Label>
+    <FormCard error={error}>
+      <H1
+        alignSelf="center"
+        size="$8"
+        $xs={{
+          size: "$7",
+        }}
+      >
+        Sign in to your account
+      </H1>
+      <View flexDirection="column" gap="$3">
+        <View flexDirection="column">
+          <Label>Email</Label>
+          <Animated.View style={[shake]}>
             <XStack>
               <Input
                 flex={1}
@@ -146,14 +147,16 @@ export default function SignInScreen() {
               />
               <Mail size={"$1"} alignSelf="center" pos={"absolute"} ml="$3" />
             </XStack>
-            <View
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Label>Password</Label>
-              <ForgotPasswordLink />
-            </View>
+          </Animated.View>
+          <View
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Label>Password</Label>
+            <ForgotPasswordLink />
+          </View>
+          <Animated.View style={[shake]}>
             <XStack>
               <Input
                 flex={1}
@@ -190,50 +193,50 @@ export default function SignInScreen() {
                 />
               )}
             </XStack>
-          </View>
-          <View flexDirection="column" gap="$1"></View>
+          </Animated.View>
         </View>
-        <Button
-          themeInverse
-          disabled={!isLoaded}
-          onPress={onSignInPress}
+        <View flexDirection="column" gap="$1"></View>
+      </View>
+      <Button
+        themeInverse
+        disabled={!isLoaded}
+        onPress={onSignInPress}
+        width="100%"
+      >
+        <Button.Text>Sign In</Button.Text>
+        {loading && <Spinner size="small" color="$accentColor" />}
+      </Button>
+      <View flexDirection="column" gap="$3" width="100%" alignItems="center">
+        <View
+          flexDirection="column"
+          gap="$3"
           width="100%"
+          alignSelf="center"
+          alignItems="center"
         >
-          <Button.Text>Sign In</Button.Text>
-          {loading && <Spinner size="small" color="$accentColor" />}
-        </Button>
-        <View flexDirection="column" gap="$3" width="100%" alignItems="center">
-          <View
-            flexDirection="column"
-            gap="$3"
-            width="100%"
-            alignSelf="center"
-            alignItems="center"
-          >
-            <View flexDirection="row" width="100%" alignItems="center" gap="$4">
-              <Separator />
-              <Paragraph>Or</Paragraph>
-              <Separator />
-            </View>
-            <View flexDirection="row" flexWrap="wrap" gap="$3">
-              <Button flex={1} minWidth="100%" onPress={onGooglePress}>
-                <Button.Icon>
-                  <AntDesign name="google" size={24} />
-                </Button.Icon>
-                <Button.Text>Continue with Google</Button.Text>
-              </Button>
-              <Button flex={1} minWidth="100%" onPress={onApplePress}>
-                <Button.Icon>
-                  <AntDesign name="apple1" size={24} />
-                </Button.Icon>
-                <Button.Text>Continue with Apple</Button.Text>
-              </Button>
-            </View>
+          <View flexDirection="row" width="100%" alignItems="center" gap="$4">
+            <Separator />
+            <Paragraph>Or</Paragraph>
+            <Separator />
           </View>
-          <SignUpLink />
+          <View flexDirection="row" flexWrap="wrap" gap="$3">
+            <Button flex={1} minWidth="100%" onPress={onGooglePress}>
+              <Button.Icon>
+                <AntDesign name="google" size={24} />
+              </Button.Icon>
+              <Button.Text>Continue with Google</Button.Text>
+            </Button>
+            <Button flex={1} minWidth="100%" onPress={onApplePress}>
+              <Button.Icon>
+                <AntDesign name="apple1" size={24} />
+              </Button.Icon>
+              <Button.Text>Continue with Apple</Button.Text>
+            </Button>
+          </View>
         </View>
-      </FormCard>
-    </Animated.View>
+        <SignUpLink />
+      </View>
+    </FormCard>
   );
 }
 

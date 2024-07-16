@@ -9,10 +9,11 @@ import {
   Separator,
   SizableText,
   Spinner,
-  View, Label,
+  View,
+  Label,
   XStack,
   Text,
-  Progress
+  Progress,
 } from "tamagui";
 import { Mail, Key, Eye, EyeOff, User } from "@tamagui/lucide-icons";
 import { FormCard } from "@/components/layoutParts";
@@ -21,6 +22,7 @@ import { useCallback, useRef, useState } from "react";
 import { Alert } from "@/components/alertDialog";
 import { useFocusEffect } from "@react-navigation/native";
 import { useShakeAnimation } from "@/components/shakeAnimation";
+import Animated from "react-native-reanimated";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -39,6 +41,10 @@ export default function SignUpScreen() {
   const [code, setCode] = useState("");
   const [values, setValues] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef<(Input | null)[]>([]);
+  const shakeName = useShakeAnimation(error.includes("Name"));
+  const shakeEmail = useShakeAnimation(error.includes("Email"));
+  const shakePassword = useShakeAnimation(error.includes("Password"));
+
   const { startOAuthFlow } = useOAuth({ strategy: "oauth_apple" });
 
   // sign in with apple
@@ -60,7 +66,6 @@ export default function SignUpScreen() {
       throw error;
     }
   }, []);
-  const shake = useShakeAnimation(error != "");
   const [pressedInResendCode, setPressedInResendCode] = useState(false);
 
   function updatePasswordProgess(password: string) {
@@ -189,21 +194,22 @@ export default function SignUpScreen() {
   );
 
   return (
-      <FormCard error={(error.length > 0)}>
-        {!pendingVerification && (
-          <>
-            <H1
-              alignSelf="center"
-              size="$8"
-              $xs={{
-                size: "$7",
-              }}
-            >
-              Create an Account
-            </H1>
-            <View flexDirection="column" gap="$3">
-              <View flexDirection="column">
-                <Label>Name</Label>
+    <FormCard error={error.length > 0}>
+      {!pendingVerification && (
+        <>
+          <H1
+            alignSelf="center"
+            size="$8"
+            $xs={{
+              size: "$7",
+            }}
+          >
+            Create an Account
+          </H1>
+          <View flexDirection="column" gap="$3">
+            <View flexDirection="column">
+              <Label>Name</Label>
+              <Animated.View style={[shakeName]}>
                 <XStack>
                   <Input
                     flex={1}
@@ -228,7 +234,9 @@ export default function SignUpScreen() {
                     ml="$3"
                   />
                 </XStack>
-                <Label>Email</Label>
+              </Animated.View>
+              <Label>Email</Label>
+              <Animated.View style={[shakeEmail]}>
                 <XStack>
                   <Input
                     flex={1}
@@ -255,18 +263,20 @@ export default function SignUpScreen() {
                     ml="$3"
                   />
                 </XStack>
-                {emailError && (
-                  <Paragraph size={"$2"} pt={"$2"} col={"$red10"}>
-                    {emailError}
-                  </Paragraph>
-                )}
-                <View
-                  flexDirection="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <Alert />
-                </View>
+              </Animated.View>
+              {emailError && (
+                <Paragraph size={"$2"} pt={"$2"} col={"$red10"}>
+                  {emailError}
+                </Paragraph>
+              )}
+              <View
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Alert />
+              </View>
+              <Animated.View style={[shakePassword]}>
                 <XStack>
                   <Input
                     flex={1}
@@ -316,149 +326,145 @@ export default function SignUpScreen() {
                     />
                   )}
                 </XStack>
-                {error.includes("Password") && emailError && (
-                  <Paragraph size={"$2"} pt={"$2"} col={"$red10"}>
-                    {"Enter valid password."}
-                  </Paragraph>
-                )}
-              </View>
-              <Progress size={"$1"} value={progress}>
-                <Progress.Indicator
-                  animation="bouncy"
-                  backgroundColor={
-                    progress < 30
-                      ? "$red10"
-                      : progress < 60
-                      ? "$orange10"
-                      : progress <= 99
-                      ? "$yellow10"
-                      : "$green10"
-                  }
-                />
-              </Progress>
-              <View flexDirection="column" gap="$1"></View>
+              </Animated.View>
             </View>
-            <Button
-              themeInverse
-              disabled={!isLoaded}
-              onPress={onSignUpPress}
-              width="100%"
-            >
-              <Button.Text>Sign Up</Button.Text>
-              {loading && <Spinner size="small" color="$accentColor" />}
-            </Button>
+            <Progress size={"$1"} value={progress}>
+              <Progress.Indicator
+                animation="bouncy"
+                backgroundColor={
+                  progress < 30
+                    ? "$red10"
+                    : progress < 60
+                    ? "$orange10"
+                    : progress <= 99
+                    ? "$yellow10"
+                    : "$green10"
+                }
+              />
+            </Progress>
+            <View flexDirection="column" gap="$1"></View>
+          </View>
+          <Button
+            themeInverse
+            disabled={!isLoaded}
+            onPress={onSignUpPress}
+            width="100%"
+          >
+            <Button.Text>Sign Up</Button.Text>
+            {loading && <Spinner size="small" color="$accentColor" />}
+          </Button>
+          <View
+            flexDirection="column"
+            gap="$3"
+            width="100%"
+            alignItems="center"
+          >
             <View
               flexDirection="column"
               gap="$3"
               width="100%"
+              alignSelf="center"
               alignItems="center"
             >
               <View
-                flexDirection="column"
-                gap="$3"
+                flexDirection="row"
                 width="100%"
-                alignSelf="center"
                 alignItems="center"
+                gap="$4"
               >
-                <View
-                  flexDirection="row"
-                  width="100%"
-                  alignItems="center"
-                  gap="$4"
-                >
-                  <Separator />
-                  <Paragraph>Or</Paragraph>
-                  <Separator />
-                </View>
-                <View flexDirection="row" flexWrap="wrap" gap="$3">
-                  <Button flex={1} minWidth="100%">
-                    <Button.Icon>
-                      <AntDesign name="google" size={24} />
-                    </Button.Icon>
-                    <Button.Text>Continue with Google</Button.Text>
-                  </Button>
-                  <Button flex={1} minWidth="100%" onPress={onApplePress}>
-                    <Button.Icon>
-                      <AntDesign name="apple1" size={24} />
-                    </Button.Icon>
-                    <Button.Text>Continue with Apple</Button.Text>
-                  </Button>
-                </View>
+                <Separator />
+                <Paragraph>Or</Paragraph>
+                <Separator />
               </View>
-              <SignInLink />
+              <View flexDirection="row" flexWrap="wrap" gap="$3">
+                <Button flex={1} minWidth="100%">
+                  <Button.Icon>
+                    <AntDesign name="google" size={24} />
+                  </Button.Icon>
+                  <Button.Text>Continue with Google</Button.Text>
+                </Button>
+                <Button flex={1} minWidth="100%" onPress={onApplePress}>
+                  <Button.Icon>
+                    <AntDesign name="apple1" size={24} />
+                  </Button.Icon>
+                  <Button.Text>Continue with Apple</Button.Text>
+                </Button>
+              </View>
             </View>
-          </>
-        )}
-        {pendingVerification && (
-          <>
-            <H1
+            <SignInLink />
+          </View>
+        </>
+      )}
+      {pendingVerification && (
+        <>
+          <H1
+            alignSelf="center"
+            size="$8"
+            $xs={{
+              size: "$7",
+            }}
+          >
+            Enter your Verification code
+          </H1>
+          <Text
+            alignSelf="center"
+            scale={pressedInResendCode ? 1.15 : 1.0}
+            fontWeight={pressedInResendCode ? "bold" : "$1"}
+            animation={"quick"}
+          >
+            We sent a verification code to your email!
+          </Text>
+          <XStack gap="$3">
+            {[0, 1, 2, 3, 4, 5].map((index) => (
+              <Input
+                minWidth={"$4.5"}
+                ref={(ref) => inputRefs.current.push(ref)}
+                key={index}
+                value={values[index]}
+                onChangeText={(text) => handleChange(text, index)}
+                onKeyPress={(e) => handleKeyPress(e, index)}
+                maxLength={1}
+                keyboardType="numeric"
+                borderColor={
+                  error.includes("Verification") ? "$red10" : "$borderColor"
+                }
+                focusStyle={{
+                  borderColor: error.includes("Verification")
+                    ? "$red10"
+                    : "$borderColor",
+                }}
+              />
+            ))}
+          </XStack>
+
+          <Button onPress={onPressVerify}>
+            <Button.Text>Verify</Button.Text>
+            {loading && <Spinner size="small" color="$white" />}
+          </Button>
+
+          <Paragraph textDecorationStyle="unset" textAlign="center">
+            {"Didn't receive code? "}
+            <SizableText
               alignSelf="center"
-              size="$8"
-              $xs={{
-                size: "$7",
+              color={pressedInResendCode ? "$colorHover" : "$color"}
+              hoverStyle={{
+                color: "$colorHover",
               }}
+              textDecorationLine="underline"
+              cursor="pointer"
+              onPress={() => {
+                setError("");
+                onSignUpPressClerk();
+              }}
+              onPressIn={() => setPressedInResendCode(true)}
+              onPressOut={() => setPressedInResendCode(false)}
             >
-              Enter your Verification code
-            </H1>
-            <Text
-              alignSelf="center"
-              scale={pressedInResendCode ? 1.15 : 1.0}
-              fontWeight={pressedInResendCode ? "bold" : "$1"}
-              animation={"quick"}
-            >
-              We sent a verification code to your email!
-            </Text>
-            <XStack gap="$3">
-              {[0, 1, 2, 3, 4, 5].map((index) => (
-                <Input
-                  minWidth={"$4.5"}
-                  ref={(ref) => inputRefs.current.push(ref)}
-                  key={index}
-                  value={values[index]}
-                  onChangeText={(text) => handleChange(text, index)}
-                  onKeyPress={(e) => handleKeyPress(e, index)}
-                  maxLength={1}
-                  keyboardType="numeric"
-                  borderColor={
-                    error.includes("Verification") ? "$red10" : "$borderColor"
-                  }
-                  focusStyle={{
-                    borderColor: error.includes("Verification")
-                      ? "$red10"
-                      : "$borderColor",
-                  }}
-                />
-              ))}
-            </XStack>
-
-            <Button onPress={onPressVerify}>
-              <Button.Text>Verify</Button.Text>
-              {loading && <Spinner size="small" color="$white" />}
-            </Button>
-
-            <Paragraph textDecorationStyle="unset" textAlign="center">
-              {"Didn't receive code? "}
-              <SizableText
-                alignSelf="center"
-                color={pressedInResendCode ? "$colorHover" : "$color"}
-                hoverStyle={{
-                  color: "$colorHover",
-                }}
-                textDecorationLine="underline"
-                cursor="pointer"
-                onPress={() => {
-                  setError("");
-                  onSignUpPressClerk();
-                }}
-                onPressIn={() => setPressedInResendCode(true)}
-                onPressOut={() => setPressedInResendCode(false)}
-              >
-                Resend code
-              </SizableText>
-            </Paragraph>
-          </>
-        )}
-      </FormCard>
+              Resend code
+            </SizableText>
+          </Paragraph>
+        </>
+      )}
+    </FormCard>
   );
 }
 

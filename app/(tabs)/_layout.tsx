@@ -1,11 +1,22 @@
 import { Tabs } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useColorScheme } from "react-native";
-import { SignedIn, useAuth } from "@clerk/clerk-expo";
+import { SignedIn, useAuth, useUser } from "@clerk/clerk-expo";
 import { Redirect } from "expo-router";
+import { Spinner, YStack } from "tamagui";
 
 export default function Layout() {
   const { isSignedIn } = useAuth();
+  const {isLoaded } = useUser();
+
+  if (!isLoaded && !isSignedIn) {
+    return (
+      <YStack flex={1} justifyContent="center" alignItems="center" backgroundColor="$background">
+        <Spinner size="large" color={'red'} />
+      </YStack>
+    );
+  }
+  
   if (!isSignedIn) {
     return <Redirect href="/(auth)/sign-in" />;
   }

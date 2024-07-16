@@ -1,152 +1,159 @@
 import React, { useState } from "react";
 import {
-    Avatar,
-    SizableText,
-    YStack,
-    XStack,
-    Paragraph,
-    View,
-    Circle,
-    Sheet,
-    ScrollView,
-    Input,
+  Avatar,
+  SizableText,
+  YStack,
+  XStack,
+  Paragraph,
+  View,
+  Circle,
+  Sheet,
+  ScrollView,
+  Input,
 } from "tamagui";
 import {
-    Dumbbell,
-    MoreHorizontal,
-    ThumbsUp,
-    MessageCircleMore,
-    Send,
-    X,
+  Dumbbell,
+  MoreHorizontal,
+  ThumbsUp,
+  MessageCircleMore,
+  Send,
+  X,
 } from "@tamagui/lucide-icons";
 import { Dimensions } from "react-native";
 import { useHeaderHeight } from "@react-navigation/elements";
-import { Comment } from './comment';
-import * as Types from '../types';
+import { Comment } from "./comment";
+import * as Types from "../types";
 
 // For testing purposes
 const comment: Types.Comment = {
-    name: "Leul Mesfin",
-    date: new Date("2023-07-10T12:00:00"),
-    pfp: "https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80",
-    body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    likes: 12
-  };
-// 
+  name: "Leul Mesfin",
+  date: new Date("2023-07-10T12:00:00"),
+  pfp: "https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80",
+  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+  likes: 12,
+};
+//
 
-export const Card = ({session}: Types.CardProps) => {
+export const Card = ({ session }: Types.CardProps) => {
   const [like, setLike] = useState(false);
   const [open, setOpen] = useState(false);
 
   return (
     <>
-    <YStack backgroundColor={"$gray1"} p="$3" gap="$2">
-      <XStack gap="$3" width="100%">
-        <Avatar circular size="$4">
-          <Avatar.Image src={session.user.pfp} />
-          <Avatar.Fallback backgroundColor="$blue10" />
-        </Avatar>
-        <YStack>
-          <SizableText size={"$2"} fontFamily={"$mono"} fontWeight={800}>
-            {session.user.name}
-          </SizableText>
-          <XStack gap="$2" alignItems="center">
-            <Dumbbell size="$1" />
-            <YStack>
-              <Paragraph lineHeight={"$1"} fontSize={"$1"}>
-                {formatSessionDate(session.date)}
-                {"\n"}
-                {session.location}
-              </Paragraph>
-            </YStack>
-          </XStack>
-        </YStack>
-        <MoreHorizontal pos="absolute" right="$0" />
-      </XStack>
-      <SizableText size={"$6"} fontFamily={"$mono"} fontWeight={700}>
-        Evening Workout
-      </SizableText>
-      <XStack gap="$5">
-        <YStack>
-          <Paragraph lineHeight={"$1"} fontSize={"$1"}>
-            Exercises
-          </Paragraph>
-          <SizableText size={"$5"} fontFamily={"$mono"} fontWeight={700}>
-            {session.exercies.length}
-          </SizableText>
-        </YStack>
-        <YStack>
-          <Paragraph lineHeight={"$1"} fontSize={"$1"}>
-            Time
-          </Paragraph>
-          <SizableText size={"$4"} fontFamily={"$mono"} fontWeight={700}>
-            {formatSessionTime(session.sessionTime)}
-          </SizableText>
-        </YStack>
-      </XStack>
-      <View
-        height={"$15"}
-        alignItems="center"
-        justifyContent="center"
-        backgroundColor={"#00cccc"}
-        borderRadius={"$5"}
-      >
-        <SizableText>Card Action</SizableText>
-      </View>
-      <XStack
-        justifyContent="space-between"
-        paddingHorizontal="$10"
-        paddingTop="$2"
-      >
-        <YStack alignItems="center" gap="$2" width={"$10"}>
-          <XStack>
-            {session.likes.slice(0, 3).map((item, index) => (
-              <Avatar
-                key={index}
-                circular
-                size="$1.5"
-                ml={index != 0 ? "$-2" : "$0"}
-                borderWidth="$0.25"
-                borderColor={"$color"}
-              >
-                <Avatar.Image src={item} />
-                <Avatar.Fallback backgroundColor="$blue10" />
-              </Avatar>
-            ))}
-            {session.likes.length > 3 && (
-              <Circle
-                size="$1.5"
-                backgroundColor="$gray7"
-                ml="$-2"
-                borderWidth="$0.25"
-                borderColor={"$color"}
-              >
-                <SizableText size={"$1"}>{session.likes.length - 3}+</SizableText>
-              </Circle>
-            )}
-            {session.likes.length == 0 && (
-              <View height={"$1.5"} justifyContent="center">
-                <SizableText size={"$1"}>Be the first to like!</SizableText>
-              </View>
-            )}
-          </XStack>
-          <ThumbsUp
-            size={"$1.5"}
-            fill={like ? "#00cccc" : "none"}
-            scale={like ? 1.25 : 1}
-            onPress={() => setLike(!like)}
-          />
-        </YStack>
-        <YStack alignItems="center" gap="$2" width={"$10"}>
-          <View height={"$1.5"} justifyContent="center">
-            <SizableText size={"$1"}>{session.comments.length} Comments</SizableText>
-          </View>
-          <MessageCircleMore size={"$1.5"} onPress={() => setOpen(!open)} />
-        </YStack>
-      </XStack>
-    </YStack>
+      <YStack backgroundColor={"$gray1"} p="$3" gap="$2">
+        <XStack gap="$3" width="100%">
+          <Avatar circular size="$4">
+            <Avatar.Image src={session.user.pfp} />
+            <Avatar.Fallback backgroundColor="$blue10" />
+          </Avatar>
+          <YStack>
+            <SizableText size={"$2"} fontFamily={"$mono"} fontWeight={800}>
+              {session.user.name}
+            </SizableText>
+            <XStack gap="$2" alignItems="center">
+              <Dumbbell size="$1" />
+              <YStack>
+                <Paragraph lineHeight={"$1"} fontSize={"$1"}>
+                  {formatSessionDate(session.date)}
+                  {"\n"}
+                  {session.location}
+                </Paragraph>
+              </YStack>
+            </XStack>
+          </YStack>
+          <MoreHorizontal pos="absolute" right="$0" />
+        </XStack>
+        <SizableText size={"$6"} fontFamily={"$mono"} fontWeight={700}>
+          Evening Workout
+        </SizableText>
+        <XStack gap="$5">
+          <YStack>
+            <Paragraph lineHeight={"$1"} fontSize={"$1"}>
+              Exercises
+            </Paragraph>
+            <SizableText size={"$5"} fontFamily={"$mono"} fontWeight={700}>
+              {session.exercies.length}
+            </SizableText>
+          </YStack>
+          <YStack>
+            <Paragraph lineHeight={"$1"} fontSize={"$1"}>
+              Time
+            </Paragraph>
+            <SizableText size={"$4"} fontFamily={"$mono"} fontWeight={700}>
+              {formatSessionTime(session.sessionTime)}
+            </SizableText>
+          </YStack>
+        </XStack>
+        <View
+          height={"$15"}
+          alignItems="center"
+          justifyContent="center"
+          backgroundColor={"#00cccc"}
+          borderRadius={"$5"}
+        >
+          <SizableText>Card Action</SizableText>
+        </View>
+        <XStack
+          justifyContent="space-between"
+          paddingHorizontal="$10"
+          paddingTop="$2"
+        >
+          <YStack alignItems="center" gap="$2" width={"$10"}>
+            <XStack>
+              {session.likes.slice(0, 3).map((item, index) => (
+                <Avatar
+                  key={index}
+                  circular
+                  size="$1.5"
+                  ml={index != 0 ? "$-2" : "$0"}
+                  borderWidth="$0.25"
+                  borderColor={"$color"}
+                >
+                  <Avatar.Image src={item} />
+                  <Avatar.Fallback backgroundColor="$blue10" />
+                </Avatar>
+              ))}
+              {session.likes.length > 3 && (
+                <Circle
+                  size="$1.5"
+                  backgroundColor="$gray7"
+                  ml="$-2"
+                  borderWidth="$0.25"
+                  borderColor={"$color"}
+                >
+                  <SizableText size={"$1"}>
+                    {session.likes.length - 3}+
+                  </SizableText>
+                </Circle>
+              )}
+              {session.likes.length == 0 && (
+                <View height={"$1.5"} justifyContent="center">
+                  <SizableText size={"$1"}>Be the first to like!</SizableText>
+                </View>
+              )}
+            </XStack>
+            <View onPress={() => setLike(!like)}>
+              <ThumbsUp
+                size={"$2"}
+                fill={like ? "#00cccc" : "none"}
+                scale={like ? 1.15 : 1}
+              />
+            </View>
+          </YStack>
+          <YStack alignItems="center" gap="$2" width={"$10"}>
+            <View height={"$1.5"} justifyContent="center">
+              <SizableText size={"$1"}>
+                {session.comments.length} Comments
+              </SizableText>
+            </View>
+            <View onPress={() => setOpen(!open)}>
+              <MessageCircleMore size={"$2"} />
+            </View>
+          </YStack>
+        </XStack>
+      </YStack>
 
-    <Sheet
+      <Sheet
         forceRemoveScrollEnabled={open}
         modal={true}
         open={open}
@@ -156,8 +163,8 @@ export const Card = ({session}: Types.CardProps) => {
           Math.floor(
             ((Dimensions.get("window").height - useHeaderHeight()) /
               Dimensions.get("window").height) *
-              100,
-          ), 
+              100
+          ),
         ]}
         snapPointsMode="percent"
         zIndex={100_000}
@@ -175,25 +182,22 @@ export const Card = ({session}: Types.CardProps) => {
                 <SizableText size={"$6"} fontFamily={"$mono"} fontWeight={700}>
                   Comments
                 </SizableText>
-                <X
-                  size="$2"
-                  pos="absolute"
-                  right="$0"
-                  onPress={() => setOpen(false)}
-                />
+                <View pos="absolute" right="$0" onPress={() => setOpen(false)}>
+                  <X size="$2" />
+                </View>
               </XStack>
             </View>
             <ScrollView width={"100%"} height={"80%"}>
               <View gap="$5" mt="$3" p="$4" pt="$2">
-                <Comment comment={comment}/>
-                <Comment comment={comment}/>
-                <Comment comment={comment}/>
-                <Comment comment={comment}/>
-                <Comment comment={comment}/>
+                <Comment comment={comment} />
+                <Comment comment={comment} />
+                <Comment comment={comment} />
+                <Comment comment={comment} />
+                <Comment comment={comment} />
               </View>
             </ScrollView>
             <View p="$4" pt="$2">
-              <XStack gap='$2'>
+              <XStack gap="$2">
                 <Avatar circular size="$4">
                   <Avatar.Image />
                   <Avatar.Fallback backgroundColor="$blue10" />
@@ -217,7 +221,6 @@ export const Card = ({session}: Types.CardProps) => {
           </YStack>
         </Sheet.Frame>
       </Sheet>
-
     </>
   );
 };

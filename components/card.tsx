@@ -206,7 +206,8 @@ export const Card = ({ session }: Types.CardProps) => {
   );
 };
 
-function formatSessionDate(sessionDate: Date) {
+function formatSessionDate(isoString: string) {
+  const sessionDate = new Date(isoString);
   const now = new Date();
   const isToday = now.toDateString() === sessionDate.toDateString();
   const isYesterday =
@@ -227,7 +228,7 @@ function formatSessionDate(sessionDate: Date) {
       year: "numeric",
       month: "long",
       day: "numeric",
-    });
+    }) + ` at ${timeString}`;
   }
 }
 

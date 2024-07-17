@@ -10,7 +10,7 @@ export type Session = {
     id: string;
     user: User;
     location: string;
-    date: Date;
+    date: string;
     exercises: Exercise[];
     sessionTime: number;
     comments: Comment[];

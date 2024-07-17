@@ -73,11 +73,13 @@ const Page = () => {
     const loadData = async () => {
       try {
         const data = await fetchUsers();
+        console.log("datum: ", data.usersTable[0].sessions);
+        console.log("\n\n\n\n\n\n\n")
         // const data2 = await fetchUser("user_2j85qqMXiHzR7YzttZCtqSpkPYh");
         // console.log("data2: ", data2);
         // console.log("\n\n\n\n");
 
-        const processUsers = data.usersTable.map((userData: { ID: string; name: string; sessions: { sessionID: string; location: string; }; }) => {
+        const processUsers = data.usersTable.map((userData: { ID: string; name: string; sessions: { sessionID: string; location: string; date: string}; }) => {
           const user: Types.User = {
             id: userData.ID,
             name: userData.name,
@@ -88,7 +90,7 @@ const Page = () => {
             id: userData.sessions.sessionID,
             user: user,
             location: userData.sessions.location,
-            date: new Date(),
+            date: userData.sessions.date,
             exercises: [],
             sessionTime: 6022,
             comments: [],

@@ -11,18 +11,18 @@ export type Session = {
     user: User;
     location: string;
     date: Date;
-    exercies: Excerise[];
+    exercises: Exercise[];
     sessionTime: number;
-    comments: string[];
-    likes: string[];
+    comments: Comment[];
+    likes: User[];
 };
 
-export type Excerise = {
+export type Exercise = {
     name: string;
-    sets: ExceriseSet[];
+    sets: ExerciseSet[];
 };
 
-export type ExceriseSet = {
+export type ExerciseSet = {
     reps: number;
     weight: number;
 }
@@ -32,10 +32,9 @@ export type CardProps = {
 };
 
 export type Comment = {
-    name: string;
+    user: User;
     date: Date;
     pfp: string;
-    body: string;
     likes: number;
 };
 

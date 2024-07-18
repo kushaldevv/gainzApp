@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 export type User = {
     id: string;
@@ -10,31 +11,31 @@ export type Session = {
     id: string;
     user: User;
     location: string;
-    date: Date;
-    exercies: Excerise[];
+    date: string;
+    exercises: Exercise[];
     sessionTime: number;
-    comments: string[];
-    likes: string[];
+    comments: Comment[];
+    likes: User[];
 };
 
-export type Excerise = {
+export type Exercise = {
     name: string;
-    sets: ExceriseSet[];
+    sets: ExerciseSet[];
 };
 
-export type ExceriseSet = {
+export type ExerciseSet = {
     reps: number;
     weight: number;
 }
 
 export type CardProps = {
   session: Session;
+  bottomSheetModalRef: React.RefObject<BottomSheetModal>;
 };
 
 export type Comment = {
-    name: string;
+    user : User;
     date: Date;
-    pfp: string;
     body: string;
     likes: number;
 };

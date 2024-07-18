@@ -1,230 +1,270 @@
-import React, { useState } from "react";
-import {
-  Avatar,
-  SizableText,
-  YStack,
-  XStack,
-  Paragraph,
-  View,
-  Circle,
-  Sheet,
-  ScrollView,
-  Input,
-} from "tamagui";
 import {
   Dumbbell,
-  MoreHorizontal,
-  ThumbsUp,
   MessageCircleMore,
+  MoreHorizontal,
   Send,
+  ThumbsUp,
   X,
 } from "@tamagui/lucide-icons";
-import { Dimensions } from "react-native";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Avatar,
+  Circle,
+  Paragraph,
+  ScrollView,
+  SizableText,
+  useTheme,
+  View,
+  XStack,
+  YStack,
+} from "tamagui";
+import {
+  BottomSheetModal,
+  BottomSheetView,
+  BottomSheetTextInput,
+  BottomSheetFooter,
+} from "@gorhom/bottom-sheet";
 import { useHeaderHeight } from "@react-navigation/elements";
-import { Comment } from "./comment";
+import { Dimensions } from "react-native";
 import * as Types from "../types";
+import Comment from "./comment";
+import CustomBackdrop from "./backdrop";
+import { BottomSheetDefaultFooterProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetFooter/types";
 
-// For testing purposes
-const comment: Types.Comment = {
-  name: "Leul Mesfin",
-  date: new Date("2023-07-10T12:00:00"),
-  pfp: "https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80",
-  body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-  likes: 12,
-};
-//
-
-export const Card = ({ session }: Types.CardProps) => {
+const Card = ({ session, bottomSheetModalRef }: Types.CardProps) => {
   const [like, setLike] = useState(false);
-  const [open, setOpen] = useState(false);
+  const headerHeight = useHeaderHeight();
+  const [comment, setComment] = useState("");
 
-  return (
-    <>
-      <YStack backgroundColor={"$gray1"} p="$3" gap="$2">
-        <XStack gap="$3" width="100%">
-          <Avatar circular size="$4">
-            <Avatar.Image src={session.user.pfp} />
-            <Avatar.Fallback backgroundColor="$blue10" />
-          </Avatar>
-          <YStack>
-            <SizableText size={"$2"} fontFamily={"$mono"} fontWeight={800}>
-              {session.user.name}
-            </SizableText>
-            <XStack gap="$2" alignItems="center">
-              <Dumbbell size="$1" />
-              <YStack>
-                <Paragraph lineHeight={"$1"} fontSize={"$1"}>
-                  {formatSessionDate(session.date)}
-                  {"\n"}
-                  {session.location}
-                </Paragraph>
-              </YStack>
-            </XStack>
-          </YStack>
-          <MoreHorizontal pos="absolute" right="$0" />
-        </XStack>
-        <SizableText size={"$6"} fontFamily={"$mono"} fontWeight={700}>
-          Evening Workout
-        </SizableText>
-        <XStack gap="$5">
-          <YStack>
-            <Paragraph lineHeight={"$1"} fontSize={"$1"}>
-              Exercises
-            </Paragraph>
-            <SizableText size={"$5"} fontFamily={"$mono"} fontWeight={700}>
-              {session.exercies.length}
-            </SizableText>
-          </YStack>
-          <YStack>
-            <Paragraph lineHeight={"$1"} fontSize={"$1"}>
-              Time
-            </Paragraph>
-            <SizableText size={"$4"} fontFamily={"$mono"} fontWeight={700}>
-              {formatSessionTime(session.sessionTime)}
-            </SizableText>
-          </YStack>
-        </XStack>
+  const [footerHeight, setFooterHeight] = useState(0);
+  useEffect(() => {
+    console.log("Updated height:", footerHeight);
+  }, [footerHeight]);
+  const onLayoutHandler = ({ nativeEvent }: any) => {
+    const { height } = nativeEvent.layout;
+    setFooterHeight(height);
+  };
+
+  const theme = useTheme();
+
+  const snapPoints = useMemo(
+    () => [
+      "50%",
+      // Math.ceil(
+      //   ((Dimensions.get("window").height - headerHeight) /
+      //     Dimensions.get("window").height) *
+      //     100
+      // ).toString() + "%",
+    ],
+    []
+  );
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const handleDismissModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.dismiss();
+  }, []);
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log("handleSheetChanges", index);
+  }, []);
+
+  const renderFooter = useCallback(
+    (props: React.JSX.IntrinsicAttributes & BottomSheetDefaultFooterProps) => (
+      <BottomSheetFooter {...props}>
         <View
-          height={"$15"}
-          alignItems="center"
-          justifyContent="center"
-          backgroundColor={"#00cccc"}
-          borderRadius={"$5"}
+          p="$4"
+          pt="$4"
+          pb="$6"
+          backgroundColor={"$gray3"}
+          borderTopWidth="$0.25"
+          borderColor={"$gray5"}
+          onLayout={onLayoutHandler}
         >
-          <SizableText>Card Action</SizableText>
+          <XStack gap="$2">
+            <Avatar circular size="$4">
+              <Avatar.Image />
+              <Avatar.Fallback backgroundColor="$blue10" />
+            </Avatar>
+            <BottomSheetTextInput
+              placeholder="Add a comment..."
+              onChangeText={(text) => setComment(text)}
+              style={{
+                flex: 1,
+                borderColor: theme.gray10.val,
+                borderWidth: 1,
+                borderRadius: 20,
+                paddingLeft: 18,
+              }}
+            />
+            <Send
+              size={"$1"}
+              alignSelf="center"
+              right="$0"
+              pos={"absolute"}
+              mr="$3"
+            />
+          </XStack>
         </View>
-        <XStack
-          justifyContent="space-between"
-          paddingHorizontal="$10"
-          paddingTop="$2"
-        >
-          <YStack alignItems="center" gap="$2" width={"$10"}>
-            <XStack>
-              {session.likes.slice(0, 3).map((item, index) => (
-                <Avatar
-                  key={index}
-                  circular
-                  size="$1.5"
-                  ml={index != 0 ? "$-2" : "$0"}
-                  borderWidth="$0.25"
-                  borderColor={"$color"}
-                >
-                  <Avatar.Image src={item} />
-                  <Avatar.Fallback backgroundColor="$blue10" />
-                </Avatar>
-              ))}
-              {session.likes.length > 3 && (
-                <Circle
-                  size="$1.5"
-                  backgroundColor="$gray7"
-                  ml="$-2"
-                  borderWidth="$0.25"
-                  borderColor={"$color"}
-                >
-                  <SizableText size={"$1"}>
-                    {session.likes.length - 3}+
-                  </SizableText>
-                </Circle>
-              )}
-              {session.likes.length == 0 && (
-                <View height={"$1.5"} justifyContent="center">
-                  <SizableText size={"$1"}>Be the first to like!</SizableText>
-                </View>
-              )}
-            </XStack>
-            <View onPress={() => setLike(!like)}>
-              <ThumbsUp
-                size={"$2"}
-                fill={like ? "#00cccc" : "none"}
-              />
-            </View>
-          </YStack>
-          <YStack alignItems="center" gap="$2" width={"$10"}>
-            <View height={"$1.5"} justifyContent="center">
-              <SizableText size={"$1"}>
-                {session.comments.length} Comments
-              </SizableText>
-            </View>
-            <View onPress={() => setOpen(!open)}>
-              <MessageCircleMore size={"$2"} />
-            </View>
-          </YStack>
-        </XStack>
-      </YStack>
-
-      <Sheet
-        forceRemoveScrollEnabled={open}
-        modal={true}
-        open={open}
-        onOpenChange={setOpen}
-        dismissOnSnapToBottom
-        snapPoints={[
-          Math.floor(
-            ((Dimensions.get("window").height - useHeaderHeight()) /
-              Dimensions.get("window").height) *
-              100
-          ),
-        ]}
-        snapPointsMode="percent"
-        zIndex={100_000}
-        animation="medium"
+      </BottomSheetFooter>
+    ),
+    []
+  );
+  return (
+    <YStack backgroundColor={"$gray1"} p="$3" gap="$2">
+      <XStack gap="$3" width="100%">
+        <Avatar circular size="$4">
+          <Avatar.Image src={session.user.pfp} />
+          <Avatar.Fallback backgroundColor="$blue10" />
+        </Avatar>
+        <YStack>
+          <SizableText size={"$2"} fontFamily={"$mono"} fontWeight={800}>
+            {session.user.name}
+          </SizableText>
+          <XStack gap="$2" alignItems="center">
+            <Dumbbell size="$1" />
+            <YStack>
+              <Paragraph lineHeight={"$1"} fontSize={"$1"}>
+                {formatSessionDate(session.date)}
+                {"\n"}
+                {session.location}
+              </Paragraph>
+            </YStack>
+          </XStack>
+        </YStack>
+        <MoreHorizontal pos="absolute" right="$0" />
+      </XStack>
+      <SizableText size={"$6"} fontFamily={"$mono"} fontWeight={700}>
+        Evening Workout
+      </SizableText>
+      <XStack gap="$5">
+        <YStack>
+          <Paragraph lineHeight={"$1"} fontSize={"$1"}>
+            Exercises
+          </Paragraph>
+          <SizableText size={"$5"} fontFamily={"$mono"} fontWeight={700}>
+            {session.exercises.length}
+          </SizableText>
+        </YStack>
+        <YStack>
+          <Paragraph lineHeight={"$1"} fontSize={"$1"}>
+            Time
+          </Paragraph>
+          <SizableText size={"$4"} fontFamily={"$mono"} fontWeight={700}>
+            {formatSessionTime(session.sessionTime)}
+          </SizableText>
+        </YStack>
+      </XStack>
+      <View
+        height={"$15"}
+        alignItems="center"
+        justifyContent="center"
+        backgroundColor={"#00cccc"}
+        borderRadius={"$5"}
       >
-        <Sheet.Overlay
-          animation="lazy"
-          enterStyle={{ opacity: 0 }}
-          exitStyle={{ opacity: 0 }}
-        />
-        <Sheet.Frame alignItems="center" gap="$5">
+        <SizableText>Card Action</SizableText>
+      </View>
+      <XStack
+        justifyContent="space-between"
+        paddingHorizontal="$10"
+        paddingTop="$2"
+      >
+        <YStack alignItems="center" gap="$2" width={"$10"}>
+          <XStack>
+            {session.likes.slice(0, 3).map((item, index) => (
+              <Avatar
+                key={index}
+                circular
+                size="$1.5"
+                ml={index != 0 ? "$-2" : "$0"}
+                borderWidth="$0.25"
+                borderColor={"$color"}
+              >
+                <Avatar.Image src={item.pfp} />
+                <Avatar.Fallback backgroundColor="$blue10" />
+              </Avatar>
+            ))}
+            {session.likes.length > 3 && (
+              <Circle
+                size="$1.5"
+                backgroundColor="$gray7"
+                ml="$-2"
+                borderWidth="$0.25"
+                borderColor={"$color"}
+              >
+                <SizableText size={"$1"}>
+                  {session.likes.length - 3}+
+                </SizableText>
+              </Circle>
+            )}
+            {session.likes.length == 0 && (
+              <View height={"$1.5"} justifyContent="center">
+                <SizableText size={"$1"}>Be the first to like!</SizableText>
+              </View>
+            )}
+          </XStack>
+          <View onPress={() => setLike(!like)}>
+            <ThumbsUp size={"$2"} fill={like ? "#00cccc" : "none"} />
+          </View>
+        </YStack>
+        <YStack alignItems="center" gap="$2" width={"$10"}>
+          <View height={"$1.5"} justifyContent="center">
+            <SizableText size={"$1"}>
+              {session.comments.length} Comments
+            </SizableText>
+          </View>
+          <View onPress={() => handlePresentModalPress()}>
+            <MessageCircleMore size={"$2"} />
+          </View>
+        </YStack>
+      </XStack>
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={0}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+        backdropComponent={CustomBackdrop}
+        handleIndicatorStyle={{ backgroundColor: theme.color.val }}
+        backgroundStyle={{ backgroundColor: theme.gray3.val }}
+        keyboardBehavior="interactive"
+        keyboardBlurBehavior="restore"
+        android_keyboardInputMode="adjustResize"
+        footerComponent={renderFooter}
+      >
+        <BottomSheetView>
           <YStack width={"100%"} gap="$2">
-            <View p="$4" pb="$2">
+            <View p="$4" paddingVertical="$2">
               <XStack justifyContent="center">
                 <SizableText size={"$6"} fontFamily={"$mono"} fontWeight={700}>
                   Comments
                 </SizableText>
-                <View pos="absolute" right="$0" onPress={() => setOpen(false)}>
+                <View
+                  pos="absolute"
+                  right="$0"
+                  onPress={() => handleDismissModalPress()}
+                >
                   <X size="$2" />
                 </View>
               </XStack>
             </View>
-            <ScrollView width={"100%"} height={"80%"}>
+            <ScrollView borderTopWidth="$0.25" borderColor={"$gray5"}>
               <View gap="$5" mt="$3" p="$4" pt="$2">
-                <Comment comment={comment} />
-                <Comment comment={comment} />
-                <Comment comment={comment} />
-                <Comment comment={comment} />
-                <Comment comment={comment} />
+                {session.comments.map((comment, index) => (
+                  <Comment key={index} comment={comment} />
+                ))}
               </View>
             </ScrollView>
-            <View p="$4" pt="$2">
-              <XStack gap="$2">
-                <Avatar circular size="$4">
-                  <Avatar.Image />
-                  <Avatar.Fallback backgroundColor="$blue10" />
-                </Avatar>
-                <Input
-                  flex={1}
-                  placeholder="Add a comment..."
-                  borderColor="$borderColor"
-                  borderRadius="$12"
-                  pr="$7"
-                />
-                <Send
-                  size={"$1"}
-                  alignSelf="center"
-                  right="$0"
-                  pos={"absolute"}
-                  mr="$3"
-                />
-              </XStack>
-            </View>
           </YStack>
-        </Sheet.Frame>
-      </Sheet>
-    </>
+        </BottomSheetView>
+      </BottomSheetModal>
+    </YStack>
   );
 };
 
-function formatSessionDate(sessionDate: Date) {
+export default Card;
+
+function formatSessionDate(isoString: string) {
+  const sessionDate = new Date(isoString);
   const now = new Date();
   const isToday = now.toDateString() === sessionDate.toDateString();
   const isYesterday =
@@ -241,11 +281,13 @@ function formatSessionDate(sessionDate: Date) {
   } else if (isYesterday) {
     return `Yesterday at ${timeString}`;
   } else {
-    return sessionDate.toLocaleDateString([], {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+    return (
+      sessionDate.toLocaleDateString([], {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }) + ` at ${timeString}`
+    );
   }
 }
 

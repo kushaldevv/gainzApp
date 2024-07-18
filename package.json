@@ -16,6 +16,7 @@
     "@clerk/clerk-expo": "^1.2.3",
     "@expo-google-fonts/inter": "^0.2.3",
     "@expo/vector-icons": "^14.0.2",
+    "@gorhom/bottom-sheet": "^4.6.3",
     "@react-navigation/native": "^6.0.2",
     "@tamagui/config": "^1.101.7",
     "@tamagui/lucide-icons": "^1.101.7",

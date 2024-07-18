@@ -3,14 +3,13 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
-import { ClerkProvider, ClerkLoaded, ClerkLoading } from "@clerk/clerk-expo";
+import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import { Slot } from "expo-router";
 import tokenCache from "../services/tokenCache";
 import { TamaguiProvider, createTamagui } from "@tamagui/core";
 import { config } from "@tamagui/config/v3";
 import { useColorScheme } from "react-native";
 import * as SystemUI from "expo-system-ui";
-import { Spinner, YStack } from "tamagui";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 if (!publishableKey) {
@@ -74,16 +73,6 @@ function RootLayoutNav() {
   return (
     <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
       <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-        <ClerkLoading>
-          <YStack
-            flex={1}
-            justifyContent="center"
-            alignItems="center"
-            backgroundColor="$background"
-          >
-            <Spinner size="large" color="red" />
-          </YStack>
-        </ClerkLoading>
         <ClerkLoaded>
           <Slot />
         </ClerkLoaded>

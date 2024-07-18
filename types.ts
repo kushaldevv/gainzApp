@@ -1,11 +1,16 @@
 import { ReactNode } from "react";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
-export type User = {
+export interface User  {
     id: string;
     name: string;
     pfp: string;
 }
+
+export interface UserProfile extends User {
+    friends : User[];
+    sessions: Session[];
+};
 
 export type Session = {
     id: string;
@@ -13,23 +18,16 @@ export type Session = {
     location: string;
     date: string;
     exercises: Exercise[];
-    date: string;
-    exercises: Exercise[];
-    sessionTime: number;
-    comments: Comment[];
-    likes: User[];
+    duration: number;
     comments: Comment[];
     likes: User[];
 };
 
-export type Exercise = {
 export type Exercise = {
     name: string;
     sets: ExerciseSet[];
-    sets: ExerciseSet[];
 };
 
-export type ExerciseSet = {
 export type ExerciseSet = {
     reps: number;
     weight: number;

@@ -30,12 +30,8 @@ export default function SignInScreen() {
   const [error, setError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const shake = useShakeAnimation(error);
-  const { startOAuthFlow: startAppleOAuthFlow } = useOAuth({
-    strategy: "oauth_apple",
-  });
-  const { startOAuthFlow: startGoogleOAuthFlow } = useOAuth({
-    strategy: "oauth_google",
-  });
+  const { startOAuthFlow: startAppleOAuthFlow } = useOAuth({ strategy: "oauth_apple", });
+  const { startOAuthFlow: startGoogleOAuthFlow } = useOAuth({ strategy: "oauth_google", });
 
   // sign in with apple
   const onApplePress = useCallback(async () => {

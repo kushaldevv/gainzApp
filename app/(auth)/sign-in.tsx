@@ -2,7 +2,7 @@ import { useSignIn } from "@clerk/clerk-expo";
 import { Link, useRouter } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 import { useState, useCallback } from "react";
-import { useAuth, useOAuth } from "@clerk/clerk-expo";
+import { useOAuth } from "@clerk/clerk-expo";
 import {
   Button,
   H1,
@@ -12,7 +12,6 @@ import {
   SizableText,
   Spinner,
   View,
-  YStack,
   XStack,
   Label,
 } from "tamagui";
@@ -32,8 +31,12 @@ export default function SignInScreen() {
   const [error, setError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const shake = useShakeAnimation(error);
-  const { startOAuthFlow: startAppleOAuthFlow } = useOAuth({ strategy: 'oauth_apple' });
-  const { startOAuthFlow: startGoogleOAuthFlow } = useOAuth({ strategy: 'oauth_google' });
+  const { startOAuthFlow: startAppleOAuthFlow } = useOAuth({
+    strategy: "oauth_apple",
+  });
+  const { startOAuthFlow: startGoogleOAuthFlow } = useOAuth({
+    strategy: "oauth_google",
+  });
 
   // sign in with apple
   const onApplePress = useCallback(async () => {
@@ -116,164 +119,124 @@ export default function SignInScreen() {
     }, [])
   );
   return (
-    <Animated.View style={[{ flex: 1 }, shake]}>
-      <YStack
-        flex={1}
-        justifyContent="center"
-        alignItems="center"
-        backgroundColor={"$background"}
+    <FormCard error={error}>
+      <H1
+        alignSelf="center"
+        size="$8"
+        $xs={{
+          size: "$7",
+        }}
       >
-        <FormCard>
+        Sign in to your account
+      </H1>
+      <View flexDirection="column" gap="$3">
+        <View flexDirection="column">
+          <Label>Email</Label>
+          <Animated.View style={[shake]}>
+            <XStack>
+              <Input
+                flex={1}
+                pl="$7"
+                textContentType="emailAddress"
+                placeholder="email@example.com"
+                borderColor={error ? "$red10" : "$borderColor"}
+                focusStyle={{
+                  borderColor: error ? "$red10" : "$borderColor",
+                }}
+                onChangeText={(text) => setEmailAddress(text)}
+              />
+              <Mail size={"$1"} alignSelf="center" pos={"absolute"} ml="$3" />
+            </XStack>
+          </Animated.View>
           <View
-            flexDirection="column"
-            alignItems="stretch"
-            justifyContent="center"
-            minWidth="100%"
-            maxWidth="100%"
-            gap="$4"
-            padding="$4"
-            paddingVertical="$6"
-            $gtSm={{
-              paddingVertical: "$4",
-              width: 400,
-            }}
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
           >
-            <H1
-              alignSelf="center"
-              size="$8"
-              $xs={{
-                size: "$7",
-              }}
-            >
-              Sign in to your account
-            </H1>
-            <View flexDirection="column" gap="$3">
-              <View flexDirection="column">
-                <Label>Email</Label>
-                <XStack>
-                  <Input
-                    flex={1}
-                    pl="$7"
-                    textContentType="emailAddress"
-                    placeholder="email@example.com"
-                    borderColor={error ? "$red10" : "$borderColor"}
-                    focusStyle={{
-                      borderColor: error ? "$red10" : "$borderColor",
-                    }}
-                    onChangeText={(text) => setEmailAddress(text)}
-                  />
-                  <Mail
-                    size={"$1"}
-                    alignSelf="center"
-                    pos={"absolute"}
-                    ml="$3"
-                  />
-                </XStack>
-                <View
-                  flexDirection="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <Label>Password</Label>
-                  <ForgotPasswordLink />
-                </View>
-                <XStack>
-                  <Input
-                    flex={1}
-                    pl="$7"
-                    pr="$7"
-                    borderColor={error ? "$red10" : "$borderColor"}
-                    focusStyle={{
-                      borderColor: error ? "$red10" : "$borderColorFocus",
-                    }}
-                    textContentType="password"
-                    secureTextEntry={!showPassword}
-                    placeholder="Enter password"
-                    onChangeText={(text) => setPassword(text)}
-                  />
-                  <Key
-                    size={"$1"}
-                    alignSelf="center"
-                    pos={"absolute"}
-                    ml="$3"
-                  />
-                  {!showPassword && (
-                    <Eye
-                      size={"$1"}
-                      alignSelf="center"
-                      right='$0'
-                      pos={"absolute"}
-                      mr="$3"
-                      onPress={() => setShowPassword(true)}
-                    />
-                  )}
-                  {showPassword && (
-                    <EyeOff
-                      size={"$1"}
-                      alignSelf="center"
-                      right='$0'
-                      pos={"absolute"}
-                      mr="$3"
-                      onPress={() => setShowPassword(false)}
-                    />
-                  )}
-                </XStack>
-              </View>
-              <View flexDirection="column" gap="$1"></View>
-            </View>
-            <Button
-              themeInverse
-              disabled={!isLoaded}
-              onPress={onSignInPress}
-              width="100%"
-            >
-              <Button.Text>Sign In</Button.Text>
-              {loading && <Spinner size="small" color="$accentColor" />}
-            </Button>
-            <View
-              flexDirection="column"
-              gap="$3"
-              width="100%"
-              alignItems="center"
-            >
-              <View
-                flexDirection="column"
-                gap="$3"
-                width="100%"
-                alignSelf="center"
-                alignItems="center"
-              >
-                <View
-                  flexDirection="row"
-                  width="100%"
-                  alignItems="center"
-                  gap="$4"
-                >
-                  <Separator />
-                  <Paragraph>Or</Paragraph>
-                  <Separator />
-                </View>
-                <View flexDirection="row" flexWrap="wrap" gap="$3">
-                  <Button flex={1} minWidth="100%" onPress={onGooglePress}>
-                    <Button.Icon>
-                      <AntDesign name="google" size={24} />
-                    </Button.Icon>
-                    <Button.Text>Continue with Google</Button.Text>
-                  </Button>
-                  <Button flex={1} minWidth="100%" onPress={onApplePress}>
-                  <Button.Icon>
-                    <AntDesign name="apple1" size={24} />
-                  </Button.Icon>
-                  <Button.Text>Continue with Apple</Button.Text>
-                </Button>
-              </View>
-              </View>
-              <SignUpLink />
-            </View>
+            <Label>Password</Label>
+            <ForgotPasswordLink />
           </View>
-        </FormCard>
-      </YStack>
-    </Animated.View>
+          <Animated.View style={[shake]}>
+            <XStack>
+              <Input
+                flex={1}
+                pl="$7"
+                pr="$7"
+                borderColor={error ? "$red10" : "$borderColor"}
+                focusStyle={{
+                  borderColor: error ? "$red10" : "$borderColorFocus",
+                }}
+                textContentType="password"
+                secureTextEntry={!showPassword}
+                placeholder="Enter password"
+                onChangeText={(text) => setPassword(text)}
+              />
+              <Key size={"$1"} alignSelf="center" pos={"absolute"} ml="$3" />
+              {!showPassword && (
+                <Eye
+                  size={"$1"}
+                  alignSelf="center"
+                  right="$0"
+                  pos={"absolute"}
+                  mr="$3"
+                  onPress={() => setShowPassword(true)}
+                />
+              )}
+              {showPassword && (
+                <EyeOff
+                  size={"$1"}
+                  alignSelf="center"
+                  right="$0"
+                  pos={"absolute"}
+                  mr="$3"
+                  onPress={() => setShowPassword(false)}
+                />
+              )}
+            </XStack>
+          </Animated.View>
+        </View>
+        <View flexDirection="column" gap="$1"></View>
+      </View>
+      <Button
+        themeInverse
+        disabled={!isLoaded}
+        onPress={onSignInPress}
+        width="100%"
+      >
+        <Button.Text>Sign In</Button.Text>
+        {loading && <Spinner size="small" color="$accentColor" />}
+      </Button>
+      <View flexDirection="column" gap="$3" width="100%" alignItems="center">
+        <View
+          flexDirection="column"
+          gap="$3"
+          width="100%"
+          alignSelf="center"
+          alignItems="center"
+        >
+          <View flexDirection="row" width="100%" alignItems="center" gap="$4">
+            <Separator />
+            <Paragraph>Or</Paragraph>
+            <Separator />
+          </View>
+          <View flexDirection="row" flexWrap="wrap" gap="$3">
+            <Button flex={1} minWidth="100%" onPress={onGooglePress}>
+              <Button.Icon>
+                <AntDesign name="google" size={24} />
+              </Button.Icon>
+              <Button.Text>Continue with Google</Button.Text>
+            </Button>
+            <Button flex={1} minWidth="100%" onPress={onApplePress}>
+              <Button.Icon>
+                <AntDesign name="apple1" size={24} />
+              </Button.Icon>
+              <Button.Text>Continue with Apple</Button.Text>
+            </Button>
+          </View>
+        </View>
+        <SignUpLink />
+      </View>
+    </FormCard>
   );
 }
 

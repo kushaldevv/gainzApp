@@ -8,7 +8,8 @@ import { Slot } from "expo-router";
 import tokenCache from "../services/tokenCache";
 import { TamaguiProvider, createTamagui } from "@tamagui/core";
 import { config } from "@tamagui/config/v3";
-import { Theme } from "tamagui";
+import { useColorScheme } from "react-native";
+import * as SystemUI from "expo-system-ui";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 if (!publishableKey) {
@@ -16,7 +17,6 @@ if (!publishableKey) {
     "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env"
   );
 }
-
 
 const tamaguiConfig = createTamagui(config);
 
@@ -52,9 +52,13 @@ export default function RootLayout() {
   }, [error]);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    async function prepare() {
+      if (loaded) {
+        await SystemUI.setBackgroundColorAsync("$background");
+        await SplashScreen.hideAsync();
+      }
     }
+    prepare();
   }, [loaded]);
 
   if (!loaded) {
@@ -65,15 +69,14 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const colorScheme = useColorScheme();
   return (
-    <TamaguiProvider config={tamaguiConfig} disableRootThemeClass>
-      <Theme name={"dark"}>
-        <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-          <ClerkLoaded>
-            <Slot />
-          </ClerkLoaded>
-        </ClerkProvider>
-      </Theme>
+    <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
+      <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+        <ClerkLoaded>
+          <Slot />
+        </ClerkLoaded>
+      </ClerkProvider>
     </TamaguiProvider>
   );
 }

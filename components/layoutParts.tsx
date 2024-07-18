@@ -1,5 +1,5 @@
-import { View, styled, YStack } from "tamagui";
 import * as Types from "@/types";
+import { styled, View, YStack } from "tamagui";
 
 const Middle = styled(View, {
   tag: "form",

@@ -2,7 +2,7 @@ import Card from "@/components/card";
 import { getUser, getUsers } from "@/services/apiCalls";
 import * as Types from "@/types";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, View, YStack } from "tamagui";
 
 const fetchUsers = async() => {

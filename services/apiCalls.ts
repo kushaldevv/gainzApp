@@ -2,7 +2,6 @@ import axios from 'axios';
 
 const API_URL = 'https://ke3qj4rbgb.execute-api.us-east-1.amazonaws.com/production';
 
-
 export const getUsers = async () => {
     try {
       const response = await axios.get(`${API_URL}/users`);

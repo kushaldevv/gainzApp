@@ -1,28 +1,28 @@
-import * as React from "react";
-import { useSignUp, useOAuth } from "@clerk/clerk-expo";
+import { Alert } from "@/components/alertDialog";
+import { FormCard } from "@/components/layoutParts";
+import { useShakeAnimation } from "@/components/shakeAnimation";
+import { useOAuth, useSignUp } from "@clerk/clerk-expo";
+import { AntDesign } from "@expo/vector-icons";
+import { useFocusEffect } from "@react-navigation/native";
+import { Eye, EyeOff, Key, Mail, User } from "@tamagui/lucide-icons";
 import { Link, useRouter } from "expo-router";
+import * as React from "react";
+import { useCallback, useRef, useState } from "react";
+import Animated from "react-native-reanimated";
 import {
   Button,
   H1,
   Input,
+  Label,
   Paragraph,
+  Progress,
   Separator,
   SizableText,
   Spinner,
-  View,
-  Label,
-  XStack,
   Text,
-  Progress,
+  View,
+  XStack,
 } from "tamagui";
-import { Mail, Key, Eye, EyeOff, User } from "@tamagui/lucide-icons";
-import { FormCard } from "@/components/layoutParts";
-import { AntDesign } from "@expo/vector-icons";
-import { useCallback, useRef, useState } from "react";
-import { Alert } from "@/components/alertDialog";
-import { useFocusEffect } from "@react-navigation/native";
-import { useShakeAnimation } from "@/components/shakeAnimation";
-import Animated from "react-native-reanimated";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();

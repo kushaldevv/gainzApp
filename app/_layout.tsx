@@ -1,15 +1,15 @@
+import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-import "react-native-reanimated";
-import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
-import { Slot } from "expo-router";
-import tokenCache from "../services/tokenCache";
-import { TamaguiProvider, createTamagui } from "@tamagui/core";
 import { config } from "@tamagui/config/v3";
-import { useColorScheme } from "react-native";
+import { TamaguiProvider, createTamagui } from "@tamagui/core";
+import { useFonts } from "expo-font";
+import { Slot } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
 import * as SystemUI from "expo-system-ui";
+import { useEffect } from "react";
+import { useColorScheme } from "react-native";
+import "react-native-reanimated";
+import tokenCache from "../services/tokenCache";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 if (!publishableKey) {
@@ -29,7 +29,7 @@ declare module "@tamagui/core" {
 
 export {
   // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
+  ErrorBoundary
 } from "expo-router";
 
 // export const unstable_settings = {

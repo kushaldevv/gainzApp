@@ -1,6 +1,6 @@
-import React from "react";
-import { YStack, Text, Button } from "tamagui";
 import { useClerk, useUser } from "@clerk/clerk-expo";
+import React from "react";
+import { Button, Text, YStack } from "tamagui";
 
 const Profile = () => {
   const { user } = useUser();

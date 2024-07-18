@@ -1,25 +1,24 @@
-import { useSignIn } from "@clerk/clerk-expo";
-import { Link, useRouter } from "expo-router";
+import { FormCard } from "@/components/layoutParts";
+import { useShakeAnimation } from "@/components/shakeAnimation";
+import { useOAuth, useSignIn } from "@clerk/clerk-expo";
 import { AntDesign } from "@expo/vector-icons";
-import { useState, useCallback } from "react";
-import { useOAuth } from "@clerk/clerk-expo";
+import { useFocusEffect } from "@react-navigation/native";
+import { Eye, EyeOff, Key, Mail } from "@tamagui/lucide-icons";
+import { Link, useRouter } from "expo-router";
+import { useCallback, useState } from "react";
+import Animated from "react-native-reanimated";
 import {
   Button,
   H1,
   Input,
+  Label,
   Paragraph,
   Separator,
   SizableText,
   Spinner,
   View,
   XStack,
-  Label,
 } from "tamagui";
-import { Mail, Key, Eye, EyeOff } from "@tamagui/lucide-icons";
-import { FormCard } from "@/components/layoutParts";
-import { useShakeAnimation } from "@/components/shakeAnimation";
-import Animated from "react-native-reanimated";
-import { useFocusEffect } from "@react-navigation/native";
 
 export default function SignInScreen() {
   const [loading, setLoading] = useState(false);

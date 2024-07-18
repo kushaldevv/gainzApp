@@ -1,4 +1,12 @@
 import {
+  BottomSheetFooter,
+  BottomSheetModal,
+  BottomSheetTextInput,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
+import { BottomSheetDefaultFooterProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetFooter/types";
+import { useHeaderHeight } from "@react-navigation/elements";
+import {
   Dumbbell,
   MessageCircleMore,
   MoreHorizontal,
@@ -6,7 +14,7 @@ import {
   ThumbsUp,
   X,
 } from "@tamagui/lucide-icons";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   Avatar,
   Circle,
@@ -18,35 +26,15 @@ import {
   XStack,
   YStack,
 } from "tamagui";
-import {
-  BottomSheetModal,
-  BottomSheetView,
-  BottomSheetTextInput,
-  BottomSheetFooter,
-} from "@gorhom/bottom-sheet";
-import { useHeaderHeight } from "@react-navigation/elements";
-import { Dimensions } from "react-native";
 import * as Types from "../types";
-import Comment from "./comment";
 import CustomBackdrop from "./backdrop";
-import { BottomSheetDefaultFooterProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetFooter/types";
+import Comment from "./comment";
 
 const Card = ({ session, bottomSheetModalRef }: Types.CardProps) => {
   const [like, setLike] = useState(false);
-  const headerHeight = useHeaderHeight();
+  // const headerHeight = useHeaderHeight();
   const [comment, setComment] = useState("");
-
-  const [footerHeight, setFooterHeight] = useState(0);
-  useEffect(() => {
-    console.log("Updated height:", footerHeight);
-  }, [footerHeight]);
-  const onLayoutHandler = ({ nativeEvent }: any) => {
-    const { height } = nativeEvent.layout;
-    setFooterHeight(height);
-  };
-
   const theme = useTheme();
-
   const snapPoints = useMemo(
     () => [
       "50%",
@@ -79,7 +67,6 @@ const Card = ({ session, bottomSheetModalRef }: Types.CardProps) => {
           backgroundColor={"$gray3"}
           borderTopWidth="$0.25"
           borderColor={"$gray5"}
-          onLayout={onLayoutHandler}
         >
           <XStack gap="$2">
             <Avatar circular size="$4">

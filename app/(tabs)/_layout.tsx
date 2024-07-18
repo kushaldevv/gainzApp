@@ -1,11 +1,10 @@
-import { Tabs } from "expo-router";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useColorScheme } from "react-native";
 import { SignedIn, useAuth } from "@clerk/clerk-expo";
-import { Redirect } from "expo-router";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
+import { Redirect, Tabs } from "expo-router";
+import { useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function Layout() {

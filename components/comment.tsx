@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Avatar, SizableText, YStack, XStack, Paragraph } from "tamagui";
 import { Heart } from "@tamagui/lucide-icons";
+import React, { useState } from "react";
+import { Avatar, Paragraph, SizableText, XStack, YStack } from "tamagui";
 import * as Types from "../types";
 
 const Comment = ({ comment }: Types.CommentProps) => {

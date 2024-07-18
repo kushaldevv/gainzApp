@@ -44,8 +44,8 @@ export default function SignUpScreen() {
   const shakeName = useShakeAnimation(error.includes("Name"));
   const shakeEmail = useShakeAnimation(error.includes("Email"));
   const shakePassword = useShakeAnimation(error.includes("Password"));
-
-  const { startOAuthFlow } = useOAuth({ strategy: "oauth_apple" });
+  const { startOAuthFlow: startAppleOAuthFlow } = useOAuth({ strategy: "oauth_apple", });
+  const { startOAuthFlow: startGoogleOAuthFlow } = useOAuth({ strategy: "oauth_google", });
 
   // sign in with apple
   const onApplePress = useCallback(async () => {
@@ -55,7 +55,7 @@ export default function SignUpScreen() {
     }
 
     try {
-      const { createdSessionId } = await startOAuthFlow();
+      const { createdSessionId } = await startAppleOAuthFlow();
 
       if (createdSessionId) {
         setActive({ session: createdSessionId });
@@ -66,6 +66,27 @@ export default function SignUpScreen() {
       throw error;
     }
   }, []);
+
+  // sign in with Google
+  const onGooglePress = useCallback(async () => {
+    if (!setActive) {
+      console.log("setActive is not available");
+      return;
+    }
+
+    try {
+      const { createdSessionId } = await startGoogleOAuthFlow();
+
+      if (createdSessionId) {
+        setActive({ session: createdSessionId });
+      } else {
+        console.log("sign in with apple failed :(");
+      }
+    } catch (error) {
+      throw error;
+    }
+  }, []);
+
   const [pressedInResendCode, setPressedInResendCode] = useState(false);
 
   function updatePasswordProgess(password: string) {
@@ -377,7 +398,7 @@ export default function SignUpScreen() {
                 <Separator />
               </View>
               <View flexDirection="row" flexWrap="wrap" gap="$3">
-                <Button flex={1} minWidth="100%">
+                <Button flex={1} minWidth="100%" onPress={onGooglePress}>
                   <Button.Icon>
                     <AntDesign name="google" size={24} />
                   </Button.Icon>

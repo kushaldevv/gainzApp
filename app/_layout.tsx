@@ -1,14 +1,15 @@
+import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-import "react-native-reanimated";
-import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
-import { Slot } from "expo-router";
-import tokenCache from "../services/tokenCache";
-import { TamaguiProvider, createTamagui } from "@tamagui/core";
 import { config } from "@tamagui/config/v3";
-import { Theme } from "tamagui";
+import { TamaguiProvider, createTamagui } from "@tamagui/core";
+import { useFonts } from "expo-font";
+import { Slot } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import * as SystemUI from "expo-system-ui";
+import { useEffect } from "react";
+import { useColorScheme } from "react-native";
+import "react-native-reanimated";
+import tokenCache from "../services/tokenCache";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 if (!publishableKey) {
@@ -16,7 +17,6 @@ if (!publishableKey) {
     "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env"
   );
 }
-
 
 const tamaguiConfig = createTamagui(config);
 
@@ -29,7 +29,7 @@ declare module "@tamagui/core" {
 
 export {
   // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
+  ErrorBoundary
 } from "expo-router";
 
 // export const unstable_settings = {
@@ -52,9 +52,13 @@ export default function RootLayout() {
   }, [error]);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    async function prepare() {
+      if (loaded) {
+        await SystemUI.setBackgroundColorAsync("$background");
+        await SplashScreen.hideAsync();
+      }
     }
+    prepare();
   }, [loaded]);
 
   if (!loaded) {
@@ -65,15 +69,14 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const colorScheme = useColorScheme();
   return (
-    <TamaguiProvider config={tamaguiConfig} disableRootThemeClass>
-      <Theme name={"dark"}>
-        <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-          <ClerkLoaded>
-            <Slot />
-          </ClerkLoaded>
-        </ClerkProvider>
-      </Theme>
+    <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
+      <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+        <ClerkLoaded>
+          <Slot />
+        </ClerkLoaded>
+      </ClerkProvider>
     </TamaguiProvider>
   );
 }

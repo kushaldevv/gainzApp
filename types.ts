@@ -42,9 +42,9 @@ export type Comment = {
 
 export type CommentProps = {
     comment: Comment;
-  };
+};
 
 export  type FormCardProps = {
     children: ReactNode;
     error : boolean;
-  };
+};

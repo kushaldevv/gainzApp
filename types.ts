@@ -13,16 +13,23 @@ export type Session = {
     location: string;
     date: string;
     exercises: Exercise[];
+    date: string;
+    exercises: Exercise[];
     sessionTime: number;
+    comments: Comment[];
+    likes: User[];
     comments: Comment[];
     likes: User[];
 };
 
 export type Exercise = {
+export type Exercise = {
     name: string;
+    sets: ExerciseSet[];
     sets: ExerciseSet[];
 };
 
+export type ExerciseSet = {
 export type ExerciseSet = {
     reps: number;
     weight: number;

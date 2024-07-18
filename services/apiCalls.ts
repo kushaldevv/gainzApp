@@ -14,16 +14,16 @@ export const getUsers = async () => {
     }
   }
 
-  export const getUser = async (id: string) => {
-    try {
-      const response = await axios.get(`${API_URL}/user?userID=${id}`);
-      return response.data;
-      //console.log(response.data.usersTable[0]);
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+export const getUser = async (id: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/user?userID=${id}`);
+    return response.data;
+    //console.log(response.data.usersTable[0]);
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
+}
 
 
 // export const userAPI = () => {

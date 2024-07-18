@@ -181,6 +181,7 @@ const Card = ({ session, bottomSheetModalRef }: Types.CardProps) => {
                 borderColor={"$color"}
               >
                 <Avatar.Image src={item.pfp} />
+                <Avatar.Image src={item.pfp} />
                 <Avatar.Fallback backgroundColor="$blue10" />
               </Avatar>
             ))}

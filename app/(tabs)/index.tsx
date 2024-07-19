@@ -1,5 +1,5 @@
 import Card from "@/components/card";
-import { getUser, getUserSessions } from "@/services/apiCalls";
+import { getUserSessions } from "@/services/apiCalls";
 import * as Types from "@/types";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, { useEffect, useRef, useState } from "react";

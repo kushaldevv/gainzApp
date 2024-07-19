@@ -32,37 +32,37 @@ import Comment from "./comment";
 import { useUser } from "@clerk/clerk-expo";
 import { Skeleton } from "moti/skeleton";
 import { useColorScheme } from "react-native";
+import { getSessionComments } from "@/services/apiCalls";
 
 const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
   const { user } = useUser();
   const [like, setLike] = useState(false);
-  // const headerHeight = useHeaderHeight();
+  const headerHeight = useHeaderHeight();
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState<Types.Comment[]>([]);
   const theme = useTheme();
   const skeletonColorScheme =
     useColorScheme() == "dark" ? "light" : "dark" || "light";
-  const snapPoints = useMemo(
-    () => [
-      "50%",
-      // Math.ceil(
-      //   ((Dimensions.get("window").height - headerHeight) /
-      //     Dimensions.get("window").height) *
-      //     100
-      // ).toString() + "%",
-    ],
-    []
-  );
 
   const handlePresentModalPress = useCallback(() => {
+    setComments([]);
+    loadComments();
     bottomSheetModalRef.current?.present();
   }, []);
   const handleDismissModalPress = useCallback(() => {
     bottomSheetModalRef.current?.dismiss();
   }, []);
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
-  }, []);
 
+  const loadComments = async () => {
+    try {
+      const data = await getSessionComments(session.user.id, session.id);
+      console.log(data);
+      setComments(data);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+      throw error;
+    }
+  };
   const renderFooter = useCallback(
     (props: React.JSX.IntrinsicAttributes & BottomSheetDefaultFooterProps) => (
       <BottomSheetFooter {...props}>
@@ -242,8 +242,8 @@ const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
         <BottomSheetModal
           ref={bottomSheetModalRef}
           index={0}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}
+          snapPoints={["50%", "100%"]}
+          // onChange={handleSheetChanges}
           backdropComponent={CustomBackdrop}
           handleIndicatorStyle={{ backgroundColor: theme.color.val }}
           backgroundStyle={{ backgroundColor: theme.gray3.val }}
@@ -251,6 +251,7 @@ const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
           keyboardBlurBehavior="restore"
           android_keyboardInputMode="adjustResize"
           footerComponent={renderFooter}
+          topInset={headerHeight}
         >
           <BottomSheetView>
             <YStack width={"100%"} gap="$2">
@@ -274,7 +275,7 @@ const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
               </View>
               <ScrollView borderTopWidth="$0.25" borderColor={"$gray5"}>
                 <View gap="$5" mt="$3" p="$4" pt="$2">
-                  {session.comments.map((comment, index) => (
+                  {comments.map((comment, index) => (
                     <Comment key={index} comment={comment} />
                   ))}
                 </View>

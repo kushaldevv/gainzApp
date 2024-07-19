@@ -34,8 +34,6 @@ export const getUserSessions = async (id: string) => {
 
     const sessions = await Promise.all(
       Object.entries(data).map(async ([sessionID, sessionData]: [string, any]) => {
-        // console.log('type shi ' + sessionID)
-        console.log('type shi ' + sessionData.comments[0]['user_2j6mHW8GrcGU4xGOf240n7yBvT0'].body)
         const likes: Types.User[] = await Promise.all(
           sessionData.likes.map((like: string) => getUser(like))
         );
@@ -65,7 +63,6 @@ export const getUserSessions = async (id: string) => {
         return session;
       })
     );
-    // console.log(sessions);
     return sessions;
   } catch (error) {
     console.error(error);
@@ -83,7 +80,6 @@ export const getUser = async (id: string) => {
       name: data.name as string,
       pfp: data.pfp as string,
     };
-    // console.log("user data in apiCalls: ", user);
     return user;
   } catch (error) {
     console.error(error);
@@ -106,11 +102,34 @@ export const getUserProfile = async (id: string) => {
       friends: friends,
       sessions: [],
     }
-    // console.log("response data friends ", responseData.friends);
     console.log("user profile friends: ", userProfile);
     return userProfile;
   } catch (error) {
     console.error(error);
+    throw error;
+  }
+}
+export const getSessionComments = async (userId: string, sessionId: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/user/sessions/comments?userID=${userId}&sessionID=${sessionId}`);
+    const responseData = response.data;
+
+    const comments: Types.Comment[] = await Promise.all(
+      responseData.flatMap((comment: any) =>
+        Object.entries(comment).map(async ([userID, content]: [string, any]) => {
+          const user = await getUser(userID) as Types.User;
+          return {
+            user,
+            date: content.date as string,
+            body: content.body as string,
+            likes: content.likes as number
+          };
+        })
+      )
+    );
+    console.log("comments: ", comments);
+    return comments;
+  } catch (error) {
     throw error;
   }
 }

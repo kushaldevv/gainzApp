@@ -19,7 +19,7 @@ export type Session = {
     date: string;
     exercises: Exercise[];
     duration: number;
-    comments: Comment[];
+    comments: number;
     likes: User[];
 };
 

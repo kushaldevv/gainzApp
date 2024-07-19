@@ -4,6 +4,7 @@ import { Avatar, Paragraph, SizableText, XStack, YStack } from "tamagui";
 import * as Types from "../types";
 
 const Comment = ({ comment }: Types.CommentProps) => {
+  
   const [like, setLike] = useState(false);
   return (
     <XStack gap="$2">
@@ -45,7 +46,8 @@ const Comment = ({ comment }: Types.CommentProps) => {
 
 export default Comment;
 
-function formatSimpleDate(likeDate: Date): string {
+function formatSimpleDate(isoString: string): string {
+  const likeDate = new Date(isoString);
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - likeDate.getTime()) / 1000);
 

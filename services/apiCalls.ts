@@ -1,69 +1,116 @@
 import axios from 'axios';
-
+import * as Types from '@/types';
 const API_URL = 'https://ke3qj4rbgb.execute-api.us-east-1.amazonaws.com/production';
+export const getUserSessions1 = async (id: string) => {
+  const sessionsList: Types.Session[] = []
+  try {
+    const response = await axios.get(`${API_URL}/user/sessions?userID=${id}`);
+    const data: { [sessionId: string]: Types.Session } = response.data;
+    const user = await getUser(id) as Types.User;
 
-export const getUsers = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/users`);
-      return response.data;
-      //console.log(response.data.usersTable[0]);
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    Object.entries(data).forEach(([sessionId, session]: [string, Types.Session]) => {
+      const userSession: Types.Session = {
+        id: sessionId,
+        user: user,
+        location: session.location,
+        date: session.date,
+        exercises: session.exercises,
+        duration: session.duration,
+        comments: session.comments,
+        likes: session.likes
+      }
+      sessionsList.push(userSession);
+    });
+    return sessionsList
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
+}
+export const getUserSessions = async (id: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/user/sessions?userID=${id}`);
+    const data = response.data;
+
+    const sessions = await Promise.all(
+      Object.entries(data).map(async ([sessionID, sessionData]: [string, any]) => {
+        // console.log('type shi ' + sessionID)
+        console.log('type shi ' + sessionData.comments[0]['user_2j6mHW8GrcGU4xGOf240n7yBvT0'].body)
+        const likes: Types.User[] = await Promise.all(
+          sessionData.likes.map((like: string) => getUser(like))
+        );
+        const comments: Types.Comment[] = await Promise.all(
+          sessionData.comments.flatMap((comment: any) =>
+            Object.entries(comment).map(async ([userID, content]: [string, any]) => {
+              const user = await getUser(userID) as Types.User;
+              return {
+                user,
+                date: content.date as string,
+                body: content.body as string,
+                likes: content.likes as number
+              };
+            })
+          )
+        );
+        const session: Types.Session = {
+          id: sessionID,
+          user: await getUser(id) as Types.User,
+          location: sessionData.location as string,
+          date: sessionData.date as string,
+          exercises: [], 
+          duration: sessionData.duration as number,
+          comments: comments,
+          likes: likes
+        };
+        return session;
+      })
+    );
+    // console.log(sessions);
+    return sessions;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
 export const getUser = async (id: string) => {
   try {
     const response = await axios.get(`${API_URL}/user?userID=${id}`);
-    return response.data;
-    //console.log(response.data.usersTable[0]);
+    const data = response.data;
+
+    const user: Types.User = {
+      id: data.userID as string,
+      name: data.name as string,
+      pfp: data.pfp as string,
+    };
+    // console.log("user data in apiCalls: ", user);
+    return user;
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
 
+export const getUserProfile = async (id: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/user?userID=${id}`);
+    const data = response.data;
 
-// export const userAPI = () => {
-      
-//   // const getUsers async(id) => 
-//   // getUsers: async (id = null) => {
-//   //   try {
-//   //     const response = await axios.get(`${API_URL}/users${id ? `/${id}` : ''}`);
-//   //     return response.data;
-//   //   } catch (error) {
-//   //     console.error('Error fetching users:', error);
-//   //     throw error;
-//   //   }
-//   // },
+    const friendPromises = data.friends.map((friendId : string) => getUser(friendId));
+    const friends: Types.User[] = await Promise.all(friendPromises);
 
-//   // createUser: async (userData) => {
-//   //   try {
-//   //     const response = await axios.post(`${API_URL}/users`, userData, {
-//   //       headers: {
-//   //         'Content-Type': 'application/json',
-//   //         'Authorization': ''//'your_auth_token_here'
-//   //       }
-//   //     });
-//   //     return response.data;
-//   //   } catch (error) {
-//   //     console.error('Error creating user:', error);
-//   //     throw error;
-//   //   }
-//   // },
-
-//   // deleteUser: async (id) => {
-//   //   try {
-//   //     const response = await axios.delete(`${API_URL}/users/${id}`, {
-//   //       headers: {
-//   //         'Authorization': ''//'your_auth_token_here'
-//   //       }
-//   //     });
-//   //     return response.data;
-//   //   } catch (error) {
-//   //     console.error('Error deleting user:', error);
-//   //     throw error;
-//   //   }
-//   // }
-// };
+    const userProfile: Types.UserProfile = {
+      id: data.userID as string,
+      name: data.name as string,
+      pfp: data.pfp as string,
+      friends: friends,
+      sessions: [],
+    }
+    // console.log("response data friends ", responseData.friends);
+    console.log("user profile friends: ", userProfile);
+    return userProfile;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

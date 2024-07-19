@@ -1,10 +1,12 @@
 import React from "react";
-import { Text, YStack } from "tamagui";
+import { Text, YStack, Button } from "tamagui";
 
 const Post = () => {
   return (
-    <YStack flex={1} alignItems="center" backgroundColor={"$background"}>
-      <Text>Hello, World!</Text>
+    <YStack flex={1} alignItems="center" justifyContent="center" backgroundColor={"$background"}>
+      <Button themeInverse
+        
+      >Mickey Post</Button>
     </YStack>
   );
 };

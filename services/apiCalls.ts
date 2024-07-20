@@ -2,7 +2,22 @@ import axios from 'axios';
 import * as Types from '@/types';
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
-// hello
+// will add a pfp arg also
+export const postUser = async(id: string, name: string) => {
+  try {
+    const payload = {
+      "userID": id,
+      "name": name,
+      "pfp": "https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80",
+      "friends": [],
+      "session": {}
+    }
+    await axios.post(`${API_URL}/user`, payload);
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const getUser = async (id: string) => {
   try {
     const response = await axios.get(`${API_URL}/user?userID=${id}`);

@@ -1,5 +1,5 @@
 import Card from "@/components/card";
-import { getUserSessions } from "@/services/apiCalls";
+import { getUserSessions, postUser } from "@/services/apiCalls";
 import * as Types from "@/types";
 import {
   BottomSheetModal,

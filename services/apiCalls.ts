@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as Types from '@/types';
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
+// hello
 export const getUser = async (id: string) => {
   try {
     const response = await axios.get(`${API_URL}/user?userID=${id}`);

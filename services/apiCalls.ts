@@ -84,6 +84,16 @@ export const getUserSessions = async (id: string) => {
   }
 };
 
+export const getUserFriends = async (id: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/user/friends?userID=${id}`);
+    const friends = await Promise.all(response.data.map(async (friendID: string) => await getUser(friendID)));
+    console.log("friends list: ", friends);
+    return friends
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const getSessionComments = async (userId: string, sessionId: string) => {
   try {

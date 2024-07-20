@@ -31,6 +31,7 @@ const Page = () => {
     const loadData = async () => {
       try {
         setLoading(true);
+        // pass in currently logged in user's id
         const data = await getUserSessions("user_2j6mHW8GrcGU4xGOf240n7yBvT0");
         setSessions(data);
       } catch (error) {

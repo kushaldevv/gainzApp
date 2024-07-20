@@ -43,7 +43,6 @@ export default function SignInScreen() {
 
     try {
       const { createdSessionId, signUp} = await startAppleOAuthFlow();
-
       console.log("apple signUp: ", signUp);
       
       const userID = signUp?.createdUserId;
@@ -53,8 +52,10 @@ export default function SignInScreen() {
         if (name){
           console.log(name)
           await postUser(userID, name);
-        } 
-        await postUser(userID, "User")
+        } else {
+          await postUser(userID, "Apple User#") // append a pseudo-randomly generated number
+        }
+       
       }    
 
       if (createdSessionId) {
@@ -75,8 +76,21 @@ export default function SignInScreen() {
     }
 
     try {
-      const { createdSessionId } = await startGoogleOAuthFlow();
+      const { createdSessionId, signUp } = await startGoogleOAuthFlow();
       console.log(createdSessionId);
+
+      const userID = signUp?.createdUserId;
+      const name = signUp?.firstName
+      if(userID) {
+        console.log(userID)
+        if (name){
+          console.log(name)
+          await postUser(userID, name);
+        } else {
+          await postUser(userID, "Google User#") // append a pseudo-randomly generated number
+        }
+       
+      }    
 
       if (createdSessionId) {
         setActive({ session: createdSessionId });

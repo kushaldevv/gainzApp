@@ -3,7 +3,6 @@ import { getUserSessions } from "@/services/apiCalls";
 import * as Types from "@/types";
 import {
   BottomSheetModal,
-  BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
 import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, View, YStack } from "tamagui";

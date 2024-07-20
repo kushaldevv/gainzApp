@@ -1,9 +1,12 @@
 import Card from "@/components/card";
 import { getUserSessions } from "@/services/apiCalls";
 import * as Types from "@/types";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
 import React, { useEffect, useRef, useState } from "react";
-import { ScrollView, View, YStack, Button } from "tamagui";
+import { ScrollView, View, YStack } from "tamagui";
 
 const emptySession: Types.Session = {
   id: "",
@@ -16,7 +19,7 @@ const emptySession: Types.Session = {
   date: "",
   exercises: [],
   duration: 0,
-  comments: [],
+  comments: 0,
   likes: [],
 };
 

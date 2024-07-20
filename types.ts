@@ -48,6 +48,7 @@ export type Comment = {
 
 export type CommentProps = {
     comment: Comment;
+    loading: boolean;
 };
 
 export  type FormCardProps = {

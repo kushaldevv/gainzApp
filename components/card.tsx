@@ -14,7 +14,7 @@ import {
   ThumbsUp,
   X,
 } from "@tamagui/lucide-icons";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Avatar,
   Circle,
@@ -40,29 +40,30 @@ const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
   const headerHeight = useHeaderHeight();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<Types.Comment[]>([]);
+  const [isCommentsLoading, setIsCommentsLoading] = useState(false);
   const theme = useTheme();
   const skeletonColorScheme =
     useColorScheme() == "dark" ? "light" : "dark" || "light";
 
   const handlePresentModalPress = useCallback(() => {
-    setComments([]);
     loadComments();
     bottomSheetModalRef.current?.present();
-  }, []);
+  }, [session.id]);
+
   const handleDismissModalPress = useCallback(() => {
     bottomSheetModalRef.current?.dismiss();
   }, []);
 
-  const loadComments = async () => {
-    try {
-      const data = await getSessionComments(session.user.id, session.id);
-      console.log(data);
-      setComments(data);
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-      throw error;
-    }
-  };
+  // const loadComments = async () => {
+  //   try {
+  //     const data = await getSessionComments(session.user.id, session.id);
+  //     setComments(data);
+  //   } catch (error) {
+  //     console.error("Error fetching comments:", error);
+  //     throw error;
+  //   }
+  // };
+
   const renderFooter = useCallback(
     (props: React.JSX.IntrinsicAttributes & BottomSheetDefaultFooterProps) => (
       <BottomSheetFooter {...props}>
@@ -104,6 +105,25 @@ const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
     ),
     []
   );
+  const loadComments = useCallback(async () => {
+    if (loading) return;
+
+    setIsCommentsLoading(true);
+    setComments([]);
+    try {
+      const data = await getSessionComments(session.user.id, session.id);
+      setComments(data);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    } finally {
+      setIsCommentsLoading(false);
+    }
+  }, [session.id, session.user.id, loading]);
+
+  useEffect(() => {
+    setComments([]);
+  }, [session.id]);
+
   return (
     <Skeleton.Group show={loading}>
       <YStack backgroundColor={"$gray1"} p="$3" gap="$2">
@@ -230,7 +250,7 @@ const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
             <YStack alignItems="center" gap="$2" width={"$10"}>
               <View height={"$1.5"} justifyContent="center">
                 <SizableText size={"$1"}>
-                  {session.comments.length} Comments
+                  {session.comments} Comments
                 </SizableText>
               </View>
               <View onPress={() => handlePresentModalPress()}>
@@ -252,6 +272,7 @@ const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
           android_keyboardInputMode="adjustResize"
           footerComponent={renderFooter}
           topInset={headerHeight}
+          onDismiss={()=> setComments([])}
         >
           <BottomSheetView>
             <YStack width={"100%"} gap="$2">
@@ -276,7 +297,7 @@ const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
               <ScrollView borderTopWidth="$0.25" borderColor={"$gray5"}>
                 <View gap="$5" mt="$3" p="$4" pt="$2">
                   {comments.map((comment, index) => (
-                    <Comment key={index} comment={comment} />
+                    <Comment key={index} comment={comment} loading={true} />
                   ))}
                 </View>
               </ScrollView>

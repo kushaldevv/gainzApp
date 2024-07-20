@@ -39,7 +39,8 @@ export type CardProps = {
   bottomSheetModalRef: React.RefObject<BottomSheetModal>;
 };
 
-export type Comment = {
+export type Comment = { 
+    id: string;
     user : User;
     date: string;
     body: string;

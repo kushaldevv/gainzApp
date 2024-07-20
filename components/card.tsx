@@ -33,7 +33,19 @@ import { useUser } from "@clerk/clerk-expo";
 import { Skeleton } from "moti/skeleton";
 import { useColorScheme } from "react-native";
 import { getSessionComments } from "@/services/apiCalls";
+import { isLoading } from "expo-font";
 
+const emptyComment: Types.Comment = {
+  id: "",
+  user: {
+    id: "",
+    name: "",
+    pfp: " ",
+  },
+  date: "",
+  body: "",
+  likes: 0,
+};
 const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
   const { user } = useUser();
   const [like, setLike] = useState(false);
@@ -142,7 +154,7 @@ const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
                 fontWeight={800}
                 mb={"$1"}
               >
-                {session.user.name}
+                {session.user.name || ' '}
               </SizableText>
             </Skeleton>
             <Skeleton colorMode={skeletonColorScheme}>
@@ -160,9 +172,7 @@ const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
             </Skeleton>
           </YStack>
           <View pos="absolute" right="$0">
-            <Skeleton colorMode={skeletonColorScheme} width={30} height={15}>
-              <MoreHorizontal />
-            </Skeleton>
+            {!loading && <MoreHorizontal />}
           </View>
         </XStack>
         <Skeleton colorMode={skeletonColorScheme} width={"90%"}>
@@ -206,8 +216,8 @@ const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
           paddingHorizontal="$10"
           paddingTop="$2"
         >
-          <Skeleton colorMode={skeletonColorScheme}>
-            <YStack alignItems="center" gap="$2" width={"$10"}>
+          <YStack alignItems="center" gap="$2" width={"$10"}>
+            <Skeleton colorMode={skeletonColorScheme}>
               <XStack>
                 {session.likes.slice(0, 3).map((item, index) => (
                   <Avatar
@@ -241,23 +251,27 @@ const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
                   </View>
                 )}
               </XStack>
-              <View onPress={() => setLike(!like)}>
+            </Skeleton>
+              <View onPress={() => setLike(!like)} height={'$2'}>
+              {!loading && (
                 <ThumbsUp size={"$2"} fill={like ? "#00cccc" : "none"} />
+              )}
               </View>
-            </YStack>
-          </Skeleton>
-          <Skeleton colorMode={skeletonColorScheme}>
-            <YStack alignItems="center" gap="$2" width={"$10"}>
+          </YStack>
+          <YStack alignItems="center" gap="$2" width={"$10"}>
+            <Skeleton colorMode={skeletonColorScheme}>
               <View height={"$1.5"} justifyContent="center">
                 <SizableText size={"$1"}>
                   {session.comments} Comments
                 </SizableText>
               </View>
+            </Skeleton>
+            {!loading && (
               <View onPress={() => handlePresentModalPress()}>
                 <MessageCircleMore size={"$2"} />
               </View>
-            </YStack>
-          </Skeleton>
+            )}
+          </YStack>
         </XStack>
         <BottomSheetModal
           ref={bottomSheetModalRef}
@@ -272,7 +286,7 @@ const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
           android_keyboardInputMode="adjustResize"
           footerComponent={renderFooter}
           topInset={headerHeight}
-          onDismiss={()=> setComments([])}
+          onDismiss={() => setComments([])}
         >
           <BottomSheetView>
             <YStack width={"100%"} gap="$2">
@@ -296,8 +310,21 @@ const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
               </View>
               <ScrollView borderTopWidth="$0.25" borderColor={"$gray5"}>
                 <View gap="$5" mt="$3" p="$4" pt="$2">
+                  {/* {Array.from({ length: session.comments }).map((_, index) => (
+                    <Comment
+                      key={index}
+                      comment={
+                        isCommentsLoading ? emptyComment : emptyComment
+                      }
+                      loading={isCommentsLoading}
+                    />
+                  ))} */}
                   {comments.map((comment, index) => (
-                    <Comment key={index} comment={comment} loading={true} />
+                    <Comment
+                      key={index}
+                      comment={comment}
+                      loading={isCommentsLoading}
+                    />
                   ))}
                 </View>
               </ScrollView>

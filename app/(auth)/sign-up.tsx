@@ -56,12 +56,23 @@ export default function SignUpScreen() {
     }
 
     try {
-      const { createdSessionId } = await startAppleOAuthFlow();
-
+      const { createdSessionId, signUp} = await startAppleOAuthFlow();
+      console.log("apple signUp: ", signUp);
+      
+      const userID = signUp?.createdUserId;
+      const name = signUp?.firstName
+      if(userID) {
+        console.log(userID)
+        if (name){
+          console.log(name)
+          await postUser(userID, name);
+        } 
+        await postUser(userID, "User")
+      }    
       if (createdSessionId) {
         setActive({ session: createdSessionId });
       } else {
-        console.log("sign in with apple failed :(");
+        console.log("Sign in with Apple failed :(");
       }
     } catch (error) {
       throw error;

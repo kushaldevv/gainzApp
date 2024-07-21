@@ -66,9 +66,12 @@ export default function SignUpScreen() {
         if (name){
           console.log(name)
           await postUser(userID, name);
-        } 
-        await postUser(userID, "User")
+        } else {
+          await postUser(userID, "Apple User#") // append a pseudo-randomly generated number
+        }
+        
       }    
+
       if (createdSessionId) {
         setActive({ session: createdSessionId });
       } else {
@@ -79,7 +82,7 @@ export default function SignUpScreen() {
     }
   }, []);
 
-  // sign in with Google
+  // sign in with google
   const onGooglePress = useCallback(async () => {
     if (!setActive) {
       console.log("setActive is not available");
@@ -87,12 +90,26 @@ export default function SignUpScreen() {
     }
 
     try {
-      const { createdSessionId } = await startGoogleOAuthFlow();
+      const { createdSessionId, signUp } = await startGoogleOAuthFlow();
+      console.log(createdSessionId);
+
+      const userID = signUp?.createdUserId;
+      const name = signUp?.firstName
+      if(userID) {
+        console.log(userID)
+        if (name){
+          console.log(name)
+          await postUser(userID, name);
+        } else {
+          await postUser(userID, "Google User#") // append a pseudo-randomly generated number
+        }
+       
+      }    
 
       if (createdSessionId) {
         setActive({ session: createdSessionId });
       } else {
-        console.log("sign in with apple failed :(");
+        console.log("Sign in with Google failed :(");
       }
     } catch (error) {
       throw error;

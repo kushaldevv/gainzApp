@@ -55,7 +55,7 @@ export default function SignInScreen() {
         } else {
           await postUser(userID, "Apple User#") // append a pseudo-randomly generated number
         }
-       
+        
       }    
 
       if (createdSessionId) {
@@ -298,3 +298,4 @@ const ForgotPasswordLink = () => {
     </Link>
   );
 };
+

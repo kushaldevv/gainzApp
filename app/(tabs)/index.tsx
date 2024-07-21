@@ -33,7 +33,6 @@ const Page = () => {
         setLoading(true);
         // pass in currently logged in user's id
         const data = await getUserSessions("user_2j6mHW8GrcGU4xGOf240n7yBvT0");
-        await getSessionLikes("user_2jWjeSXTPtnTxG5aOfMoWfPrtRk", "session_2024071501");
         setSessions(data);
       } catch (error) {
         console.error("Error fetching sessions:", error);

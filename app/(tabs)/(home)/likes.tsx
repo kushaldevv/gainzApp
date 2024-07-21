@@ -2,7 +2,15 @@ import { getSessionLikes } from "@/services/apiCalls";
 import * as Types from "@/types";
 
 import React, { useEffect, useState } from "react";
-import { Avatar, Button, ScrollView, XStack, YStack, Text } from "tamagui";
+import {
+  Avatar,
+  Button,
+  ScrollView,
+  XStack,
+  YStack,
+  Text,
+  SizableText,
+} from "tamagui";
 import { useLocalSearchParams } from "expo-router";
 
 type Like = {
@@ -47,29 +55,33 @@ const Likes = () => {
   console.log("Hello this is: ");
   console.log(likesData);
 
-  return (
-    // <View style={{ flex: 1 }}>
-    //   <XStack justifyContent="space-between" alignItems="center" padding="$4">
-    //     <Button onPress={() => router.back()}>Back</Button>
-    //     <Text>Likes</Text>
-    //   </XStack>
+  const handleFollow = (userId: string) => {
+    // Implement follow functionality here
+    console.log(`Following user with ID: ${userId}`);
+  };
 
-    //   {/* Rest of your Likes screen content */}
-    //   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    //     <Text>This is the Likes Screen</Text>
-    //     {/* You can add your likes content here */}
-    //   </View>
-    // </View>
+  return (
     <YStack flex={1} alignItems="center" backgroundColor={"$background"}>
       <ScrollView width={"100%"}>
         {likesData.map((like: Like) => (
-          <XStack key={like.id} padding="$3" alignItems="center">
-            <Avatar circular size="$4">
-              <Avatar.Image src={like.pfp} />
-              <Avatar.Fallback backgroundColor="$blue10" />
-            </Avatar>
-    
-            <Text fontSize={"$6"} paddingLeft={"$4"}>{like.name}</Text>
+          <XStack key={like.id} padding="$3" alignItems="center" justifyContent='space-between'>
+            <XStack flex={1} alignItems="center" mr="$3">
+              <Avatar circular size="$5">
+                <Avatar.Image src={like.pfp} />
+                <Avatar.Fallback backgroundColor="$blue10" />
+              </Avatar>
+              <SizableText
+                size={"$4"}
+                fontFamily={"$mono"}
+                fontWeight={700}
+                ml="$3"
+              >
+                {like.name}
+              </SizableText>
+            </XStack>
+            <Button themeInverse onPress={() => handleFollow(like.id)} height={'$3'} width={'$10'}>
+              Follow
+            </Button>
           </XStack>
         ))}
       </ScrollView>

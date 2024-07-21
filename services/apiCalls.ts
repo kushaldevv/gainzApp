@@ -43,6 +43,7 @@ export const getUserProfile = async (id: string) => {
 
 export const getUserSessions = async (id: string) => {
   try {
+    console.log("getting sessions")
     const response = await axios.get(`${API_URL}/user/sessions?userID=${id}`);
     const data = response.data;
 
@@ -76,7 +77,6 @@ export const getUserFriends = async (id: string) => {
   try {
     const response = await axios.get(`${API_URL}/user/friends?userID=${id}`);
     const friends = await Promise.all(response.data.map(async (friendID: string) => await getUser(friendID)));
-    console.log("friends list: ", friends);
     return friends
   } catch (error) {
     throw error;
@@ -87,23 +87,44 @@ export const getSessionComments = async (userId: string, sessionId: string) => {
   try {
     const response = await axios.get(`${API_URL}/user/sessions/comments?userID=${userId}&sessionID=${sessionId}`);
     const responseData = response.data;
-
     const comments: Types.Comment[] = await Promise.all(
-      responseData.flatMap((comment: any) =>
-        Object.entries(comment).map(async ([commentID, content]: [string, any]) => {
-          const user = await getUser(content.userID) as Types.User;
+      responseData.flatMap(async (comment: any) => {
+          const user = await getUser(comment.userID) as Types.User;
           return {
-            id: commentID as string,
             user,
-            date: content.date as string,
-            body: content.body as string,
-            likes: content.likes as number
+            date: comment.date as string,
+            body: comment.body as string,
+            likes: comment.likes as number
           };
-        })
+        }
       )
     );
-    console.log("comments: ", comments);
     return comments;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const postUser = async(id: string, name: string) => {
+  try {
+    console.log("posting user")
+    const payload = {
+      "userID": id,
+      "name": name,
+      "pfp": "https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80",
+      "friends": [],
+      "session": {}
+    }
+    await axios.post(`${API_URL}/user`, payload);
+  } catch (error) {
+    throw error;
+  }
+}
+export const getSessionLikes = async(userID: string, sessionID: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/user/sessions/likes?userID=${userID}&sessionID=${sessionID}`);
+    const likedUsers : Types.User[] = await Promise.all(response.data.map(async (friendID: string) => await getUser(friendID)));
+    return likedUsers
   } catch (error) {
     throw error;
   }

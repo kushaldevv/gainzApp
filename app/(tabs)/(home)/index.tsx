@@ -1,6 +1,7 @@
 import Card from "@/components/card";
 import { getUserSessions } from "@/services/apiCalls";
 import * as Types from "@/types";
+import { useUser } from "@clerk/clerk-expo";
 import {
   BottomSheetModal,
 } from "@gorhom/bottom-sheet";
@@ -25,13 +26,14 @@ const emptySession: Types.Session = {
 const Page = () => {
   const [sessions, setSessions] = useState<Types.Session[]>([]);
   const [loading, setLoading] = useState(true);
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const { user } = useUser();
 
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
-        const data = await getUserSessions("user_2j6mHW8GrcGU4xGOf240n7yBvT0");
+        // const data = await getUserSessions(user?.id as string);
+        const data = await getUserSessions("user_2jWjeSXTPtnTxG5aOfMoWfPrtRk");
         setSessions(data);
       } catch (error) {
         console.error("Error fetching sessions:", error);
@@ -53,7 +55,6 @@ const Page = () => {
                 key={index}
                 session={loading ? emptySession : sessions[index]}
                 loading={loading}
-                bottomSheetModalRef={bottomSheetModalRef}
               />
             )
           )}

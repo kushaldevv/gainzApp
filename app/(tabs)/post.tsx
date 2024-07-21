@@ -13,18 +13,18 @@ const Post = () => {
   const postSession = () => {
     console.log("Posting session...");
     const sessionId = `session_${new Date().getTime()}`;
-    const newSession = {
-      comments: [],
-      date: new Date().toISOString(),
-      duration: duration,
-      exercises: {
+    const newSession  = {
+      'likes': [],
+      'comments': [],
+      'date': new Date().toISOString(),
+      'duration': duration,
+      'exercises': {
         [exerciseName]: {
-          reps: reps,
-          weight: weight,
+          'reps': [reps],
+          'weight': [weight],
         },
       },
-      likes: [],
-      location: location,
+      'location': location,
     };
   };
   return (

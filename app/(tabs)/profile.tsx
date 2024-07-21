@@ -8,6 +8,7 @@ const Profile = () => {
   return (
     <YStack flex={1} alignItems="center" backgroundColor={"$background"}>
       <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
+      <Text>Hello {user?.id}</Text>
       <Button onPress={() => signOut()}>Log out</Button>
     </YStack>
   );

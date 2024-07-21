@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 export interface User  {
     id: string;
@@ -36,7 +35,6 @@ export type ExerciseSet = {
 export type CardProps = {
   session: Session;
   loading: boolean;
-  bottomSheetModalRef: React.RefObject<BottomSheetModal>;
 };
 
 export type Comment = { 

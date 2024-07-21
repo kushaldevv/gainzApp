@@ -4,8 +4,8 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 export const appendSession = async(userID: string, session: any) => {
   try {
-    const res = await axios.patch(`${API_URL}/user?userID=${userID}`, session);
-    console.log("res: ", res);
+    await axios.patch(`${API_URL}/user?userID=${userID}`, session);
+    // console.log("res: ", res);
   } catch (error) {
     throw error;
   }

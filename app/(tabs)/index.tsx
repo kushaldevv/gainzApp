@@ -33,7 +33,6 @@ const Page = () => {
         setLoading(true);
         // pass in currently logged in user's id
         const data = await getUserSessions("user_2j6mHW8GrcGU4xGOf240n7yBvT0");
-        await appendSession("user_2jWjeSXTPtnTxG5aOfMoWfPrtRk", "session_2024071504", [], {}, [], "Eppley - College Park, MD", 3600, "2024-08-15T16:40:00.000Z");
         setSessions(data);
       } catch (error) {
         console.error("Error fetching sessions:", error);

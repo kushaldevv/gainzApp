@@ -2,19 +2,8 @@ import axios from 'axios';
 import * as Types from '@/types';
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
-export const appendSession = async(userID: string, sessionKey: string, likes: string[], exercises: {}, comments: Comment[], location: string, duration: number, date: string) => {
+export const appendSession = async(userID: string, session: any) => {
   try {
-    const session = {
-      "sessionKey": sessionKey,
-      "sessionData": {
-        "likes": likes,
-        "exercises": exercises,
-        "comments": comments,
-        "location": location,
-        "duration": duration,
-        "date": date
-      }
-    }
     const res = await axios.patch(`${API_URL}/user?userID=${userID}`, session);
     console.log("res: ", res);
   } catch (error) {

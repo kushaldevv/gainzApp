@@ -1,5 +1,7 @@
+import { appendSession } from "@/services/apiCalls";
 import React, { useState } from "react";
 import { Text, YStack, Button, Input, XStack } from "tamagui";
+import * as Types from "@/types";
 
 const Post = () => {
   const [sessionName, setSessionName] = useState("");
@@ -10,22 +12,26 @@ const Post = () => {
   const [reps, setReps] = useState(0);
   const [weight, setWeight] = useState(0);
 
-  const postSession = () => {
+  const postSession = async () => {
     console.log("Posting session...");
-    const sessionId = `session_${new Date().getTime()}`;
+    const sessionKey = `session_${new Date().getTime()}`;
     const newSession = {
-      comments: [],
-      date: new Date().toISOString(),
-      duration: duration,
-      exercises: {
-        [exerciseName]: {
-          reps: reps,
-          weight: weight,
+      "sessionKey": sessionKey,
+      "sessionData": {
+        "likes": [],
+        "exercises": {
+          [exerciseName]: {
+            reps: reps,
+            weight: weight,
+          },
         },
-      },
-      likes: [],
-      location: location,
+        "comments": [],
+        "location": location,
+        "duration": duration,
+        "date": new Date().toISOString()
+      }
     };
+    await appendSession("user_2jWjeSXTPtnTxG5aOfMoWfPrtRk", newSession) // don't hardcode user id
   };
   return (
     <YStack

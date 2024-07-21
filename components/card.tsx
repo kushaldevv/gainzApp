@@ -37,8 +37,10 @@ import CustomBackdrop from "./backdrop";
 import Comment from "./comment";
 import { useUser } from "@clerk/clerk-expo";
 import { Skeleton } from "moti/skeleton";
-import { useColorScheme } from "react-native";
+import { TouchableOpacity, useColorScheme } from "react-native";
 import { getSessionComments } from "@/services/apiCalls";
+import { isLoading } from "expo-font";
+import { useRouter } from "expo-router";
 
 const emptyComment: Types.Comment = {
   id: "",
@@ -52,16 +54,18 @@ const emptyComment: Types.Comment = {
   likes: 0,
 };
 
+
 const Card = ({ session, loading }: Types.CardProps) => {
   const { user } = useUser();
-  const theme = useTheme();
-  const skeletonColorScheme =
-    useColorScheme() == "dark" ? "light" : "dark" || "light";
   const [like, setLike] = useState(false);
   const headerHeight = useHeaderHeight();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<Types.Comment[]>([]);
   const [isCommentsLoading, setIsCommentsLoading] = useState(false);
+  const theme = useTheme();
+  const router = useRouter();
+  const skeletonColorScheme =
+    useColorScheme() == "dark" ? "light" : "dark" || "light";
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const handlePresentModalPress = useCallback(() => {
@@ -73,6 +77,14 @@ const Card = ({ session, loading }: Types.CardProps) => {
     bottomSheetModalRef.current?.dismiss();
   }, []);
 
+  const handleLikesPress = () => {
+    if (session.likes.length > 0) {
+      router.push({
+        pathname: '/likes',
+        params: { likes: JSON.stringify(session.likes) }
+      });
+    }
+  };
   const loadComments = async () => {
     setIsCommentsLoading(true);
     try {
@@ -134,6 +146,10 @@ const Card = ({ session, loading }: Types.CardProps) => {
     ),
     []
   );
+
+  const handleAvatarClick = (profileUrl: string) => {
+    window.open(profileUrl, '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <Skeleton.Group show={loading}>
@@ -217,6 +233,7 @@ const Card = ({ session, loading }: Types.CardProps) => {
         >
           <YStack alignItems="center" gap="$2" width={"$10"}>
             <Skeleton colorMode={skeletonColorScheme}>
+            <TouchableOpacity onPress={handleLikesPress} disabled={session.likes.length === 0}>
               <XStack>
                 {session.likes.slice(0, 3).map((item, index) => (
                   <Avatar
@@ -250,6 +267,7 @@ const Card = ({ session, loading }: Types.CardProps) => {
                   </View>
                 )}
               </XStack>
+              </TouchableOpacity>
             </Skeleton>
             <View onPress={() => setLike(!like)} height={"$2"}>
               {!loading && (

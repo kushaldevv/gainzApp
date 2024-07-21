@@ -2,6 +2,26 @@ import axios from 'axios';
 import * as Types from '@/types';
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
+export const appendSession = async(userID: string, sessionKey: string, likes: string[], exercises: {}, comments: Comment[], location: string, duration: number, date: string) => {
+  try {
+    const session = {
+      "sessionKey": sessionKey,
+      "sessionData": {
+        "likes": likes,
+        "exercises": exercises,
+        "comments": comments,
+        "location": location,
+        "duration": duration,
+        "date": date
+      }
+    }
+    const res = await axios.patch(`${API_URL}/user?userID=${userID}`, session);
+    console.log("res: ", res);
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const getSessionLikes = async(userID: string, sessionID: string) => {
   try {
     const response = await axios.get(`${API_URL}/user/sessions/likes?userID=${userID}&sessionID=${sessionID}`);
@@ -11,6 +31,7 @@ export const getSessionLikes = async(userID: string, sessionID: string) => {
     throw error;
   }
 }
+
 // will add a pfp arg also
 export const postUser = async(id: string, name: string) => {
   try {

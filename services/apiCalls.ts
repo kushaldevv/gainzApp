@@ -55,6 +55,7 @@ export const getUserSessions = async (id: string) => {
 
         const session: Types.Session = {
           id: sessionID,
+          name: sessionData.name as string,
           user: await getUser(id) as Types.User,
           location: sessionData.location as string,
           date: sessionData.date as string,

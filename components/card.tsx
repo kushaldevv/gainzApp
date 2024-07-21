@@ -98,13 +98,15 @@ const Card = ({ session, loading }: Types.CardProps) => {
           borderColor={"$gray5"}
         >
           <XStack gap="$2">
-            <Avatar circular size="$4">
+            <Avatar circular size="$4" alignSelf="center">
               <Avatar.Image src={user?.imageUrl} />
               <Avatar.Fallback backgroundColor="$blue10" />
             </Avatar>
             <BottomSheetTextInput
               placeholder="Add a comment..."
               onChangeText={(text) => setComment(text)}
+              multiline={true}
+              maxLength={256}
               style={{
                 flex: 1,
                 color: theme.color.val,
@@ -112,6 +114,11 @@ const Card = ({ session, loading }: Types.CardProps) => {
                 borderWidth: 1,
                 borderRadius: 20,
                 paddingLeft: 18,
+                paddingRight: 40,
+                paddingTop: 12,
+                paddingBottom: 12,
+                textAlignVertical: "top",
+                
               }}
             />
             <Send
@@ -169,7 +176,7 @@ const Card = ({ session, loading }: Types.CardProps) => {
         </XStack>
         <Skeleton colorMode={skeletonColorScheme} width={"90%"}>
           <SizableText size={"$6"} fontFamily={"$mono"} fontWeight={700}>
-            Evening Workout
+            {session.name}
           </SizableText>
         </Skeleton>
         <Skeleton colorMode={skeletonColorScheme} width={"50%"}>

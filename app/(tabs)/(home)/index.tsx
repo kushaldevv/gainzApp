@@ -2,14 +2,14 @@ import Card from "@/components/card";
 import { getUserSessions } from "@/services/apiCalls";
 import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
-import {
-  BottomSheetModal,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, { useEffect, useRef, useState } from "react";
+import { RefreshControl } from "react-native";
 import { ScrollView, View, YStack } from "tamagui";
 
 const emptySession: Types.Session = {
   id: "",
+  name: "",
   user: {
     id: "",
     name: "",
@@ -26,38 +26,51 @@ const emptySession: Types.Session = {
 const Page = () => {
   const [sessions, setSessions] = useState<Types.Session[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = React.useState(false);
   const { user } = useUser();
 
+  const fetchSessions = async () => {
+    try {
+      setLoading(true);
+      // const data = await getUserSessions(user?.id as string);
+      const data = await getUserSessions("user_2jWjeSXTPtnTxG5aOfMoWfPrtRk");
+      setSessions(data);
+    } catch (error) {
+      console.error("Error fetching sessions:", error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        setLoading(true);
-        // const data = await getUserSessions(user?.id as string);
-        const data = await getUserSessions("user_2jWjeSXTPtnTxG5aOfMoWfPrtRk");
-        setSessions(data);
-      } catch (error) {
-        console.error("Error fetching sessions:", error);
-        throw error;
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadData();
+    fetchSessions();
+  }, []);
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await fetchSessions();
+    } catch (error) {
+      console.error("Error refreshing sessions:", error);
+    } finally {
+      setRefreshing(false);
+    }
   }, []);
 
   return (
     <YStack flex={1} alignItems="center" backgroundColor={"$background"}>
-      <ScrollView width={"100%"}>
+      <ScrollView
+        width={"100%"}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View gap="$2">
-          {Array.from({ length: loading ? 2 : sessions.length }).map(
-            (_, index) => (
-              <Card
-                key={index}
-                session={loading ? emptySession : sessions[index]}
-                loading={loading}
-              />
-            )
-          )}
+          {
+            sessions.map((session, index) => (
+              <Card key={index} session={session} loading={loading} />
+            ))
+          }
         </View>
       </ScrollView>
     </YStack>

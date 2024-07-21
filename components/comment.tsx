@@ -44,7 +44,7 @@ const Comment = ({ comment, loading }: Types.CommentProps) => {
           <YStack position="absolute" right="$1" alignItems="center">
             <Heart
               size={"$1"}
-              fill={like ? "red" : "none"}
+              fill={like ? "#e5484d" : "none"}
               onPress={() => setLike(!like)}
             />
             <SizableText size={"$1"} color={"$gray11"}>

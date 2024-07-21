@@ -71,7 +71,10 @@ const Card = ({ session, loading, bottomSheetModalRef }: Types.CardProps) => {
 
   const handleLikesPress = () => {
     if (session.likes.length > 0) {
-      router.push('/likes');
+      router.push({
+        pathname: '/likes',
+        params: { likes: JSON.stringify(session.likes) }
+      });
     }
   };
 

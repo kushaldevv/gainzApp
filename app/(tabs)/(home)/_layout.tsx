@@ -1,4 +1,4 @@
-import { Redirect, Stack } from "expo-router";
+import {Stack } from "expo-router";
 import { useColorScheme } from "react-native";
 
 export default function HomeLayout() {

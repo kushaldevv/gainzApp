@@ -32,7 +32,7 @@ const Page = () => {
     const loadData = async () => {
       try {
         setLoading(true);
-        const data = await getUserSessions("user_2j6mHW8GrcGU4xGOf240n7yBvT0");
+        const data = await getUserSessions("user_2jWjeSXTPtnTxG5aOfMoWfPrtRk");
         setSessions(data);
       } catch (error) {
         console.error("Error fetching sessions:", error);

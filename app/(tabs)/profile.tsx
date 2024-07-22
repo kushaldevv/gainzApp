@@ -1,6 +1,6 @@
 import { useClerk, useUser } from "@clerk/clerk-expo";
 import React from "react";
-import { Button, Text, YStack } from "tamagui";
+import { Avatar, Button, Text, YStack } from "tamagui";
 
 const Profile = () => {
   const { user } = useUser();
@@ -8,7 +8,12 @@ const Profile = () => {
   return (
     <YStack flex={1} alignItems="center" backgroundColor={"$background"}>
       <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
+      <Text>Hello {user?.id}</Text>
       <Button onPress={() => signOut()}>Log out</Button>
+      <Avatar circular size="$4">
+        <Avatar.Image src={user?.imageUrl} />
+        <Avatar.Fallback backgroundColor="$blue10" />
+      </Avatar>
     </YStack>
   );
 };

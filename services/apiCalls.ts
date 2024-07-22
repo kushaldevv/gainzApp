@@ -1,69 +1,297 @@
 import axios from 'axios';
+import * as Types from '@/types';
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
-const API_URL = 'https://ke3qj4rbgb.execute-api.us-east-1.amazonaws.com/production';
-
-export const getUsers = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/users`);
-      return response.data;
-      //console.log(response.data.usersTable[0]);
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  }
-
-export const getUser = async (id: string) => {
+/**
+ * Appends a comment to a user's session.
+ * 
+ * @param userID - The unique identifier of the user.
+ * @param sessionID - The unique identifier of the session.
+ * @param body - The content of the comment.
+ * @returns A Promise that resolves when the comment is successfully appended.
+ * @throws Will throw an error if the API request fails.
+ */
+export const appendSessionComment = async(userID: string, sessionID: string, body: string) => {
+  const sessionUserID = sessionID.split('session')[0]
+  console.log("session user id: ", sessionUserID);
   try {
-    const response = await axios.get(`${API_URL}/user?userID=${id}`);
-    return response.data;
-    //console.log(response.data.usersTable[0]);
+    // Prepare the payload for the API request
+    const payload = {
+      "userID": userID,
+      "body": body,
+      "date": new Date().toISOString(), // Current date and time in ISO format
+      "likes": 0 // Initialize likes count to 0
+    }
+
+    // Send a PATCH request to update the session with the new comment
+    console.log("append session comment....");
+    await axios.patch(`${API_URL}/user/sessions/comments?userID=${sessionUserID}&sessionID=${sessionID}`, payload);
   } catch (error) {
-    console.error(error);
+    // If an error occurs during the API request, re-throw it
     throw error;
   }
 }
 
+/**
+ * Appends a like to a user's session.
+ * 
+ * @param userID - The unique identifier of the user.
+ * @param sessionID - The unique identifier of the session.
+ * @returns A Promise that resolves when the like is successfully appended.
+ * @throws Will throw an error if the API request fails.
+ */
+export const appendSessionLikes = async(userID: string, sessionID: string) => {
+  const sessionUserID = sessionID.split('session')[0];
+  try {
+    // Send a PATCH request to update the session with a new like
+    console.log("append session Likes....");
+    await axios.patch(`${API_URL}/user/sessions/likes?userID=${sessionUserID}&sessionID=${sessionID}`, {userID});
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+    throw error;
+  }
+}
 
-// export const userAPI = () => {
-      
-//   // const getUsers async(id) => 
-//   // getUsers: async (id = null) => {
-//   //   try {
-//   //     const response = await axios.get(`${API_URL}/users${id ? `/${id}` : ''}`);
-//   //     return response.data;
-//   //   } catch (error) {
-//   //     console.error('Error fetching users:', error);
-//   //     throw error;
-//   //   }
-//   // },
+/**
+ * Appends a session to a user account
+ * 
+ * @param userID - The unique identifier of the user.
+ * @param session - The session that will be appended to a user
+ * @returns A Promise that resolves when the like is successfully appended.
+ * @throws Will throw an error if the API request fails.
+ */
+export const appendSession = async(userID: string, session: any) => {
+  try {
+    console.log("append session....");
+    // Send a PATCH request to update the user with a new session
+    await axios.patch(`${API_URL}/user?userID=${userID}`, session);
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+    throw error;
+  }
+}
 
-//   // createUser: async (userData) => {
-//   //   try {
-//   //     const response = await axios.post(`${API_URL}/users`, userData, {
-//   //       headers: {
-//   //         'Content-Type': 'application/json',
-//   //         'Authorization': ''//'your_auth_token_here'
-//   //       }
-//   //     });
-//   //     return response.data;
-//   //   } catch (error) {
-//   //     console.error('Error creating user:', error);
-//   //     throw error;
-//   //   }
-//   // },
+/**
+ * Retrieves the users who have liked a specific session.
+ * 
+ * @param userID - The unique identifier of the user who owns the session.
+ * @param sessionID - The unique identifier of the session.
+ * @returns A Promise that resolves to an array of User objects who have liked the session.
+ * @throws Will throw an error if the API request fails or if there's an issue fetching user data.
+ */
+export const getSessionLikes = async(userID: string, sessionID: string) => {
+  try {
+    // Make a GET request to fetch the IDs of users who liked the session
+    console.log("get session likes....");
+    const response = await axios.get(`${API_URL}/user/sessions/likes?userID=${userID}&sessionID=${sessionID}`);
+    
+    // Map over the array of user IDs and fetch full user data for each
+    const likedUsers: Types.User[] = await Promise.all(
+      response.data.map(async (friendID: string) => await getUser(friendID))
+    );
+    
+    // Return the array of User objects
+    return likedUsers;
+  } catch (error) {
+    // If an error occurs during the API request or user data fetching, re-throw it
+    throw error;
+  }
+}
 
-//   // deleteUser: async (id) => {
-//   //   try {
-//   //     const response = await axios.delete(`${API_URL}/users/${id}`, {
-//   //       headers: {
-//   //         'Authorization': ''//'your_auth_token_here'
-//   //       }
-//   //     });
-//   //     return response.data;
-//   //   } catch (error) {
-//   //     console.error('Error deleting user:', error);
-//   //     throw error;
-//   //   }
-//   // }
-// };
+/**
+ * Posts a specific user to the DynamoDB database
+ * 
+ * @param id - The unique identifier of the user
+ * @param name - The name of the user
+ * @returns A Promise that resolves when a user is posted
+ * @throws Will throw an error if the API request fails or if there's an issue fetching user data.
+ */
+export const postUser = async(id: string, name: string) => {
+  try {
+    // Prepare the payload for the API request
+    const payload = {
+      "userID": id,
+      "name": name,
+      "pfp": `https://ui-avatars.com/api/?name=${name.charAt(0)}&background=00cccc&color=fff`, 
+      "friends": [],
+      "sessions": {}
+    }
+    // Send a POST request to update the database with a new user
+    console.log("post user....");
+    await axios.post(`${API_URL}/user`, payload);
+  } catch (error) {
+    // If an error occurs during the API request or user data fetching, re-throw it
+    throw error;
+  }
+}
+
+/**
+ * Fetches user data for a given user ID.
+ * 
+ * @param id - The unique identifier of the user to fetch.
+ * @returns A Promise that resolves to a User object containing id, name, and profile picture URL.
+ * @throws Will throw an error if the API request fails or if there's an issue processing the response.
+ */
+export const getUser = async (id: string) => {
+  try {
+    // Make a GET request to fetch user data
+    console.log("get user....");
+    const response = await axios.get(`${API_URL}/user?userID=${id}`);
+    
+    // Extract the data from the response
+    const data = response.data;
+    
+    // Construct a User object from the API response
+    const user: Types.User = {
+      id: data.userID as string,
+      name: data.name as string,
+      pfp: data.pfp as string, // pfp likely stands for "profile picture"
+    };
+    
+    // Return the constructed User object
+    return user;
+  } catch (error) { 
+    // Re-throw the error for the caller to handle
+    throw error;
+  }
+}
+
+/**
+ * Fetches user data for a given user ID.
+ * 
+ * @param id - The unique identifier of the user to fetch.
+ * @returns A Promise that resolves to a User profile object.
+ * @throws Will throw an error if the API request fails or if there's an issue processing the response.
+ */
+export const getUserProfile = async (id: string) => {
+  try {
+    // Make a GET request to fetch user profile data
+    console.log("get user profile....");
+    const response = await axios.get(`${API_URL}/user?userID=${id}`);
+    const data = response.data;
+
+    // maps thru the friends list of user ids(strings), and calls getUser on each
+    // end result is a friends list of type User
+    const friendPromises = data.friends.map((friendId : string) => getUser(friendId));
+    const friends: Types.User[] = await Promise.all(friendPromises);
+
+    // Construct a User profile object from the API response
+    const userProfile: Types.UserProfile = {
+      id: data.userID as string,
+      name: data.name as string,
+      pfp: data.pfp as string,
+      friends: friends,
+      sessions: [],
+    }
+    // Return the constructed User profile object
+    return userProfile;
+  } catch (error) {
+    // Re-throw the error for the caller to handle
+    throw error;
+  }
+}
+
+export const getFriendsSessions = async (userID: string) => {
+  try {
+    const friends = await getUserFriends(userID) as Types.User[];
+    const friendsSessions = await Promise.all(friends.map(async (friend) => getUserSessions(friend.id)));
+    const flattenedSessions = friendsSessions.flat() as Types.Session[];
+
+    // Sort sessions by date
+    const sortedSessions = flattenedSessions.sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    })
+
+    return sortedSessions;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export const getUserSessions = async (userID: string) => {
+  try {
+    console.log("getting sessions")
+    const response = await axios.get(`${API_URL}/user/sessions?userID=${userID}`);
+    const data = response.data;
+    const sessions = await Promise.all(
+      Object.entries(data).map(async ([sessionID, sessionData]: [string, any]) => {
+        const likes: Types.User[] = await Promise.all(
+          sessionData.likes.map((like: string) => getUser(like))
+        );
+
+        const session: Types.Session = {
+          id: sessionID,
+          name: sessionData.name as string,
+          user: await getUser(userID) as Types.User,
+          location: sessionData.location as string,
+          date: sessionData.date as string,
+          exercises: [], 
+          duration: sessionData.duration as number,
+          comments: sessionData.comments.length,
+          likes: likes,
+        };
+        return session;
+      })
+    );
+    return sessions;
+  } catch (error) {
+    // Re-throw the error for the caller to handle
+    throw error;
+  }
+};
+
+/**
+ * Fetches the friends for a user
+ *
+ * @param id - The unique identifier of the user to fetch.
+ * @returns A Promise that resolves to a list of friends.
+ * @throws Will throw an error if the API request fails or if there's an issue processing the response.
+ */
+export const getUserFriends = async (id: string) => {
+  try {
+    console.log("get a user friends....");
+    // Make a GET request to fetch the friends for a user
+    const response = await axios.get(`${API_URL}/user/friends?userID=${id}`);
+    const friends = await Promise.all(response.data.map(async (friendID: string) => await getUser(friendID)));
+    return friends;
+  } catch (error) {
+    // Re-throw the error for the caller to handle
+    throw error;
+  }
+}
+
+/**
+ * Fetches the comments for a sesison
+ *
+ * @param userId - The unique identifier of the user to fetch.
+ * @param sessionId - The unique identifier of the user to fetch.
+ * @returns A Promise that resolves to a list of comments.
+ * @throws Will throw an error if the API request fails or if there's an issue processing the response.
+ */
+export const getSessionComments = async (userId: string, sessionId: string) => {
+  try {
+    console.log("get session comments....");
+    // Make a GET request to fetch the comments for a user's session
+    const response = await axios.get(`${API_URL}/user/sessions/comments?userID=${userId}&sessionID=${sessionId}`);
+    const responseData = response.data;
+
+    // This function maps thru every comment, generates a user,
+    // and returns a list of comments
+    const comments: Types.Comment[] = await Promise.all(
+      responseData.flatMap(async (comment: any) => {
+          const user = await getUser(comment.userID) as Types.User;
+          return {
+            user,
+            date: comment.date as string,
+            body: comment.body as string,
+            likes: comment.likes as number
+          };
+        }
+      )
+    );
+    return comments;
+  } catch (error) {
+    // Re-throw the error for the caller to handle
+    throw error;
+  }
+}

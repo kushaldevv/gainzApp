@@ -2,7 +2,7 @@ import { Alert } from "@/components/alertDialog";
 import { FormCard } from "@/components/layoutParts";
 import { useShakeAnimation } from "@/components/shakeAnimation";
 import { postUser } from "@/services/apiCalls";
-import { useOAuth, useSignUp } from "@clerk/clerk-expo";
+import { ClerkProvider, useOAuth, useSignUp, useUser } from "@clerk/clerk-expo";
 import { AntDesign } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import { Eye, EyeOff, Key, Mail, User } from "@tamagui/lucide-icons";
@@ -47,7 +47,7 @@ export default function SignUpScreen() {
   const shakePassword = useShakeAnimation(error.includes("Password"));
   const { startOAuthFlow: startAppleOAuthFlow } = useOAuth({ strategy: "oauth_apple", });
   const { startOAuthFlow: startGoogleOAuthFlow } = useOAuth({ strategy: "oauth_google", });
-
+  
   // sign in with apple
   const onApplePress = useCallback(async () => {
     if (!setActive) {
@@ -216,6 +216,7 @@ export default function SignUpScreen() {
         if (!userId) {
           return;
         } 
+        
         await postUser(userId, firstName); // user is added into database
         await setActive({ session: completeSignUp.createdSessionId });
         router.replace("/");

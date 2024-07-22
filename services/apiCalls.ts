@@ -105,7 +105,7 @@ export const postUser = async(id: string, name: string) => {
     const payload = {
       "userID": id,
       "name": name,
-      "pfp": "https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80", // pfp is currently hardcoded
+      "pfp": `https://ui-avatars.com/api/?name=${name.charAt(0)}&background=00cccc&color=fff`, 
       "friends": [],
       "session": {}
     }

@@ -221,6 +221,10 @@ export default function SignInScreen() {
         disabled={!isLoaded}
         onPress={onSignInPress}
         width="100%"
+        pressStyle={{
+          backgroundColor: "$gray7",
+          borderColor:'$borderColorFocus'
+        }}
       >
         <Button.Text>Sign In</Button.Text>
         {loading && <Spinner size="small" color="$accentColor" />}

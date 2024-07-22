@@ -395,6 +395,10 @@ export default function SignUpScreen() {
             disabled={!isLoaded}
             onPress={onSignUpPress}
             width="100%"
+            pressStyle={{
+              backgroundColor: "$gray7",
+              borderColor:'$borderColorFocus'
+            }}
           >
             <Button.Text>Sign Up</Button.Text>
             {loading && <Spinner size="small" color="$accentColor" />}

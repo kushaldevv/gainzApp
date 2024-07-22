@@ -2,16 +2,6 @@ import axios from 'axios';
 import * as Types from '@/types';
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
-export const getSessionLikes = async(userID: string, sessionID: string) => {
-  try {
-    const response = await axios.get(`${API_URL}/user/sessions/likes?userID=${userID}&sessionID=${sessionID}`);
-    const likedUsers : Types.User[] = await Promise.all(response.data.map(async (friendID: string) => await getUser(friendID)));
-    return likedUsers
-  } catch (error) {
-    throw error;
-  }
-}
-
 export const getUser = async (id: string) => {
   try {
     const response = await axios.get(`${API_URL}/user?userID=${id}`);

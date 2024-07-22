@@ -14,13 +14,7 @@ import {
   ThumbsUp,
   X,
 } from "@tamagui/lucide-icons";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   Avatar,
   Circle,
@@ -39,9 +33,7 @@ import { useUser } from "@clerk/clerk-expo";
 import { Skeleton } from "moti/skeleton";
 import { TouchableOpacity, useColorScheme } from "react-native";
 import { getSessionComments } from "@/services/apiCalls";
-import { isLoading } from "expo-font";
 import { useRouter } from "expo-router";
-
 const emptyComment: Types.Comment = {
   id: "",
   user: {
@@ -53,7 +45,6 @@ const emptyComment: Types.Comment = {
   body: "",
   likes: 0,
 };
-
 
 const Card = ({ session, loading }: Types.CardProps) => {
   const { user } = useUser();
@@ -80,8 +71,8 @@ const Card = ({ session, loading }: Types.CardProps) => {
   const handleLikesPress = () => {
     if (session.likes.length > 0) {
       router.push({
-        pathname: '/likes',
-        params: { likes: JSON.stringify(session.likes) }
+        pathname: "/likes",
+        params: { likes: JSON.stringify(session.likes) },
       });
     }
   };
@@ -130,7 +121,6 @@ const Card = ({ session, loading }: Types.CardProps) => {
                 paddingTop: 12,
                 paddingBottom: 12,
                 textAlignVertical: "top",
-                
               }}
             />
             <Send
@@ -146,10 +136,13 @@ const Card = ({ session, loading }: Types.CardProps) => {
     ),
     []
   );
-
-  const handleAvatarClick = (profileUrl: string) => {
-    window.open(profileUrl, '_blank', 'noopener,noreferrer');
-  };
+  // const initialSnapPoints = useMemo(() => ["CONTENT_HEIGHT", "100%"], []);
+  // const {
+  //   animatedHandleHeight,
+  //   animatedSnapPoints,
+  //   animatedContentHeight,
+  //   handleContentLayout,
+  // } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
   return (
     <Skeleton.Group show={loading}>
@@ -233,40 +226,45 @@ const Card = ({ session, loading }: Types.CardProps) => {
         >
           <YStack alignItems="center" gap="$2" width={"$10"}>
             <Skeleton colorMode={skeletonColorScheme}>
-            <TouchableOpacity onPress={handleLikesPress} disabled={session.likes.length === 0}>
-              <XStack>
-                {session.likes.slice(0, 3).map((item, index) => (
-                  <Avatar
-                    key={index}
-                    circular
-                    size="$1.5"
-                    ml={index != 0 ? "$-2" : "$0"}
-                    borderWidth="$0.25"
-                    borderColor={"$color"}
-                  >
-                    <Avatar.Image src={item.pfp} />
-                    <Avatar.Fallback backgroundColor="$blue10" />
-                  </Avatar>
-                ))}
-                {session.likes.length > 3 && (
-                  <Circle
-                    size="$1.5"
-                    backgroundColor="$gray7"
-                    ml="$-2"
-                    borderWidth="$0.25"
-                    borderColor={"$color"}
-                  >
-                    <SizableText size={"$1"}>
-                      {session.likes.length - 3}+
-                    </SizableText>
-                  </Circle>
-                )}
-                {session.likes.length == 0 && (
-                  <View height={"$1.5"} justifyContent="center">
-                    <SizableText size={"$1"}>Be the first to like!</SizableText>
-                  </View>
-                )}
-              </XStack>
+              <TouchableOpacity
+                onPress={handleLikesPress}
+                disabled={session.likes.length === 0}
+              >
+                <XStack>
+                  {session.likes.slice(0, 3).map((item, index) => (
+                    <Avatar
+                      key={index}
+                      circular
+                      size="$1.5"
+                      ml={index != 0 ? "$-2" : "$0"}
+                      borderWidth="$0.25"
+                      borderColor={"$color"}
+                    >
+                      <Avatar.Image src={item.pfp} />
+                      <Avatar.Fallback backgroundColor="$blue10" />
+                    </Avatar>
+                  ))}
+                  {session.likes.length > 3 && (
+                    <Circle
+                      size="$1.5"
+                      backgroundColor="$gray7"
+                      ml="$-2"
+                      borderWidth="$0.25"
+                      borderColor={"$color"}
+                    >
+                      <SizableText size={"$1"}>
+                        {session.likes.length - 3}+
+                      </SizableText>
+                    </Circle>
+                  )}
+                  {session.likes.length == 0 && (
+                    <View height={"$1.5"} justifyContent="center">
+                      <SizableText size={"$1"}>
+                        Be the first to like!
+                      </SizableText>
+                    </View>
+                  )}
+                </XStack>
               </TouchableOpacity>
             </Skeleton>
             <View onPress={() => setLike(!like)} height={"$2"}>
@@ -305,7 +303,7 @@ const Card = ({ session, loading }: Types.CardProps) => {
           topInset={headerHeight}
         >
           <BottomSheetView>
-            <YStack width={"100%"} gap="$2">
+            <YStack width={"100%"} height={"100%"} gap="$2">
               <View p="$4" paddingVertical="$2">
                 <XStack justifyContent="center">
                   <SizableText

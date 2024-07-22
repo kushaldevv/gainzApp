@@ -1,35 +1,33 @@
 import { ReactNode } from "react";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
-export type User = {
+export interface User  {
     id: string;
     name: string;
     pfp: string;
 }
 
+export interface UserProfile extends User {
+    friends : User[];
+    sessions: Session[];
+};
+
 export type Session = {
     id: string;
+    name: string;
     user: User;
     location: string;
     date: string;
     exercises: Exercise[];
-    date: string;
-    exercises: Exercise[];
-    sessionTime: number;
-    comments: Comment[];
-    likes: User[];
-    comments: Comment[];
+    duration: number;
+    comments: number;
     likes: User[];
 };
 
-export type Exercise = {
 export type Exercise = {
     name: string;
     sets: ExerciseSet[];
-    sets: ExerciseSet[];
 };
 
-export type ExerciseSet = {
 export type ExerciseSet = {
     reps: number;
     weight: number;
@@ -37,21 +35,22 @@ export type ExerciseSet = {
 
 export type CardProps = {
   session: Session;
-  bottomSheetModalRef: React.RefObject<BottomSheetModal>;
+  loading: boolean;
 };
 
-export type Comment = {
+export type Comment = { 
     user : User;
-    date: Date;
+    date: string;
     body: string;
     likes: number;
 };
 
 export type CommentProps = {
     comment: Comment;
-  };
+    loading: boolean;
+};
 
 export  type FormCardProps = {
     children: ReactNode;
     error : boolean;
-  };
+};

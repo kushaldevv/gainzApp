@@ -23,6 +23,7 @@ import {
   View,
   XStack,
 } from "tamagui";
+import { postUser } from "@/services/apiCalls";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -44,8 +45,12 @@ export default function SignUpScreen() {
   const shakeName = useShakeAnimation(error.includes("Name"));
   const shakeEmail = useShakeAnimation(error.includes("Email"));
   const shakePassword = useShakeAnimation(error.includes("Password"));
-  const { startOAuthFlow: startAppleOAuthFlow } = useOAuth({ strategy: "oauth_apple", });
-  const { startOAuthFlow: startGoogleOAuthFlow } = useOAuth({ strategy: "oauth_google", });
+  const { startOAuthFlow: startAppleOAuthFlow } = useOAuth({
+    strategy: "oauth_apple",
+  });
+  const { startOAuthFlow: startGoogleOAuthFlow } = useOAuth({
+    strategy: "oauth_google",
+  });
 
   // sign in with apple
   const onApplePress = useCallback(async () => {
@@ -55,19 +60,29 @@ export default function SignUpScreen() {
     }
 
     try {
-      const { createdSessionId } = await startAppleOAuthFlow();
+      const { createdSessionId, signUp } = await startAppleOAuthFlow();
+      const userID = signUp?.createdUserId;
+      const name = signUp?.firstName;
 
+      if (userID) {
+        console.log(userID);
+        if (name) {
+          await postUser(userID, name);
+        } else {
+          await postUser(userID, "User");
+        }
+      }
       if (createdSessionId) {
         setActive({ session: createdSessionId });
       } else {
-        console.log("sign in with apple failed :(");
+        console.log("Sign in with Apple failed :(");
       }
     } catch (error) {
       throw error;
     }
   }, []);
 
-  // sign in with Google
+  // sign in with google
   const onGooglePress = useCallback(async () => {
     if (!setActive) {
       console.log("setActive is not available");
@@ -75,12 +90,22 @@ export default function SignUpScreen() {
     }
 
     try {
-      const { createdSessionId } = await startGoogleOAuthFlow();
+      const { createdSessionId, signUp } = await startGoogleOAuthFlow();
+      const userID = signUp?.createdUserId;
+      const name = signUp?.firstName;
 
+      if (userID) {
+        console.log(userID);
+        if (name) {
+          await postUser(userID, name);
+        } else {
+          await postUser(userID, "User");
+        }
+      }
       if (createdSessionId) {
         setActive({ session: createdSessionId });
       } else {
-        console.log("sign in with apple failed :(");
+        console.log("Sign in with Google failed :(");
       }
     } catch (error) {
       throw error;
@@ -370,6 +395,10 @@ export default function SignUpScreen() {
             disabled={!isLoaded}
             onPress={onSignUpPress}
             width="100%"
+            pressStyle={{
+              backgroundColor: "$gray7",
+              borderColor:'$borderColorFocus'
+            }}
           >
             <Button.Text>Sign Up</Button.Text>
             {loading && <Spinner size="small" color="$accentColor" />}

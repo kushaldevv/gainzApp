@@ -2,6 +2,27 @@ import axios from 'axios';
 import * as Types from '@/types';
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
+export const appendSessionComment = async(userID: string, sessionID: string, body: string) => {
+  try {
+    const payload = {
+      "userID": userID,
+      "body": body,
+      "date": new Date().toISOString,
+      "likes": 0
+    }
+    await axios.patch(`${API_URL}/user/sessions/comments?userID=${userID}&sessionID=${sessionID}`, payload);
+  } catch (error) {
+    throw error;
+  }
+}
+export const appendSessionLikes = async(userID: string, sessionID: string) => {
+  try {
+    await axios.patch(`${API_URL}/user/sessions/likes?userID=${userID}&sessionID=${sessionID}`);
+  } catch (error) {
+    throw error;
+  }
+}
+
 export const appendSession = async(userID: string, session: any) => {
   try {
     await axios.patch(`${API_URL}/user?userID=${userID}`, session);
@@ -89,6 +110,7 @@ export const getUserSessions = async (id: string) => {
 
         const session: Types.Session = {
           id: sessionID,
+          name: sessionData.name as string,
           user: await getUser(id) as Types.User,
           location: sessionData.location as string,
           date: sessionData.date as string,

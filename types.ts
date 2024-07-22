@@ -14,6 +14,7 @@ export interface UserProfile extends User {
 
 export type Session = {
     id: string;
+    name: string;
     user: User;
     location: string;
     date: string;

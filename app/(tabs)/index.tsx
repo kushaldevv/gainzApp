@@ -1,5 +1,5 @@
 import Card from "@/components/card";
-import { appendSession, getSessionLikes, getUserSessions, postUser } from "@/services/apiCalls";
+import { appendSession, appendSessionComment, appendSessionLikes, getSessionLikes, getUserSessions, postUser } from "@/services/apiCalls";
 import * as Types from "@/types";
 import {
   BottomSheetModal,
@@ -9,6 +9,7 @@ import { ScrollView, View, YStack } from "tamagui";
 
 const emptySession: Types.Session = {
   id: "",
+  name: "",
   user: {
     id: "",
     name: "",
@@ -32,7 +33,7 @@ const Page = () => {
       try {
         setLoading(true);
         // pass in currently logged in user's id
-        const data = await getUserSessions("user_2j6mHW8GrcGU4xGOf240n7yBvT0");
+        const data = await getUserSessions("user_2jWjeSXTPtnTxG5aOfMoWfPrtRk");
         setSessions(data);
       } catch (error) {
         console.error("Error fetching sessions:", error);

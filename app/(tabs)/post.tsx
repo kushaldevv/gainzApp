@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Text, YStack, Button, Input, XStack } from "tamagui";
 import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
+//
 
 const Post = () => {
   const [sessionName, setSessionName] = useState("");

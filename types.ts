@@ -37,7 +37,6 @@ export type ExerciseSet = {
 export type CardProps = {
   session: Session;
   loading: boolean;
-  bottomSheetModalRef: React.RefObject<BottomSheetModal>;
 };
 
 export type Comment = { 

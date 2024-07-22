@@ -16,7 +16,9 @@ const Post = () => {
 
   const postSession = async () => {
     console.log("Posting session...");
-    const sessionKey = `session_${new Date().getTime()}`;
+    const sessionKey = `${user?.id}session_${new Date().getTime()}`;
+    sessionKey.split('session')[0]
+    console.log(sessionKey);
     const newSession = {
       "sessionKey": sessionKey,
       "sessionData": {

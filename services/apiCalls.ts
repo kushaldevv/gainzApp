@@ -12,6 +12,8 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL;
  * @throws Will throw an error if the API request fails.
  */
 export const appendSessionComment = async(userID: string, sessionID: string, body: string) => {
+  const sessionUserID = sessionID.split('session')[0]
+  console.log("session user id: ", sessionUserID);
   try {
     // Prepare the payload for the API request
     const payload = {
@@ -22,7 +24,8 @@ export const appendSessionComment = async(userID: string, sessionID: string, bod
     }
 
     // Send a PATCH request to update the session with the new comment
-    await axios.patch(`${API_URL}/user/sessions/comments?userID=${userID}&sessionID=${sessionID}`, payload);
+    console.log("append session comment....");
+    await axios.patch(`${API_URL}/user/sessions/comments?userID=${sessionUserID}&sessionID=${sessionID}`, payload);
   } catch (error) {
     // If an error occurs during the API request, re-throw it
     throw error;
@@ -38,9 +41,15 @@ export const appendSessionComment = async(userID: string, sessionID: string, bod
  * @throws Will throw an error if the API request fails.
  */
 export const appendSessionLikes = async(userID: string, sessionID: string) => {
+  const sessionUserID = sessionID.split('session')[0];
+  console.log("session user id: ", sessionUserID);
+  console.log("user id", userID);
+  console.log(`${API_URL}/user/sessions/likes?userID=${sessionUserID}&sessionID=${sessionID}`);
+
   try {
     // Send a PATCH request to update the session with a new like
-    await axios.patch(`${API_URL}/user/sessions/likes?userID=${userID}&sessionID=${sessionID}`);
+    console.log("append sessions....");
+    await axios.patch(`${API_URL}/user/sessions/likes?userID=${sessionUserID}&sessionID=${sessionID}`, {userID});
   } catch (error) {
     // If an error occurs during the API request, re-throw it
     throw error;
@@ -57,6 +66,7 @@ export const appendSessionLikes = async(userID: string, sessionID: string) => {
  */
 export const appendSession = async(userID: string, session: any) => {
   try {
+    console.log("append session....");
     // Send a PATCH request to update the user with a new session
     await axios.patch(`${API_URL}/user?userID=${userID}`, session);
   } catch (error) {
@@ -76,6 +86,7 @@ export const appendSession = async(userID: string, session: any) => {
 export const getSessionLikes = async(userID: string, sessionID: string) => {
   try {
     // Make a GET request to fetch the IDs of users who liked the session
+    console.log("get session likes....");
     const response = await axios.get(`${API_URL}/user/sessions/likes?userID=${userID}&sessionID=${sessionID}`);
     
     // Map over the array of user IDs and fetch full user data for each
@@ -107,9 +118,10 @@ export const postUser = async(id: string, name: string) => {
       "name": name,
       "pfp": `https://ui-avatars.com/api/?name=${name.charAt(0)}&background=00cccc&color=fff`, 
       "friends": [],
-      "session": {}
+      "sessions": {}
     }
     // Send a POST request to update the database with a new user
+    console.log("post user....");
     await axios.post(`${API_URL}/user`, payload);
   } catch (error) {
     // If an error occurs during the API request or user data fetching, re-throw it
@@ -127,6 +139,7 @@ export const postUser = async(id: string, name: string) => {
 export const getUser = async (id: string) => {
   try {
     // Make a GET request to fetch user data
+    console.log("get user....");
     const response = await axios.get(`${API_URL}/user?userID=${id}`);
     
     // Extract the data from the response
@@ -157,6 +170,7 @@ export const getUser = async (id: string) => {
 export const getUserProfile = async (id: string) => {
   try {
     // Make a GET request to fetch user profile data
+    console.log("get user profile....");
     const response = await axios.get(`${API_URL}/user?userID=${id}`);
     const data = response.data;
 
@@ -191,6 +205,7 @@ export const getUserProfile = async (id: string) => {
 export const getUserSessions = async (id: string) => {
   try {
     // Make a GET request to fetch a session for a user
+    console.log("get a user session....");
     const response = await axios.get(`${API_URL}/user/sessions?userID=${id}`);
     const data = response.data;
 
@@ -232,6 +247,7 @@ export const getUserSessions = async (id: string) => {
  */
 export const getUserFriends = async (id: string) => {
   try {
+    console.log("get a user friends....");
     // Make a GET request to fetch the friends for a user
     const response = await axios.get(`${API_URL}/user/friends?userID=${id}`);
     const friends = await Promise.all(response.data.map(async (friendID: string) => await getUser(friendID)));
@@ -252,6 +268,7 @@ export const getUserFriends = async (id: string) => {
  */
 export const getSessionComments = async (userId: string, sessionId: string) => {
   try {
+    console.log("get session comments....");
     // Make a GET request to fetch the comments for a user's session
     const response = await axios.get(`${API_URL}/user/sessions/comments?userID=${userId}&sessionID=${sessionId}`);
     const responseData = response.data;

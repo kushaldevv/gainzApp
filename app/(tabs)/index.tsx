@@ -1,10 +1,11 @@
 import Card from "@/components/card";
-import { appendSession, appendSessionComment, appendSessionLikes, getSessionLikes, getUserSessions, postUser } from "@/services/apiCalls";
+import { getUserSessions } from "@/services/apiCalls";
 import * as Types from "@/types";
-import {
-  BottomSheetModal,
-} from "@gorhom/bottom-sheet";
-import React, { useEffect, useRef, useState } from "react";
+import { useUser } from "@clerk/clerk-expo";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { useFocusEffect } from "expo-router";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { RefreshControl } from "react-native";
 import { ScrollView, View, YStack } from "tamagui";
 
 const emptySession: Types.Session = {
@@ -26,39 +27,55 @@ const emptySession: Types.Session = {
 const Page = () => {
   const [sessions, setSessions] = useState<Types.Session[]>([]);
   const [loading, setLoading] = useState(true);
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const { user } = useUser();
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        setLoading(true);
-        // pass in currently logged in user's id
-        const data = await getUserSessions("user_2jWjeSXTPtnTxG5aOfMoWfPrtRk");
-        setSessions(data);
-      } catch (error) {
-        console.error("Error fetching sessions:", error);
-        throw error;
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadData();
+  const fetchSessions = useCallback(async () => {
+    try {
+      setLoading(true);
+      // const data = await getUserSessions(user?.id as string);
+      const data = await getUserSessions("user_2jbvkPupZsfeBeD27PejfgmWt0w");
+      setSessions(data);
+    } catch (error) {
+      console.error("Error fetching sessions:", error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  }, [user?.id]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchSessions();
+    }, [fetchSessions])
+  );
+  
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      console.log('refreshing');
+      await fetchSessions();
+    } catch (error) {
+      console.error("Error refreshing sessions:", error);
+    } finally {
+      setRefreshing(false);
+    }
   }, []);
 
   return (
     <YStack flex={1} alignItems="center" backgroundColor={"$background"}>
-      <ScrollView width={"100%"}>
+      <ScrollView
+        width={"100%"}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View gap="$2">
-          {Array.from({ length: loading ? 2 : sessions.length }).map(
-            (_, index) => (
-              <Card
-                key={index}
-                session={loading ? emptySession : sessions[index]}
-                loading={loading}
-                bottomSheetModalRef={bottomSheetModalRef}
-              />
-            )
-          )}
+          {
+            sessions.map((session, index) => (
+              <Card key={index} session={session} loading={loading} />
+            ))
+          }
         </View>
       </ScrollView>
     </YStack>

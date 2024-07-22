@@ -41,12 +41,28 @@ export const getUserProfile = async (id: string) => {
   }
 }
 
-export const getUserSessions = async (id: string) => {
+export const getFriendsSessions = async (userID: string) => {
+  try {
+    const friends = await getUserFriends(userID) as Types.User[];
+    const friendsSessions = await Promise.all(friends.map(async (friend) => getUserSessions(friend.id)));
+    const flattenedSessions = friendsSessions.flat() as Types.Session[];
+
+    // Sort sessions by date
+    const sortedSessions = flattenedSessions.sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    })
+
+    return sortedSessions;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export const getUserSessions = async (userID: string) => {
   try {
     console.log("getting sessions")
-    const response = await axios.get(`${API_URL}/user/sessions?userID=${id}`);
+    const response = await axios.get(`${API_URL}/user/sessions?userID=${userID}`);
     const data = response.data;
-
     const sessions = await Promise.all(
       Object.entries(data).map(async ([sessionID, sessionData]: [string, any]) => {
         const likes: Types.User[] = await Promise.all(
@@ -56,13 +72,13 @@ export const getUserSessions = async (id: string) => {
         const session: Types.Session = {
           id: sessionID,
           name: sessionData.name as string,
-          user: await getUser(id) as Types.User,
+          user: await getUser(userID) as Types.User,
           location: sessionData.location as string,
           date: sessionData.date as string,
           exercises: [], 
           duration: sessionData.duration as number,
           comments: sessionData.comments.length,
-          likes: likes
+          likes: likes,
         };
         return session;
       })
@@ -114,7 +130,7 @@ export const postUser = async(id: string, name: string) => {
       "name": name,
       "pfp": "https://images.unsplash.com/photo-1548142813-c348350df52b?&w=150&h=150&dpr=2&q=80",
       "friends": [],
-      "session": {}
+      "sessions": {}
     }
     await axios.post(`${API_URL}/user`, payload);
   } catch (error) {

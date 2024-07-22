@@ -39,7 +39,6 @@ export type CardProps = {
 };
 
 export type Comment = { 
-    id: string;
     user : User;
     date: string;
     body: string;

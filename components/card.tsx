@@ -35,7 +35,6 @@ import { TouchableOpacity, useColorScheme } from "react-native";
 import { getSessionComments } from "@/services/apiCalls";
 import { useRouter } from "expo-router";
 const emptyComment: Types.Comment = {
-  id: "",
   user: {
     id: "",
     name: "",
@@ -48,7 +47,9 @@ const emptyComment: Types.Comment = {
 
 const Card = ({ session, loading }: Types.CardProps) => {
   const { user } = useUser();
-  const [like, setLike] = useState(false);
+  const [like, setLike] = useState(
+    session.likes.some((likeUser) => likeUser.id === user?.id)
+  );
   const headerHeight = useHeaderHeight();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState<Types.Comment[]>([]);
@@ -183,7 +184,7 @@ const Card = ({ session, loading }: Types.CardProps) => {
             {!loading && <MoreHorizontal />}
           </View>
         </XStack>
-        <Skeleton colorMode={skeletonColorScheme} width={"90%"}>
+        <Skeleton colorMode={skeletonColorScheme} width={"0%"}>
           <SizableText size={"$6"} fontFamily={"$mono"} fontWeight={700}>
             {session.name}
           </SizableText>
@@ -267,7 +268,7 @@ const Card = ({ session, loading }: Types.CardProps) => {
                 </XStack>
               </TouchableOpacity>
             </Skeleton>
-            <View onPress={() => setLike(!like)} height={"$2"}>
+            <View onPress={() => setLike(true)} height={"$2"}>
               {!loading && (
                 <ThumbsUp size={"$2"} fill={like ? "#00cccc" : "none"} />
               )}

@@ -32,7 +32,7 @@ import Comment from "./comment";
 import { useUser } from "@clerk/clerk-expo";
 import { Skeleton } from "moti/skeleton";
 import { TouchableOpacity, useColorScheme } from "react-native";
-import { getSessionComments } from "@/services/apiCalls";
+import { appendSessionComment, appendSessionLikes, getSessionComments } from "@/services/apiCalls";
 import { useRouter } from "expo-router";
 const emptyComment: Types.Comment = {
   user: {
@@ -51,7 +51,8 @@ const Card = ({ session, loading }: Types.CardProps) => {
     session.likes.some((likeUser) => likeUser.id === user?.id)
   );
   const headerHeight = useHeaderHeight();
-  const [comment, setComment] = useState("");
+  const commentTextRef = useRef('');
+  // const commentRef = useRef(null)
   const [comments, setComments] = useState<Types.Comment[]>([]);
   const [isCommentsLoading, setIsCommentsLoading] = useState(false);
   const theme = useTheme();
@@ -66,10 +67,11 @@ const Card = ({ session, loading }: Types.CardProps) => {
   }, [session.id]);
 
   const handleDismissModalPress = useCallback(() => {
+    commentTextRef.current = '';
     bottomSheetModalRef.current?.dismiss();
   }, []);
 
-  const handleLikesPress = () => {
+  const handleLikesScreen = () => {
     if (session.likes.length > 0) {
       router.push({
         pathname: "/likes",
@@ -90,6 +92,24 @@ const Card = ({ session, loading }: Types.CardProps) => {
     }
   };
 
+  const postLike = async () => {
+    try {
+      setLike(true);
+      await appendSessionLikes(user?.id!, session.id);
+    } catch (error) {
+      throw error;
+    }
+  }
+ 
+  const postComment = async () => {
+    console.log('commented ' + commentTextRef.current)
+    try {
+      await appendSessionComment(user?.id!, session.id, commentTextRef.current);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   const renderFooter = useCallback(
     (props: React.JSX.IntrinsicAttributes & BottomSheetDefaultFooterProps) => (
       <BottomSheetFooter {...props}>
@@ -108,7 +128,8 @@ const Card = ({ session, loading }: Types.CardProps) => {
             </Avatar>
             <BottomSheetTextInput
               placeholder="Add a comment..."
-              onChangeText={(text) => setComment(text)}
+              onChangeText={(text) => {commentTextRef.current = text}} 
+              defaultValue={commentTextRef.current}
               multiline={true}
               maxLength={256}
               style={{
@@ -124,13 +145,15 @@ const Card = ({ session, loading }: Types.CardProps) => {
                 textAlignVertical: "top",
               }}
             />
-            <Send
-              size={"$1"}
-              alignSelf="center"
-              right="$0"
-              pos={"absolute"}
-              mr="$3"
-            />
+            <View onPress={() => postComment()}>
+              <Send
+                size={"$1"}
+                alignSelf="center"
+                right="$0"
+                pos={"absolute"}
+                mr="$3"
+              />
+            </View>
           </XStack>
         </View>
       </BottomSheetFooter>
@@ -228,7 +251,7 @@ const Card = ({ session, loading }: Types.CardProps) => {
           <YStack alignItems="center" gap="$2" width={"$10"}>
             <Skeleton colorMode={skeletonColorScheme}>
               <TouchableOpacity
-                onPress={handleLikesPress}
+                onPress={handleLikesScreen}
                 disabled={session.likes.length === 0}
               >
                 <XStack>
@@ -268,7 +291,12 @@ const Card = ({ session, loading }: Types.CardProps) => {
                 </XStack>
               </TouchableOpacity>
             </Skeleton>
-            <View onPress={() => setLike(true)} height={"$2"}>
+            <View onPress={() => {
+              if(!like){
+                setLike(!like)
+                postLike()
+              }
+              }} height={"$2"}>
               {!loading && (
                 <ThumbsUp size={"$2"} fill={like ? "#00cccc" : "none"} />
               )}

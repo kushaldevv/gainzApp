@@ -1,6 +1,7 @@
 import { FormCard } from "@/components/layoutParts";
 import { useShakeAnimation } from "@/components/shakeAnimation";
-import { useOAuth, useSignIn } from "@clerk/clerk-expo";
+import { postUser } from "@/services/apiCalls";
+import { useOAuth, useSignIn, useUser } from "@clerk/clerk-expo";
 import { AntDesign } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import { Eye, EyeOff, Key, Mail } from "@tamagui/lucide-icons";
@@ -19,7 +20,6 @@ import {
   View,
   XStack,
 } from "tamagui";
-import { postUser } from "@/services/apiCalls";
 
 export default function SignInScreen() {
   const [loading, setLoading] = useState(false);
@@ -61,6 +61,7 @@ export default function SignInScreen() {
         setActive({ session: createdSessionId });
       } else {
         console.log("Sign in with Apple failed :(");
+        console.log("Sign in with Apple failed :(");
       }
     } catch (error) {
       throw error;
@@ -90,6 +91,7 @@ export default function SignInScreen() {
       if (createdSessionId) {
         setActive({ session: createdSessionId });
       } else {
+        console.log("Sign in with Google failed :(");
         console.log("Sign in with Google failed :(");
       }
     } catch (error) {
@@ -297,3 +299,4 @@ const ForgotPasswordLink = () => {
     </Link>
   );
 };
+

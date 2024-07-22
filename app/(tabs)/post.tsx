@@ -1,5 +1,8 @@
+import { appendSession } from "@/services/apiCalls";
 import React, { useState } from "react";
 import { Text, YStack, Button, Input, XStack } from "tamagui";
+import * as Types from "@/types";
+import { useUser } from "@clerk/clerk-expo";
 
 const Post = () => {
   const [sessionName, setSessionName] = useState("");
@@ -9,23 +12,40 @@ const Post = () => {
   const [exerciseName, setExerciseName] = useState("");
   const [reps, setReps] = useState(0);
   const [weight, setWeight] = useState(0);
+  const {user} = useUser();
 
-  const postSession = () => {
+  const postSession = async () => {
     console.log("Posting session...");
-    const sessionId = `session_${new Date().getTime()}`;
-    const newSession  = {
-      'likes': [],
-      'comments': [],
-      'date': new Date().toISOString(),
-      'duration': duration,
-      'exercises': {
-        [exerciseName]: {
-          'reps': [reps],
-          'weight': [weight],
+    const sessionKey = `${user?.id}session_${new Date().getTime()}`;
+    sessionKey.split('session')[0]
+    console.log(sessionKey);
+    const newSession = {
+      "sessionKey": sessionKey,
+      "sessionData": {
+        "name": sessionName,
+        "likes": [],
+        "exercises": {
+          [exerciseName]: {
+            reps: [reps],
+            weight: [weight],
+          },
+          ['Incline dumbell bench press']: {
+            reps: [10, 8, 6],
+            weight: [135, 185, 205],
+          },
+          ['Pendelum squat']: {
+            reps: [12, 12, 15],
+            weight: [45, 90, 70],
+          },
         },
-      },
-      'location': location,
+        "comments": [],
+        "location": location,
+        "duration": duration,
+        "date": new Date().toISOString()
+      }
     };
+    if (user)
+      await appendSession(user?.id, newSession)
   };
   return (
     <YStack

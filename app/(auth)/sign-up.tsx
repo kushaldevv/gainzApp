@@ -1,7 +1,8 @@
 import { Alert } from "@/components/alertDialog";
 import { FormCard } from "@/components/layoutParts";
 import { useShakeAnimation } from "@/components/shakeAnimation";
-import { useOAuth, useSignUp } from "@clerk/clerk-expo";
+import { postUser } from "@/services/apiCalls";
+import { ClerkProvider, useOAuth, useSignUp, useUser } from "@clerk/clerk-expo";
 import { AntDesign } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import { Eye, EyeOff, Key, Mail, User } from "@tamagui/lucide-icons";
@@ -23,7 +24,6 @@ import {
   View,
   XStack,
 } from "tamagui";
-import { postUser } from "@/services/apiCalls";
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -76,12 +76,14 @@ export default function SignUpScreen() {
         setActive({ session: createdSessionId });
       } else {
         console.log("Sign in with Apple failed :(");
+        console.log("Sign in with Apple failed :(");
       }
     } catch (error) {
       throw error;
     }
   }, []);
 
+  // sign in with google
   // sign in with google
   const onGooglePress = useCallback(async () => {
     if (!setActive) {
@@ -105,6 +107,7 @@ export default function SignUpScreen() {
       if (createdSessionId) {
         setActive({ session: createdSessionId });
       } else {
+        console.log("Sign in with Google failed :(");
         console.log("Sign in with Google failed :(");
       }
     } catch (error) {
@@ -164,9 +167,7 @@ export default function SignUpScreen() {
         emailAddress: emailAddress,
         password: password,
       });
-
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
-
       setPendingVerification(true);
     } catch (err: any) {
       const errorLongMessage = err.errors[0].longMessage;
@@ -210,6 +211,12 @@ export default function SignUpScreen() {
       });
 
       if (completeSignUp.status === "complete") {
+        const userId = completeSignUp.createdUserId;
+        if (!userId) {
+          return;
+        } 
+        
+        await postUser(userId, firstName); // user is added into database
         await setActive({ session: completeSignUp.createdSessionId });
         router.replace("/");
       } else {

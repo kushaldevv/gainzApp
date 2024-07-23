@@ -150,7 +150,7 @@ export const postUser = async(id: string, name: string) => {
       "userID": id,
       "name": name,
       "pfp": `https://ui-avatars.com/api/?name=${name.charAt(0)}&background=00cccc&color=fff`, 
-      "following": [],
+      "following": [id],
       "followers": [],
       "sessions": {}
     }

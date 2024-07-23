@@ -76,7 +76,6 @@ export default function SignUpScreen() {
         setActive({ session: createdSessionId });
       } else {
         console.log("Sign in with Apple failed :(");
-        console.log("Sign in with Apple failed :(");
       }
     } catch (error) {
       throw error;
@@ -107,7 +106,6 @@ export default function SignUpScreen() {
       if (createdSessionId) {
         setActive({ session: createdSessionId });
       } else {
-        console.log("Sign in with Google failed :(");
         console.log("Sign in with Google failed :(");
       }
     } catch (error) {

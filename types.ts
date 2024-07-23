@@ -36,6 +36,7 @@ export type ExerciseSet = {
 export type CardProps = {
   session: Session;
   loading: boolean;
+  userPfp: string;
 };
 
 export type Comment = { 

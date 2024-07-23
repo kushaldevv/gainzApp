@@ -21,6 +21,7 @@ import {
   Paragraph,
   ScrollView,
   SizableText,
+  Spinner,
   useTheme,
   View,
   XStack,
@@ -32,7 +33,11 @@ import Comment from "./comment";
 import { useUser } from "@clerk/clerk-expo";
 import { Skeleton } from "moti/skeleton";
 import { TouchableOpacity, useColorScheme } from "react-native";
-import { appendSessionComment, appendSessionLikes, getSessionComments } from "@/services/apiCalls";
+import {
+  appendSessionComment,
+  appendSessionLikes,
+  getSessionComments,
+} from "@/services/apiCalls";
 import { useRouter } from "expo-router";
 const emptyComment: Types.Comment = {
   user: {
@@ -45,21 +50,22 @@ const emptyComment: Types.Comment = {
   likes: 0,
 };
 
-const Card = ({ session, loading }: Types.CardProps) => {
+const Card = ({ session, loading, userPfp }: Types.CardProps) => {
   const { user } = useUser();
-  const [like, setLike] = useState(
-    session.likes.some((likeUser) => likeUser.id === user?.id)
-  );
   const headerHeight = useHeaderHeight();
-  const commentTextRef = useRef('');
-  // const commentRef = useRef(null)
-  const [comments, setComments] = useState<Types.Comment[]>([]);
-  const [isCommentsLoading, setIsCommentsLoading] = useState(false);
   const theme = useTheme();
   const router = useRouter();
   const skeletonColorScheme =
     useColorScheme() == "dark" ? "light" : "dark" || "light";
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const [like, setLike] = useState(
+    session.likes.some((likeUser) => likeUser.id === user?.id)
+  );
+  const commentTextRef = useRef("");
+  const [sendCommentLoading, setSendCommentLoading] = useState(false);
+
+  const [comments, setComments] = useState<Types.Comment[]>([]);
+  const [isCommentsLoading, setIsCommentsLoading] = useState(false);
 
   const handlePresentModalPress = useCallback(() => {
     loadComments();
@@ -67,7 +73,7 @@ const Card = ({ session, loading }: Types.CardProps) => {
   }, [session.id]);
 
   const handleDismissModalPress = useCallback(() => {
-    commentTextRef.current = '';
+    commentTextRef.current = "";
     bottomSheetModalRef.current?.dismiss();
   }, []);
 
@@ -99,16 +105,22 @@ const Card = ({ session, loading }: Types.CardProps) => {
     } catch (error) {
       throw error;
     }
-  }
- 
+  };
+
   const postComment = async () => {
-    console.log('commented ' + commentTextRef.current)
+    console.log("commented " + commentTextRef.current);
+    setSendCommentLoading(true);
+    session.comments++;
     try {
       await appendSessionComment(user?.id!, session.id, commentTextRef.current);
     } catch (error) {
       throw error;
+    } finally {
+      setSendCommentLoading(false);
+      commentTextRef.current = "";
+      loadComments();
     }
-  }
+  };
 
   const renderFooter = useCallback(
     (props: React.JSX.IntrinsicAttributes & BottomSheetDefaultFooterProps) => (
@@ -123,12 +135,14 @@ const Card = ({ session, loading }: Types.CardProps) => {
         >
           <XStack gap="$2">
             <Avatar circular size="$4" alignSelf="center">
-              <Avatar.Image src={user?.imageUrl} />
+              <Avatar.Image src={userPfp} />
               <Avatar.Fallback backgroundColor="$blue10" />
             </Avatar>
             <BottomSheetTextInput
               placeholder="Add a comment..."
-              onChangeText={(text) => {commentTextRef.current = text}} 
+              onChangeText={(text) => {
+                commentTextRef.current = text;
+              }}
               defaultValue={commentTextRef.current}
               multiline={true}
               maxLength={256}
@@ -145,14 +159,18 @@ const Card = ({ session, loading }: Types.CardProps) => {
                 textAlignVertical: "top",
               }}
             />
-            <View onPress={() => postComment()}>
-              <Send
-                size={"$1"}
-                alignSelf="center"
-                right="$0"
-                pos={"absolute"}
-                mr="$3"
-              />
+            <View
+              onPress={() => {
+                if (!sendCommentLoading && commentTextRef.current.trim() !== ""){
+                  postComment();
+                }
+              }}
+              alignSelf="center"
+              right="$0"
+              pos={"absolute"}
+              mr="$3"
+            >
+              {sendCommentLoading ? <Spinner/> : <Send size={"$1"} />}
             </View>
           </XStack>
         </View>
@@ -207,7 +225,7 @@ const Card = ({ session, loading }: Types.CardProps) => {
             {!loading && <MoreHorizontal />}
           </View>
         </XStack>
-        <Skeleton colorMode={skeletonColorScheme} width={"0%"}>
+        <Skeleton colorMode={skeletonColorScheme} width={"80%"}>
           <SizableText size={"$6"} fontFamily={"$mono"} fontWeight={700}>
             {session.name}
           </SizableText>
@@ -291,12 +309,15 @@ const Card = ({ session, loading }: Types.CardProps) => {
                 </XStack>
               </TouchableOpacity>
             </Skeleton>
-            <View onPress={() => {
-              if(!like){
-                setLike(!like)
-                postLike()
-              }
-              }} height={"$2"}>
+            <View
+              onPress={() => {
+                if (!like) {
+                  setLike(!like);
+                  postLike();
+                }
+              }}
+              height={"$2"}
+            >
               {!loading && (
                 <ThumbsUp size={"$2"} fill={like ? "#00cccc" : "none"} />
               )}

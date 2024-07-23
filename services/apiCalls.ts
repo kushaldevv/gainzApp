@@ -230,11 +230,11 @@ export const getUserProfile = async (id: string) => {
   }
 }
 
-export const getFriendsSessions = async (userID: string) => {
+export const getFollowingSessions = async (userID: string) => {
   try {
-    const friends = await getUserFollowing(userID) as Types.User[];
-    const friendsSessions = await Promise.all(friends.map(async (friend) => getUserSessions(friend.id)));
-    const flattenedSessions = friendsSessions.flat() as Types.Session[];
+    const following = await getUserFollowing(userID) as Types.User[];
+    const followingSessions = await Promise.all(following.map(async (friend) => getUserSessions(friend.id)));
+    const flattenedSessions = followingSessions.flat() as Types.Session[];
 
     // Sort sessions by date
     const sortedSessions = flattenedSessions.sort((a, b) => {

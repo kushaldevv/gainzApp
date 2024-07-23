@@ -1,5 +1,5 @@
 import Card from "@/components/card";
-import { getFriendsSessions, getUserPfp } from "@/services/apiCalls";
+import { getFollowingSessions, getUserPfp } from "@/services/apiCalls";
 import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
 import { useFocusEffect } from "expo-router";
@@ -33,7 +33,7 @@ const Page = () => {
   const fetchSessions = async () => {
     try {
       const placeHolderSessions : Types.Session[] = []
-      const data = await getFriendsSessions(user?.id as string) || placeHolderSessions;
+      const data = await getFollowingSessions(user?.id as string) || placeHolderSessions;
       setSessions(data);
     } catch (error) {
       console.error("Error fetching sessions:", error);

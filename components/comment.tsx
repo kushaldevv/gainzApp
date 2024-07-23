@@ -1,12 +1,53 @@
 import { Heart } from "@tamagui/lucide-icons";
 import React, { useState } from "react";
-import { Avatar, Paragraph, SizableText, View, XStack, YStack } from "tamagui";
+import {
+  Avatar,
+  Button,
+  Paragraph,
+  SizableText,
+  View,
+  XStack,
+  YStack,
+} from "tamagui";
 import * as Types from "../types";
 import { Skeleton } from "moti/skeleton";
 import { useColorScheme } from "react-native";
+import { appendLikeToComment } from "@/services/apiCalls";
+import { useUser } from "@clerk/clerk-expo";
+import { useFocusEffect } from "expo-router";
 
-const Comment = ({ comment, loading }: Types.CommentProps) => {
+const Comment = ({
+  index,
+  comment,
+  sessionID,
+  userID,
+  loading,
+}: Types.CommentProps) => {
   const [like, setLike] = useState(false);
+
+  useFocusEffect(() => {
+    if (comment.likes) {
+      const userLiked = comment.likes.some((likeUser) => likeUser == userID);
+      if (userLiked) {
+        setLike(true);
+      }
+    }
+  });
+
+  const postLike = async () => {
+    console.log("previously liked ", like);
+    if (!like) {
+      try {
+        await appendLikeToComment(userID as string, sessionID, index);
+        comment.likes.push(userID as string);
+        console.log("Liked comment");
+      } catch (error) {
+        console.error("Error liking comment:", error);
+      }
+      setLike(true);
+    }
+  };
+
   const skeletonColorScheme =
     useColorScheme() == "dark" ? "light" : "dark" || "light";
   return (
@@ -45,10 +86,10 @@ const Comment = ({ comment, loading }: Types.CommentProps) => {
             <Heart
               size={"$1"}
               fill={like ? "#e5484d" : "none"}
-              onPress={() => setLike(!like)}
+              onPress={() => postLike()}
             />
             <SizableText size={"$1"} color={"$gray11"}>
-              {comment.likes}
+              {comment.likes.length}
             </SizableText>
           </YStack>
         )}

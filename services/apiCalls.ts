@@ -3,6 +3,30 @@ import * as Types from '@/types';
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 /**
+ * Append a like to a user's comment
+ * 
+ * @param userID - The unique identifier of the user.
+ * @param sessionID - The unique identifier of the session.
+ * @param index - The comment index.
+ * @returns A Promise that resolves when a like is appended to a comment likes field
+ * @throws Will throw an error if the API request fails.
+ */
+export const appendLikeToComment = async(userID: string, sessionID: string, index: number) => {
+  try {
+    console.log('appending like to comment')
+    console.log('index', index)
+    console.log('sessionID', sessionID)
+    console.log('userID', userID)
+    const sessionUserID = sessionID.split('session')[0]
+    // Send a PATCH request to update the like of a comment
+    await axios.patch(`${API_URL}/user/sessions/comments/likes?userID=${sessionUserID}&sessionID=${sessionID}&index=${index}`, {userID});
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+      throw error;
+  }
+}
+
+/**
  * Get's a user's pfp
  * 
  * @param userID - The unique identifier of the user.
@@ -37,7 +61,7 @@ export const appendSessionComment = async(userID: string, sessionID: string, bod
       "userID": userID,
       "body": body,
       "date": new Date().toISOString(), // Current date and time in ISO format
-      "likes": 0 // Initialize likes count to 0
+      "likes": [] 
     }
 
     // Send a PATCH request to update the session with the new comment
@@ -291,7 +315,7 @@ export const getSessionComments = async (userId: string, sessionId: string) => {
             user,
             date: comment.date as string,
             body: comment.body as string,
-            likes: comment.likes as number
+            likes: comment.likes as string[]
           };
         }
       )

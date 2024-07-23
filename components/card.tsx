@@ -32,7 +32,7 @@ import CustomBackdrop from "./backdrop";
 import Comment from "./comment";
 import { useUser } from "@clerk/clerk-expo";
 import { Skeleton } from "moti/skeleton";
-import { TouchableOpacity, useColorScheme } from "react-native";
+import { Pressable, TouchableOpacity, useColorScheme } from "react-native";
 import {
   appendSessionComment,
   appendSessionLikes,
@@ -47,7 +47,7 @@ const emptyComment: Types.Comment = {
   },
   date: "",
   body: "",
-  likes: 0,
+  likes: [],
 };
 
 const Card = ({ session, loading, userPfp }: Types.CardProps) => {
@@ -58,18 +58,18 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
   const skeletonColorScheme =
     useColorScheme() == "dark" ? "light" : "dark" || "light";
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const [like, setLike] = useState(
-    session.likes.some((likeUser) => likeUser.id === user?.id)
-  );
-  const commentTextRef = useRef("");
-  const [sendCommentLoading, setSendCommentLoading] = useState(false);
 
+  const [like, setLike] = useState(
+    session.likes.some((likeUser) => likeUser.id == user?.id)
+  );
+  const inputRef = useRef<any>(null);
+  const commentTextRef = useRef("");
   const [comments, setComments] = useState<Types.Comment[]>([]);
   const [isCommentsLoading, setIsCommentsLoading] = useState(false);
 
   const handlePresentModalPress = useCallback(() => {
-    loadComments();
     bottomSheetModalRef.current?.present();
+    loadComments();
   }, [session.id]);
 
   const handleDismissModalPress = useCallback(() => {
@@ -109,15 +109,11 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
 
   const postComment = async () => {
     console.log("commented " + commentTextRef.current);
-    setSendCommentLoading(true);
-    session.comments++;
     try {
       await appendSessionComment(user?.id!, session.id, commentTextRef.current);
     } catch (error) {
       throw error;
     } finally {
-      setSendCommentLoading(false);
-      commentTextRef.current = "";
       loadComments();
     }
   };
@@ -143,6 +139,7 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
               onChangeText={(text) => {
                 commentTextRef.current = text;
               }}
+              ref={inputRef}
               defaultValue={commentTextRef.current}
               multiline={true}
               maxLength={256}
@@ -159,19 +156,22 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
                 textAlignVertical: "top",
               }}
             />
-            <View
+            <TouchableOpacity
+              style={{
+                alignSelf: "center",
+                position: "absolute",
+                right: 0,
+                marginRight: 15,
+              }}
               onPress={() => {
-                if (!sendCommentLoading && commentTextRef.current.trim() !== ""){
+                if (commentTextRef.current.trim() !== "") {
                   postComment();
+                  inputRef.current.clear();
                 }
               }}
-              alignSelf="center"
-              right="$0"
-              pos={"absolute"}
-              mr="$3"
             >
-              {sendCommentLoading ? <Spinner/> : <Send size={"$1"} />}
-            </View>
+              <Send size={"$1"} />
+            </TouchableOpacity>
           </XStack>
         </View>
       </BottomSheetFooter>
@@ -332,9 +332,9 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
               </View>
             </Skeleton>
             {!loading && (
-              <View onPress={() => handlePresentModalPress()}>
+              <TouchableOpacity onPress={() => handlePresentModalPress()}>
                 <MessageCircleMore size={"$2"} />
-              </View>
+              </TouchableOpacity>
             )}
           </YStack>
         </XStack>
@@ -375,11 +375,14 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
               <ScrollView borderTopWidth="$0.25" borderColor={"$gray5"}>
                 <View gap="$5" mt="$3" p="$4" pt="$2">
                   {isCommentsLoading
-                    ? Array.from({ length: session.comments }).map(
+                    ? Array.from({ length: comments.length }).map(
                         (_, index) => (
                           <Comment
                             key={index}
+                            index={index}
                             comment={emptyComment}
+                            sessionID=""
+                            userID={""}
                             loading={true}
                           />
                         )
@@ -387,7 +390,10 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
                     : comments.map((comment, index) => (
                         <Comment
                           key={index}
+                          index={index}
                           comment={comment}
+                          sessionID={session.id}
+                          userID={user?.id!}
                           loading={false}
                         />
                       ))}

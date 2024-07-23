@@ -43,11 +43,14 @@ export type Comment = {
     user : User;
     date: string;
     body: string;
-    likes: number;
+    likes: string[];
 };
 
 export type CommentProps = {
+    index: number;
     comment: Comment;
+    sessionID: string;
+    userID: string;
     loading: boolean;
 };
 

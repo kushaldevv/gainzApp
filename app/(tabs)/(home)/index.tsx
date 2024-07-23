@@ -52,11 +52,11 @@ const Page = () => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log(loading)
+      // console.log(loading)
       fetchSessions();
       setLoading(false);
       fetchPFP();
-    }, [refreshing])
+    }, [])
   );
 
 

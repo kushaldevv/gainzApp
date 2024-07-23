@@ -150,7 +150,8 @@ export const postUser = async(id: string, name: string) => {
       "userID": id,
       "name": name,
       "pfp": `https://ui-avatars.com/api/?name=${name.charAt(0)}&background=00cccc&color=fff`, 
-      "friends": [],
+      "following": [],
+      "followers": [],
       "sessions": {}
     }
     // Send a POST request to update the database with a new user

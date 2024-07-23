@@ -2,6 +2,15 @@ import axios from 'axios';
 import * as Types from '@/types';
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
+export const getUserPfp = async(userID: string) => {
+  try {
+    console.log("get user pfp....");
+    await axios.get(`${API_URL}/user/pfp?userID=${userID}`);
+  } catch (error) {
+    throw error;
+  }
+}
+
 /**
  * Appends a comment to a user's session.
  * 

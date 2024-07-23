@@ -2,11 +2,20 @@ import axios from 'axios';
 import * as Types from '@/types';
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
+/**
+ * Get's a user's pfp
+ * 
+ * @param userID - The unique identifier of the user.
+ * @returns A Promise that resolves when the user pfp is retrieved
+ * @throws Will throw an error if the API request fails.
+ */
 export const getUserPfp = async(userID: string) => {
   try {
+    // Send a GET request to get a user's pfp
     console.log("get user pfp....");
     await axios.get(`${API_URL}/user/pfp?userID=${userID}`);
   } catch (error) {
+    // If an error occurs during the API request, re-throw it
     throw error;
   }
 }

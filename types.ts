@@ -7,7 +7,8 @@ export interface User  {
 }
 
 export interface UserProfile extends User {
-    friends : User[];
+    following: User[];
+    followers: User[];
     sessions: Session[];
 };
 

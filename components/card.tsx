@@ -375,7 +375,7 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
               <ScrollView borderTopWidth="$0.25" borderColor={"$gray5"}>
                 <View gap="$5" mt="$3" p="$4" pt="$2">
                   {isCommentsLoading
-                    ? Array.from({ length: comments.length }).map(
+                    ? Array.from({ length: session.comments }).map(
                         (_, index) => (
                           <Comment
                             key={index}

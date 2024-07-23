@@ -206,15 +206,19 @@ export const getUserProfile = async (id: string) => {
 
     // maps thru the friends list of user ids(strings), and calls getUser on each
     // end result is a friends list of type User
-    const friendPromises = data.friends.map((friendId : string) => getUser(friendId));
-    const friends: Types.User[] = await Promise.all(friendPromises);
+    const followersPromises = data.followers.map((friendId : string) => getUser(friendId));
+    const followers: Types.User[] = await Promise.all(followersPromises);
+
+    const followingPromises = data.following.map((friendId : string) => getUser(friendId));
+    const following: Types.User[] = await Promise.all(followingPromises);
 
     // Construct a User profile object from the API response
     const userProfile: Types.UserProfile = {
       id: data.userID as string,
       name: data.name as string,
       pfp: data.pfp as string,
-      friends: friends,
+      followers: followers,
+      following: following,
       sessions: [],
     }
     // Return the constructed User profile object
@@ -227,7 +231,7 @@ export const getUserProfile = async (id: string) => {
 
 export const getFriendsSessions = async (userID: string) => {
   try {
-    const friends = await getUserFriends(userID) as Types.User[];
+    const friends = await getUserFollowing(userID) as Types.User[];
     const friendsSessions = await Promise.all(friends.map(async (friend) => getUserSessions(friend.id)));
     const flattenedSessions = friendsSessions.flat() as Types.Session[];
 
@@ -274,18 +278,18 @@ export const getUserSessions = async (userID: string) => {
 };
 
 /**
- * Fetches the friends for a user
+ * Fetches the following for a user
  *
  * @param id - The unique identifier of the user to fetch.
- * @returns A Promise that resolves to a list of friends.
+ * @returns A Promise that resolves to a list of following.
  * @throws Will throw an error if the API request fails or if there's an issue processing the response.
  */
-export const getUserFriends = async (id: string) => {
+export const getUserFollowing = async (id: string) => {
   try {
-    // Make a GET request to fetch the friends for a user
-    const response = await axios.get(`${API_URL}/user/friends?userID=${id}`);
-    const friends = await Promise.all(response.data.map(async (friendID: string) => await getUser(friendID)));
-    return friends;
+    // Make a GET request to fetch the following for a user
+    const response = await axios.get(`${API_URL}/user/following?userID=${id}`);
+    const following = await Promise.all(response.data.map(async (followingID: string) => await getUser(followingID)));
+    return following;
   } catch (error) {
     // Re-throw the error for the caller to handle
     throw error;

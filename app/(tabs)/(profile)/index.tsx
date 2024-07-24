@@ -73,7 +73,7 @@ const Profile = () => {
     if (following > 0) {
       router.push({
         pathname: "/following",
-        params: {userID: user?.id},
+        params: {userID: user?.id, numFollowing: following},
       });
     }
   };
@@ -82,7 +82,7 @@ const Profile = () => {
     if (following > 0) {
       router.push({
         pathname: "/followers",
-        params: {userID: user?.id},
+        params: {userID: user?.id, numFollowers: followers},
       });
     }
   };

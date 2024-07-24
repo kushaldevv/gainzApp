@@ -47,12 +47,13 @@ const Likes = () => {
       alignItems="center"
       backgroundColor={"$background"}
     >
-      {loading ? (
+      {loading && (
         <UserScrollView
           userList={skeletonUsers}
           loading={true}
         />
-      ) : (
+      )}
+      {!loading && (
         <UserScrollView
           userList={likes}
           loading={false}

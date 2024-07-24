@@ -12,10 +12,9 @@ const UserScrollView = ({
     useColorScheme() == "dark" ? "light" : "dark" || "light";
   return (
     <ScrollView width={"100%"}>
-      {userList.map((user: Types.User) => (
-        <Skeleton.Group show={loading}>
+      {userList.map((user: Types.User, index: number) => (
+        <Skeleton.Group show={loading} key={index}>
           <XStack
-            key={user.id}
             padding="$3"
             alignItems="center"
             justifyContent="space-between"

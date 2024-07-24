@@ -299,6 +299,26 @@ export const getUserFollowing = async (userID: string) => {
   }
 }
 
+
+/**
+ * Fetches the followers for a user
+ *
+ * @param id - The unique identifier of the user to fetch.
+ * @returns A Promise that resolves to a list of following.
+ * @throws Will throw an error if the API request fails or if there's an issue processing the response.
+ */
+export const getUserFollowers = async (userID: string) => {
+  try {
+    // Make a GET request to fetch the following for a user
+    const response = await axios.get(`${API_URL}/user/followers?userID=${userID}`);
+    const following = await Promise.all(response.data.map(async (followingID: string) => await getUser(followingID)));
+    return following;
+  } catch (error) {
+    // Re-throw the error for the caller to handle
+    throw error;
+  }
+}
+
 /**
  * Fetches the comments for a sesison
  *

@@ -21,6 +21,7 @@ import {
   Paragraph,
   ScrollView,
   SizableText,
+  Spinner,
   useTheme,
   View,
   XStack,
@@ -31,8 +32,13 @@ import CustomBackdrop from "./backdrop";
 import Comment from "./comment";
 import { useUser } from "@clerk/clerk-expo";
 import { Skeleton } from "moti/skeleton";
-import { TouchableOpacity, useColorScheme } from "react-native";
-import { appendSessionComment, appendSessionLikes, getSessionComments } from "@/services/apiCalls";
+import {TouchableOpacity, useColorScheme } from "react-native";
+import {
+  appendSessionComment,
+  appendSessionLikes,
+  getSessionComments,
+  getLikesAndComments
+} from "@/services/apiCalls";
 import { useRouter } from "expo-router";
 const emptyComment: Types.Comment = {
   user: {
@@ -42,32 +48,33 @@ const emptyComment: Types.Comment = {
   },
   date: "",
   body: "",
-  likes: 0,
+  likes: [],
 };
 
-const Card = ({ session, loading }: Types.CardProps) => {
+const Card = ({ session, loading, userPfp }: Types.CardProps) => {
   const { user } = useUser();
-  const [like, setLike] = useState(
-    session.likes.some((likeUser) => likeUser.id === user?.id)
-  );
   const headerHeight = useHeaderHeight();
-  const commentTextRef = useRef('');
-  // const commentRef = useRef(null)
-  const [comments, setComments] = useState<Types.Comment[]>([]);
-  const [isCommentsLoading, setIsCommentsLoading] = useState(false);
   const theme = useTheme();
   const router = useRouter();
   const skeletonColorScheme =
     useColorScheme() == "dark" ? "light" : "dark" || "light";
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
+  const [like, setLike] = useState(
+    session.likes.some((likeUser) => likeUser.id == user?.id)
+  );
+  const inputRef = useRef<any>(null);
+  const commentTextRef = useRef("");
+  const [comments, setComments] = useState<Types.Comment[]>([]);
+  const [isCommentsLoading, setIsCommentsLoading] = useState(false);
+
   const handlePresentModalPress = useCallback(() => {
-    loadComments();
     bottomSheetModalRef.current?.present();
+    loadComments();
   }, [session.id]);
 
   const handleDismissModalPress = useCallback(() => {
-    commentTextRef.current = '';
+    commentTextRef.current = "";
     bottomSheetModalRef.current?.dismiss();
   }, []);
 
@@ -75,10 +82,11 @@ const Card = ({ session, loading }: Types.CardProps) => {
     if (session.likes.length > 0) {
       router.push({
         pathname: "/likes",
-        params: { likes: JSON.stringify(session.likes) },
+        params: {sessionID: session.id, numLikes: session.numLikes},
       });
     }
   };
+
   const loadComments = async () => {
     setIsCommentsLoading(true);
     try {
@@ -96,16 +104,36 @@ const Card = ({ session, loading }: Types.CardProps) => {
     try {
       setLike(true);
       await appendSessionLikes(user?.id!, session.id);
+      loadLikesComments();
     } catch (error) {
       throw error;
     }
-  }
- 
+  };
+
   const postComment = async () => {
-    console.log('commented ' + commentTextRef.current)
+    console.log("commented " + commentTextRef.current);
     try {
       await appendSessionComment(user?.id!, session.id, commentTextRef.current);
+      loadLikesComments();
     } catch (error) {
+      throw error;
+    } finally {
+      loadComments();
+    }
+  };
+
+  const [numLikes, setNumLikes] = useState(session.numLikes);
+  const [numComments, setNumComments] = useState(session.comments);
+  const [cardLikes, setCardLikes] = useState(session.likes);
+
+  const loadLikesComments = async () => {
+    try {
+      const data = await getLikesAndComments(session.id);
+      setNumLikes(data.numLikes);
+      setCardLikes(data.likes);
+      setNumComments(data.numComments);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
       throw error;
     }
   }
@@ -123,12 +151,15 @@ const Card = ({ session, loading }: Types.CardProps) => {
         >
           <XStack gap="$2">
             <Avatar circular size="$4" alignSelf="center">
-              <Avatar.Image src={user?.imageUrl} />
+              <Avatar.Image src={userPfp} />
               <Avatar.Fallback backgroundColor="$blue10" />
             </Avatar>
             <BottomSheetTextInput
               placeholder="Add a comment..."
-              onChangeText={(text) => {commentTextRef.current = text}} 
+              onChangeText={(text) => {
+                commentTextRef.current = text;
+              }}
+              ref={inputRef}
               defaultValue={commentTextRef.current}
               multiline={true}
               maxLength={256}
@@ -145,15 +176,22 @@ const Card = ({ session, loading }: Types.CardProps) => {
                 textAlignVertical: "top",
               }}
             />
-            <View onPress={() => postComment()}>
-              <Send
-                size={"$1"}
-                alignSelf="center"
-                right="$0"
-                pos={"absolute"}
-                mr="$3"
-              />
-            </View>
+            <TouchableOpacity
+              style={{
+                alignSelf: "center",
+                position: "absolute",
+                right: 0,
+                marginRight: 15,
+              }}
+              onPress={() => {
+                if (commentTextRef.current.trim() !== "") {
+                  postComment();
+                  inputRef.current.clear();
+                }
+              }}
+            >
+              <Send size={"$1"} />
+            </TouchableOpacity>
           </XStack>
         </View>
       </BottomSheetFooter>
@@ -207,7 +245,7 @@ const Card = ({ session, loading }: Types.CardProps) => {
             {!loading && <MoreHorizontal />}
           </View>
         </XStack>
-        <Skeleton colorMode={skeletonColorScheme} width={"0%"}>
+        <Skeleton colorMode={skeletonColorScheme} width={"80%"}>
           <SizableText size={"$6"} fontFamily={"$mono"} fontWeight={700}>
             {session.name}
           </SizableText>
@@ -252,10 +290,10 @@ const Card = ({ session, loading }: Types.CardProps) => {
             <Skeleton colorMode={skeletonColorScheme}>
               <TouchableOpacity
                 onPress={handleLikesScreen}
-                disabled={session.likes.length === 0}
+                disabled={numLikes === 0}
               >
                 <XStack>
-                  {session.likes.slice(0, 3).map((item, index) => (
+                  {cardLikes.map((item, index) => (
                     <Avatar
                       key={index}
                       circular
@@ -268,7 +306,7 @@ const Card = ({ session, loading }: Types.CardProps) => {
                       <Avatar.Fallback backgroundColor="$blue10" />
                     </Avatar>
                   ))}
-                  {session.likes.length > 3 && (
+                  {numLikes > 3 && (
                     <Circle
                       size="$1.5"
                       backgroundColor="$gray7"
@@ -277,11 +315,11 @@ const Card = ({ session, loading }: Types.CardProps) => {
                       borderColor={"$color"}
                     >
                       <SizableText size={"$1"}>
-                        {session.likes.length - 3}+
+                        {numLikes - 3}+
                       </SizableText>
                     </Circle>
                   )}
-                  {session.likes.length == 0 && (
+                  {numLikes == 0 && (
                     <View height={"$1.5"} justifyContent="center">
                       <SizableText size={"$1"}>
                         Be the first to like!
@@ -291,12 +329,15 @@ const Card = ({ session, loading }: Types.CardProps) => {
                 </XStack>
               </TouchableOpacity>
             </Skeleton>
-            <View onPress={() => {
-              if(!like){
-                setLike(!like)
-                postLike()
-              }
-              }} height={"$2"}>
+            <View
+              onPress={() => {
+                if (!like) {
+                  setLike(!like);
+                  postLike();
+                }
+              }}
+              height={"$2"}
+            >
               {!loading && (
                 <ThumbsUp size={"$2"} fill={like ? "#00cccc" : "none"} />
               )}
@@ -306,14 +347,14 @@ const Card = ({ session, loading }: Types.CardProps) => {
             <Skeleton colorMode={skeletonColorScheme}>
               <View height={"$1.5"} justifyContent="center">
                 <SizableText size={"$1"}>
-                  {session.comments} Comments
+                  {numComments} Comments
                 </SizableText>
               </View>
             </Skeleton>
             {!loading && (
-              <View onPress={() => handlePresentModalPress()}>
+              <TouchableOpacity onPress={() => handlePresentModalPress()}>
                 <MessageCircleMore size={"$2"} />
-              </View>
+              </TouchableOpacity>
             )}
           </YStack>
         </XStack>
@@ -354,11 +395,14 @@ const Card = ({ session, loading }: Types.CardProps) => {
               <ScrollView borderTopWidth="$0.25" borderColor={"$gray5"}>
                 <View gap="$5" mt="$3" p="$4" pt="$2">
                   {isCommentsLoading
-                    ? Array.from({ length: session.comments }).map(
+                    ? Array.from({ length: numComments }).map(
                         (_, index) => (
                           <Comment
                             key={index}
+                            index={index}
                             comment={emptyComment}
+                            sessionID=""
+                            userID={""}
                             loading={true}
                           />
                         )
@@ -366,7 +410,10 @@ const Card = ({ session, loading }: Types.CardProps) => {
                     : comments.map((comment, index) => (
                         <Comment
                           key={index}
+                          index={index}
                           comment={comment}
+                          sessionID={session.id}
+                          userID={user?.id!}
                           loading={false}
                         />
                       ))}

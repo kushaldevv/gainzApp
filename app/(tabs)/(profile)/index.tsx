@@ -118,13 +118,15 @@ const Profile = () => {
             <Text fontSize="$4">workouts</Text>
           </YStack>
           <YStack alignItems="center" paddingHorizontal="$4">
-            <Text fontWeight="bold" fontSize="$5">{followers}</Text>
-            <Text fontSize="$4" onPress={handleFollowersPress}>followers</Text>
+            <TouchableOpacity onPress={handleFollowersPress} style={{ alignItems: "center" }}>
+              <Text fontWeight="bold" fontSize="$5">{followers}</Text>
+              <Text fontSize="$4">followers</Text>
+            </TouchableOpacity>
           </YStack>
           <YStack alignItems="center" paddingHorizontal="$4">
-            <Text fontWeight="bold" fontSize="$5">{following}</Text>
-            <TouchableOpacity>
-              <Text fontSize="$4" onPress={handleFollowingPress}>following</Text>
+            <TouchableOpacity onPress={handleFollowingPress} style={{ alignItems: "center" }}>
+              <Text fontWeight="bold" fontSize="$5">{following}</Text>
+              <Text fontSize="$4">following</Text>
             </TouchableOpacity>
           </YStack>
         </XStack>

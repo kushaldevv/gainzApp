@@ -252,11 +252,11 @@ export const getUserSessions = async (userID: string) => {
     const response = await axios.get(`${API_URL}/user/sessions?userID=${userID}`);
     const data = response.data;
     const sessions = await Promise.all(
+
       Object.entries(data).map(async ([sessionID, sessionData]: [string, any]) => {
         const likes: Types.User[] = await Promise.all(
-          sessionData.likes.map((like: string) => getUser(like))
+          sessionData.likes.slice(0,3).map((like: string) => getUser(like))
         );
-
         const session: Types.Session = {
           id: sessionID,
           name: sessionData.name as string,
@@ -267,6 +267,7 @@ export const getUserSessions = async (userID: string) => {
           duration: sessionData.duration as number,
           comments: sessionData.comments.length,
           likes: likes,
+          numLikes: sessionData.likes.length as number,
         };
         return session;
       })
@@ -326,6 +327,51 @@ export const getSessionComments = async (userId: string, sessionId: string) => {
       )
     );
     return comments;
+  } catch (error) {
+    // Re-throw the error for the caller to handle
+    throw error;
+  }
+}
+// export const getSpecificUserSession = async (sessionID: string) => {
+//   try {
+//     console.log("getting a specific session");
+//     const sessionUserID = sessionID.split('session')[0]
+//     const response = await axios.get(`${API_URL}/user/session?userID=${sessionUserID}&sessionID=${sessionID}`);
+//     const respData = response.data;
+
+//     const likes: Types.User[] = await Promise.all(
+//       respData.likes.map((like: string) => getUser(like))
+//     );
+    
+//     const session: Types.Session = {
+//       id: sessionID,
+//       name: respData.name as string,
+//       user: await getUser(sessionUserID) as Types.User,
+//       location: respData.location as string,
+//       date: respData.date as string,
+//       exercises: [], 
+//       duration: respData.duration as number,
+//       comments: respData.comments.length,
+//       likes: likes,
+//     };
+//     return session;
+//   } catch (error) {
+//     // Re-throw the error for the caller to handle
+//     throw error;
+//   }
+// };
+
+export const getLikesAndComments = async (sessionID: string) => {
+  try {
+    const sessionUserID = sessionID.split('session')[0];
+    const response = await axios.get(`${API_URL}/user/session?userID=${sessionUserID}&sessionID=${sessionID}`);
+    const respData = response.data;
+
+    const likes: Types.User[] = await Promise.all(
+      respData.likes.slice(0,3).map((like: string) => getUser(like))
+    );
+
+    return {'likes': likes, 'numLikes':respData.likes.length as number ,'numComments': respData.comments.length as number};
   } catch (error) {
     // Re-throw the error for the caller to handle
     throw error;

@@ -22,6 +22,7 @@ export type Session = {
     duration: number;
     comments: number;
     likes: User[];
+    numLikes: number;
 };
 
 export type Exercise = {

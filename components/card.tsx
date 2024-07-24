@@ -32,11 +32,12 @@ import CustomBackdrop from "./backdrop";
 import Comment from "./comment";
 import { useUser } from "@clerk/clerk-expo";
 import { Skeleton } from "moti/skeleton";
-import { Pressable, TouchableOpacity, useColorScheme } from "react-native";
+import {TouchableOpacity, useColorScheme } from "react-native";
 import {
   appendSessionComment,
   appendSessionLikes,
   getSessionComments,
+  getLikesAndComments
 } from "@/services/apiCalls";
 import { useRouter } from "expo-router";
 const emptyComment: Types.Comment = {
@@ -102,6 +103,7 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
     try {
       setLike(true);
       await appendSessionLikes(user?.id!, session.id);
+      loadLikesComments();
     } catch (error) {
       throw error;
     }
@@ -111,12 +113,29 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
     console.log("commented " + commentTextRef.current);
     try {
       await appendSessionComment(user?.id!, session.id, commentTextRef.current);
+      loadLikesComments();
     } catch (error) {
       throw error;
     } finally {
       loadComments();
     }
   };
+
+  const [numLikes, setNumLikes] = useState(session.numLikes);
+  const [numComments, setNumComments] = useState(session.comments);
+  const [cardLikes, setCardLikes] = useState(session.likes);
+
+  const loadLikesComments = async () => {
+    try {
+      const data = await getLikesAndComments(session.id);
+      setNumLikes(data.numLikes);
+      setCardLikes(data.likes);
+      setNumComments(data.numComments);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+      throw error;
+    }
+  }
 
   const renderFooter = useCallback(
     (props: React.JSX.IntrinsicAttributes & BottomSheetDefaultFooterProps) => (
@@ -270,10 +289,10 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
             <Skeleton colorMode={skeletonColorScheme}>
               <TouchableOpacity
                 onPress={handleLikesScreen}
-                disabled={session.likes.length === 0}
+                disabled={numLikes === 0}
               >
                 <XStack>
-                  {session.likes.slice(0, 3).map((item, index) => (
+                  {cardLikes.map((item, index) => (
                     <Avatar
                       key={index}
                       circular
@@ -286,7 +305,7 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
                       <Avatar.Fallback backgroundColor="$blue10" />
                     </Avatar>
                   ))}
-                  {session.likes.length > 3 && (
+                  {numLikes > 3 && (
                     <Circle
                       size="$1.5"
                       backgroundColor="$gray7"
@@ -295,11 +314,11 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
                       borderColor={"$color"}
                     >
                       <SizableText size={"$1"}>
-                        {session.likes.length - 3}+
+                        {numLikes - 3}+
                       </SizableText>
                     </Circle>
                   )}
-                  {session.likes.length == 0 && (
+                  {numLikes == 0 && (
                     <View height={"$1.5"} justifyContent="center">
                       <SizableText size={"$1"}>
                         Be the first to like!
@@ -327,7 +346,7 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
             <Skeleton colorMode={skeletonColorScheme}>
               <View height={"$1.5"} justifyContent="center">
                 <SizableText size={"$1"}>
-                  {session.comments} Comments
+                  {numComments} Comments
                 </SizableText>
               </View>
             </Skeleton>
@@ -375,7 +394,7 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
               <ScrollView borderTopWidth="$0.25" borderColor={"$gray5"}>
                 <View gap="$5" mt="$3" p="$4" pt="$2">
                   {isCommentsLoading
-                    ? Array.from({ length: session.comments }).map(
+                    ? Array.from({ length: numComments }).map(
                         (_, index) => (
                           <Comment
                             key={index}

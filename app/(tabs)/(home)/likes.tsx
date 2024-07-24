@@ -1,5 +1,5 @@
-import { useLocalSearchParams } from "expo-router";
-import React from "react";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
+import React, { useCallback, useState } from "react";
 import {
   Avatar,
   Button,
@@ -9,49 +9,35 @@ import {
   YStack,
 } from "tamagui";
 import * as Types from "@/types";
+import UserScrollView from "@/components/userScrollView";
+import { getSessionLikes } from "@/services/apiCalls";
+
 
 const Likes = () => {
-  const { likes } = useLocalSearchParams();
-  const likesData = JSON.parse(likes as string);
+  const params = useLocalSearchParams();
+  const {sessionID} = params;
+  const [likes, setLikes] = useState<Types.User[]>([])
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchLikes();
+    }, [])
+  );
+  
+  const fetchLikes = async () => {
+    try {
+      if (sessionID){
+        const data = await getSessionLikes(sessionID as string);
+        setLikes(data);
+      }
+    } catch (error) {
+      
+    } 
+  }
 
   return (
     <YStack flex={1} alignItems="center" backgroundColor={"$background"}>
-      <ScrollView width={"100%"}>
-        {likesData.map((like: Types.User) => (
-          <XStack
-            key={like.id}
-            padding="$3"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <XStack flex={1} alignItems="center" mr="$3">
-              <Avatar circular size="$5">
-                <Avatar.Image src={like.pfp} />
-                <Avatar.Fallback backgroundColor="$blue10" />
-              </Avatar>
-              <SizableText
-                size={"$4"}
-                fontFamily={"$mono"}
-                fontWeight={700}
-                ml="$3"
-              >
-                {like.name}
-              </SizableText>
-            </XStack>
-            <Button
-              themeInverse
-              height={"$3"}
-              width={"$10"}
-              pressStyle={{
-                backgroundColor: "$gray7",
-                borderColor: "$borderColorFocus",
-              }}
-            >
-              Follow
-            </Button>
-          </XStack>
-        ))}
-      </ScrollView>
+      <UserScrollView userList={likes}/>
     </YStack>
   );
 };

@@ -82,10 +82,11 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
     if (session.likes.length > 0) {
       router.push({
         pathname: "/likes",
-        params: { likes: JSON.stringify(session.likes) },
+        params: {sessionID: session.id},
       });
     }
   };
+
   const loadComments = async () => {
     setIsCommentsLoading(true);
     try {

@@ -60,3 +60,7 @@ export  type FormCardProps = {
     children: ReactNode;
     error : boolean;
 };
+
+export type UserScrollViewProps = {
+    userList: User[];
+}

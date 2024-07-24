@@ -117,14 +117,15 @@ export const appendSession = async(userID: string, session: any) => {
  * @returns A Promise that resolves to an array of User objects who have liked the session.
  * @throws Will throw an error if the API request fails or if there's an issue fetching user data.
  */
-export const getSessionLikes = async(userID: string, sessionID: string) => {
+export const getSessionLikes = async(sessionID: string) => {
   try {
+    const sessionUserID = sessionID.split('session')[0];
     // Make a GET request to fetch the IDs of users who liked the session
-    const response = await axios.get(`${API_URL}/user/sessions/likes?userID=${userID}&sessionID=${sessionID}`);
+    const response = await axios.get(`${API_URL}/user/sessions/likes?userID=${sessionUserID}&sessionID=${sessionID}`);
     
     // Map over the array of user IDs and fetch full user data for each
     const likedUsers: Types.User[] = await Promise.all(
-      response.data.map(async (friendID: string) => await getUser(friendID))
+      response.data.map(async (userID: string) => await getUser(userID))
     );
     
     // Return the array of User objects
@@ -143,14 +144,14 @@ export const getSessionLikes = async(userID: string, sessionID: string) => {
  * @returns A Promise that resolves when a user is posted
  * @throws Will throw an error if the API request fails or if there's an issue fetching user data.
  */
-export const postUser = async(id: string, name: string) => {
+export const postUser = async(userID: string, name: string) => {
   try {
     // Prepare the payload for the API request
     const payload = {
-      "userID": id,
+      "userID": userID,
       "name": name,
       "pfp": `https://ui-avatars.com/api/?name=${name.charAt(0)}&background=00cccc&color=fff`, 
-      "following": [id],
+      "following": [userID],
       "followers": [],
       "sessions": {}
     }
@@ -169,10 +170,10 @@ export const postUser = async(id: string, name: string) => {
  * @returns A Promise that resolves to a User object containing id, name, and profile picture URL.
  * @throws Will throw an error if the API request fails or if there's an issue processing the response.
  */
-export const getUser = async (id: string) => {
+export const getUser = async (userID: string) => {
   try {
     // Make a GET request to fetch user data
-    const response = await axios.get(`${API_URL}/user?userID=${id}`);
+    const response = await axios.get(`${API_URL}/user?userID=${userID}`);
     
     // Extract the data from the response
     const data = response.data;
@@ -199,10 +200,10 @@ export const getUser = async (id: string) => {
  * @returns A Promise that resolves to a User profile object.
  * @throws Will throw an error if the API request fails or if there's an issue processing the response.
  */
-export const getUserProfile = async (id: string) => {
+export const getUserProfile = async (userID: string) => {
   try {
     // Make a GET request to fetch user profile data
-    const response = await axios.get(`${API_URL}/user?userID=${id}`);
+    const response = await axios.get(`${API_URL}/user?userID=${userID}`);
     const data = response.data;
 
     // maps thru the friends list of user ids(strings), and calls getUser on each
@@ -286,10 +287,10 @@ export const getUserSessions = async (userID: string) => {
  * @returns A Promise that resolves to a list of following.
  * @throws Will throw an error if the API request fails or if there's an issue processing the response.
  */
-export const getUserFollowing = async (id: string) => {
+export const getUserFollowing = async (userID: string) => {
   try {
     // Make a GET request to fetch the following for a user
-    const response = await axios.get(`${API_URL}/user/following?userID=${id}`);
+    const response = await axios.get(`${API_URL}/user/following?userID=${userID}`);
     const following = await Promise.all(response.data.map(async (followingID: string) => await getUser(followingID)));
     return following;
   } catch (error) {
@@ -306,10 +307,10 @@ export const getUserFollowing = async (id: string) => {
  * @returns A Promise that resolves to a list of comments.
  * @throws Will throw an error if the API request fails or if there's an issue processing the response.
  */
-export const getSessionComments = async (userId: string, sessionId: string) => {
+export const getSessionComments = async (userID: string, sessionID: string) => {
   try {
     // Make a GET request to fetch the comments for a user's session
-    const response = await axios.get(`${API_URL}/user/sessions/comments?userID=${userId}&sessionID=${sessionId}`);
+    const response = await axios.get(`${API_URL}/user/sessions/comments?userID=${userID}&sessionID=${sessionID}`);
     const responseData = response.data;
 
     // This function maps thru every comment, generates a user,

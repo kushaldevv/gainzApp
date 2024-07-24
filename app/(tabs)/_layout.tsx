@@ -1,5 +1,6 @@
 import { SignedIn, useAuth } from "@clerk/clerk-expo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+
 import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";

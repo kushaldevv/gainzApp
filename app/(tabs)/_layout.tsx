@@ -1,5 +1,6 @@
 import { SignedIn, useAuth } from "@clerk/clerk-expo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+
 import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
@@ -68,8 +69,9 @@ function TabsProvider() {
             }}
           />
           <Tabs.Screen
-            name="profile"
+            name="(profile)"
             options={{
+              headerShown: false,
               title: "Profile",
               tabBarIcon: ({ color }) => (
                 <FontAwesome size={25} name="user" color={color} />

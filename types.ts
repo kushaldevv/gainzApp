@@ -7,7 +7,8 @@ export interface User  {
 }
 
 export interface UserProfile extends User {
-    friends : User[];
+    following: User[];
+    followers: User[];
     sessions: Session[];
 };
 
@@ -21,6 +22,7 @@ export type Session = {
     duration: number;
     comments: number;
     likes: User[];
+    numLikes: number;
 };
 
 export type Exercise = {
@@ -36,17 +38,21 @@ export type ExerciseSet = {
 export type CardProps = {
   session: Session;
   loading: boolean;
+  userPfp: string;
 };
 
 export type Comment = { 
     user : User;
     date: string;
     body: string;
-    likes: number;
+    likes: string[];
 };
 
 export type CommentProps = {
+    index: number;
     comment: Comment;
+    sessionID: string;
+    userID: string;
     loading: boolean;
 };
 
@@ -54,3 +60,8 @@ export  type FormCardProps = {
     children: ReactNode;
     error : boolean;
 };
+
+export type UserScrollViewProps = {
+    userList: User[];
+    loading: boolean;
+}

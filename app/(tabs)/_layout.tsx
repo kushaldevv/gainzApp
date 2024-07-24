@@ -69,8 +69,9 @@ function TabsProvider() {
             }}
           />
           <Tabs.Screen
-            name="profile"
+            name="(profile)"
             options={{
+              headerShown: false,
               title: "Profile",
               tabBarIcon: ({ color }) => (
                 <FontAwesome size={25} name="user" color={color} />

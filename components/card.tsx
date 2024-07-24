@@ -82,7 +82,7 @@ const Card = ({ session, loading, userPfp }: Types.CardProps) => {
     if (session.likes.length > 0) {
       router.push({
         pathname: "/likes",
-        params: {sessionID: session.id},
+        params: {sessionID: session.id, numLikes: session.numLikes},
       });
     }
   };

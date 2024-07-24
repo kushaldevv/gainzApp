@@ -63,4 +63,5 @@ export  type FormCardProps = {
 
 export type UserScrollViewProps = {
     userList: User[];
+    loading: boolean;
 }

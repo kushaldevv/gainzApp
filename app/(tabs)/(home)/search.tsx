@@ -1,14 +1,16 @@
 import { Mail } from '@tamagui/lucide-icons';
-import React from 'react'
-import { View, Text, XStack, Input, YStack } from 'tamagui';
-// hey
-import {
-    Search
-} from "@tamagui/lucide-icons";
-import * as Types from "@/types";
-import UserScrollView from '@/components/userScrollView';
+import React, { useEffect, useState } from 'react';
+import { Button, Input, Spacer, Text, View, XStack, YStack } from 'tamagui';
 
-const userList: Types.User[] = [
+import UserScrollView from '@/components/userScrollView';
+import * as Types from "@/types";
+import {
+  Search
+} from "@tamagui/lucide-icons";
+import { useLocalSearchParams } from 'expo-router';
+import { getUsers } from '@/services/apiCalls';
+
+const suggestedUsers: Types.User[] = [
   {
     id: "1",
     name: "Alice Johnson",
@@ -62,22 +64,31 @@ const userList: Types.User[] = [
 ];
 
 const SearchScreen = () => {
+  const [userList, setUserList] = useState<Types.User[]>(suggestedUsers);
+  const params = useLocalSearchParams();
+  const { query }  = params;
+  const queryLower = (query as string).toLowerCase();
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      if (query as string) {
+        try {
+          const fetchedUsers = await getUsers(queryLower);
+          setUserList(fetchedUsers);
+          console.log(fetchedUsers);
+        } catch (error) {
+          console.error('Error fetching users:', error);
+        }
+      }
+    };
+
+    fetchUsers();
+  }, [query as string]);
+ 
   return (
     <YStack flex={1} alignItems="center" backgroundColor={"$background"}>
-      <XStack padding={'$3'}>
-      <Input
-        flex={1}
-        pl="$7"
-        textContentType='name'
-        placeholder="Search for people on BondFit"
-        borderColor={"$borderColor"}
-        focusStyle={{
-          borderColor: "$borderColor",
-        }}
-      />
-      <Search size={"$1"} alignSelf="center" pos={"absolute"} ml="$5" />
-    </XStack>
-    <UserScrollView userList={userList}/>
+      <Spacer/>
+    <UserScrollView userList={userList} loading={false}/>
   </YStack>
   )
 }

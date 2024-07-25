@@ -62,7 +62,7 @@ export default function SignUpScreen() {
     try {
       const { createdSessionId, signUp } = await startAppleOAuthFlow();
       const userID = signUp?.createdUserId;
-      const name = signUp?.firstName;
+      const name = (signUp?.firstName || '') + (signUp?.lastName || '');
 
       if (userID) {
         console.log(userID);
@@ -93,7 +93,7 @@ export default function SignUpScreen() {
     try {
       const { createdSessionId, signUp } = await startGoogleOAuthFlow();
       const userID = signUp?.createdUserId;
-      const name = signUp?.firstName;
+      const name = (signUp?.firstName || '') + (signUp?.lastName || '');
 
       if (userID) {
         console.log(userID);

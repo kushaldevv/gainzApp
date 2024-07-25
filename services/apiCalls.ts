@@ -149,6 +149,7 @@ export const postUser = async(userID: string, name: string) => {
     // Prepare the payload for the API request
     const payload = {
       "userID": userID,
+      "searchName"  : name.toLowerCase(),
       "name": name,
       "pfp": `https://ui-avatars.com/api/?name=${name.charAt(0)}&background=00cccc&color=fff`, 
       "following": [userID],
@@ -395,6 +396,31 @@ export const getLikesAndComments = async (sessionID: string) => {
     return {'likes': likes, 'numLikes':respData.likes.length as number ,'numComments': respData.comments.length as number};
   } catch (error) {
     // Re-throw the error for the caller to handle
+    throw error;
+  }
+}
+
+/**
+ * Gets all the users that correspond to the query
+ * 
+ * @param query - The query
+ * @returns A Promise that resolves when a list of users is returned
+ * @throws Will throw an error if the API request fails.
+ */
+export const getUsers = async (query: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/users?q=${query}`);
+    const responseData = response.data;
+
+    const users: Types.User[] = responseData.map((user: any) => {
+      return {
+        id: user.id as string,
+        name: user.name as string,
+        pfp: user.pfp as string
+      };
+    });
+    return users;
+  } catch (error) {
     throw error;
   }
 }

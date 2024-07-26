@@ -65,18 +65,27 @@ export type UserScrollViewProps = {
     followers?: User[];
     following: User[];
     loading: boolean;
-    notiContent?: NotiContent;
+    notisContent?: NotiContent[];
 
 }
 
 //use index as key when mapping
 
+export enum NotiType {
+    FOLLOW_REQUEST,
+    SESSION_LIKE,
+    SESSION_COMMENT,
+    SESSION_FEEDBACK,
+}
+
 export interface NotiContent  {
     sessionID: string;
     date: string;
     body: string;
+    type : NotiType;
     
 }
+
 export interface Noti extends NotiContent {
     user: User;
 };

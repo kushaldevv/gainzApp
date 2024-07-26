@@ -467,9 +467,10 @@ export const getNotis = async(userID: string) => {
       data.map(async (notiData: any) => {
         const noti: Types.Noti = {
           sessionID: notiData.sessionID, // Assuming each notification has an ID
-          user: await getUser(userID) as Types.User,
+          user: await getUser(notiData.userID) as Types.User,
           date: notiData.date,
-          body: notiData.body
+          body: notiData.body,
+          type: notiData.type 
         };
         return noti;
       })

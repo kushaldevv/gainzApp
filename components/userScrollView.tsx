@@ -122,7 +122,7 @@ enum ScreenType {
   NOTIS,
 }
 
-const UserScrollView = ({ followers, following, loading }: Types.UserScrollViewProps) => {
+const UserScrollView = ({ followers, following, notisContent, loading }: Types.UserScrollViewProps) => {
   const skeletonColorScheme = useColorScheme() === "dark" ? "light" : "dark";
   const screenType: ScreenType = followers ? ScreenType.FOLLOWERS : ScreenType.FOLLOWING;
   const userList = screenType === ScreenType.FOLLOWERS ? followers : following;
@@ -146,12 +146,22 @@ const UserScrollView = ({ followers, following, loading }: Types.UserScrollViewP
     (user: Types.User, index: number) => {
       const alreadyFollowing = isFollowing(user.id);
       const followingScreen = screenType === ScreenType.FOLLOWING;
+      const showButton = notisContent ? (notisContent[index]?.type === Types.NotiType.FOLLOW_REQUEST) : true;
+      const notiDate = notisContent ? notisContent[index]?.date : null;
+      const notiBody = notisContent ? notisContent[index]?.body : null;  
 
+      const x = () => {
+        if (notisContent){
+          console.log(notisContent[index].type);
+          console.log(showButton)
+        }
+      }
       return (
         <Skeleton.Group
           show={loading}
           key={user.id || index}
         >
+          <Button onPress={x}>x</Button>
           <XStack
             padding="$3"
             alignItems="center"
@@ -186,6 +196,9 @@ const UserScrollView = ({ followers, following, loading }: Types.UserScrollViewP
                     fontWeight={700}
                   >
                     {user.name}
+                    {notiBody ? ` ${notiBody}` : ""}
+                    {notiDate ? ` ${formatSimpleDate(notiDate)}` : ""}
+                    
                   </SizableText>
                 </Skeleton>
               </View>
@@ -194,7 +207,7 @@ const UserScrollView = ({ followers, following, loading }: Types.UserScrollViewP
               colorMode={skeletonColorScheme}
               height={32}
             >
-              <Button
+              {showButton ? <Button
                 disabled={followingScreen || alreadyFollowing}
                 themeInverse={!followingScreen && !alreadyFollowing}
                 height="$2.5"
@@ -210,7 +223,7 @@ const UserScrollView = ({ followers, following, loading }: Types.UserScrollViewP
                 onPress={() => postFollow(user.id)}
               >
                 {followingScreen || alreadyFollowing ? "Following" : "Follow"}
-              </Button>
+              </Button> : null}
             </Skeleton>
           </XStack>
         </Skeleton.Group>
@@ -223,3 +236,27 @@ const UserScrollView = ({ followers, following, loading }: Types.UserScrollViewP
 };
 
 export default UserScrollView;
+
+function formatSimpleDate(isoString: string): string {
+  const likeDate = new Date(isoString);
+  const now = new Date();
+  const diffInSeconds = Math.floor((now.getTime() - likeDate.getTime()) / 1000);
+
+  if (diffInSeconds < 60) {
+    return `${diffInSeconds}s`;
+  }
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) {
+    return `${diffInMinutes}m`;
+  }
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) {
+    return `${diffInHours}h`;
+  }
+  const diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays < 7) {
+    return `${diffInDays}d`;
+  }
+  const diffInWeeks = Math.floor(diffInDays / 7);
+  return `${diffInWeeks}w`;
+}

@@ -20,49 +20,39 @@ const emptyUser: Types.User = {
 
 const UserFollowing = () => {
   const params = useLocalSearchParams();
-  const {userID, numFollowing} = params;
-  const [following, setFollowing] = useState<Types.User[]>([])
+  const { followingParam } = params;
+  const following = JSON.parse(followingParam as string) as Types.User[];
   const [loading, setLoading] = useState(true);
 
-  const skeletonUsers = Array.from(
-    { length: Math.min(parseInt(numFollowing as string), 10) },
-    (_, i) => emptyUser
-  );
+  const skeletonUsers = Array.from({ length: Math.min(following.length, 10) }, (_, i) => emptyUser);
 
-  useFocusEffect(
-    useCallback(() => {
-        fetchFollowing();
-    }, [])
-  );
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //       fetchFollowing();
+  //   }, [])
+  // );
   
-  const fetchFollowing = async () => {
-    try {
-      setLoading(true);
-      if (userID) {
-        const data = await getUserFollowing(userID as string);
-        setFollowing(data);
-      }
-    } catch (error) {
-      console.log("Error: ", error);
-    } finally {
-      setLoading(false);
-    }
-  }
+  // const fetchFollowing = async () => {
+  //   try {
+  //     setLoading(true);
+  //     if (userID) {
+  //       const data = await getUserFollowing(userID as string);
+  //       setFollowing(data);
+  //     }
+  //   } catch (error) {
+  //     console.log("Error: ", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
 
   return (
     <YStack flex={1} alignItems="center" backgroundColor={"$background"}>
-           {loading && (
         <UserScrollView
-          userList={skeletonUsers}
-          loading={true}
-        />
-      )}
-      {!loading && (
-        <UserScrollView
-          userList={following}
+          following={following}
           loading={false}
         />
-      )}
     </YStack>
   );
 };

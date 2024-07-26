@@ -62,6 +62,21 @@ export  type FormCardProps = {
 };
 
 export type UserScrollViewProps = {
-    userList: User[];
+    followers?: User[];
+    following: User[];
     loading: boolean;
+    notiContent?: NotiContent;
+
 }
+
+//use index as key when mapping
+
+export interface NotiContent  {
+    sessionID: string;
+    date: string;
+    body: string;
+    
+}
+export interface Noti extends NotiContent {
+    user: User;
+};

@@ -3,7 +3,8 @@ import React, { useCallback, useState } from "react";
 import { YStack } from "tamagui";
 import * as Types from "@/types";
 import UserScrollView from "@/components/userScrollView";
-import { getSessionLikes } from "@/services/apiCalls";
+import { getSessionLikes, getUserFollowing } from "@/services/apiCalls";
+import { useUser } from "@clerk/clerk-expo";
 
 const emptyUser: Types.User = {
   id: "",
@@ -15,7 +16,9 @@ const Likes = () => {
   const params = useLocalSearchParams();
   const { sessionID, numLikes } = params;
   const [likes, setLikes] = useState<Types.User[]>([]);
+  const [following, setFollowing] = useState<Types.User[]>([]);
   const [loading, setLoading] = useState(true);
+  const {user} = useUser();
 
   const skeletonUsers = Array.from(
     { length: Math.min(parseInt(numLikes as string), 10) },
@@ -24,16 +27,18 @@ const Likes = () => {
 
   useFocusEffect(
     useCallback(() => {
-      fetchLikes();
+      fetchLikesAndFollowing();
     }, [])
   );
 
-  const fetchLikes = async () => {
+  const fetchLikesAndFollowing = async () => {
     try {
       setLoading(true);
       if (sessionID) {
-        const data = await getSessionLikes(sessionID as string);
-        setLikes(data);
+        const likesData = await getSessionLikes(sessionID as string);
+        setLikes(likesData);
+        const followingData = await getUserFollowing(user?.id as string);
+        setFollowing(followingData);
       }
     } catch (error) {
     } finally {
@@ -49,13 +54,15 @@ const Likes = () => {
     >
       {loading && (
         <UserScrollView
-          userList={skeletonUsers}
+         followers={skeletonUsers}
+          following={[]}
           loading={true}
         />
       )}
       {!loading && (
         <UserScrollView
-          userList={likes}
+         followers={likes}
+         following={following}
           loading={false}
         />
       )}

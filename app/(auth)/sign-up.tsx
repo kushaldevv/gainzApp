@@ -62,7 +62,8 @@ export default function SignUpScreen() {
     try {
       const { createdSessionId, signUp } = await startAppleOAuthFlow();
       const userID = signUp?.createdUserId;
-      const name = (signUp?.firstName || '') + (signUp?.lastName || '');
+      const lastName = ' ' + signUp?.lastName;
+      const name = (signUp?.firstName || '') + (lastName || '');
 
       if (userID) {
         console.log(userID);
@@ -83,7 +84,6 @@ export default function SignUpScreen() {
   }, []);
 
   // sign in with google
-  // sign in with google
   const onGooglePress = useCallback(async () => {
     if (!setActive) {
       console.log("setActive is not available");
@@ -93,7 +93,8 @@ export default function SignUpScreen() {
     try {
       const { createdSessionId, signUp } = await startGoogleOAuthFlow();
       const userID = signUp?.createdUserId;
-      const name = (signUp?.firstName || '') + (signUp?.lastName || '');
+      const lastName = ' ' + signUp?.lastName;
+      const name = (signUp?.firstName || '') + (lastName || '');
 
       if (userID) {
         console.log(userID);

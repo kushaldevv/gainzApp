@@ -3,7 +3,7 @@ import React, { useCallback, useState } from "react";
 import { Avatar, Button, Text, View, XStack, YStack } from "tamagui";
 import { getUserPfp, getUserProfile } from "@/services/apiCalls";
 import { router, useFocusEffect } from "expo-router";
-import axios from "axios";
+import * as Types from "@/types";
 import { TouchableOpacity } from "react-native";
 
 const Profile = () => {
@@ -12,8 +12,8 @@ const Profile = () => {
   const [pfp, setPfp] = useState(" ");
 
   const [workouts, setWorkouts] = useState(0);
-  const [followers, setFollowers] = useState(0);
-  const [following, setFollowing] = useState(0);
+  const [followers, setFollowers] = useState<Types.User[]>([]);
+  const [following, setFollowing] = useState<Types.User[]>([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -33,8 +33,10 @@ const Profile = () => {
       try {
         const userProfile = await getUserProfile(user.id);
         setWorkouts(userProfile.sessions.length);
-        setFollowers(userProfile.followers.length);
-        setFollowing(userProfile.following.length);
+        setFollowers(userProfile.followers);
+        setFollowing(userProfile.following);
+        router.setParams({ followers: JSON.stringify(userProfile.followers) });
+        router.setParams({ following: JSON.stringify(userProfile.following) });
       } catch (error) {
         console.error("Error fetching user profile: ", error);
       }
@@ -42,19 +44,19 @@ const Profile = () => {
   };
 
   const handleFollowingPress = () => {
-    if (following > 0) {
+    if (following.length > 0) {
       router.push({
         pathname: "/following",
-        params: { userID: user?.id, numFollowing: following },
+        params: {followingParam: JSON.stringify(following)},
       });
     }
   };
 
   const handleFollowersPress = () => {
-    if (following > 0) {
+    if (followers.length > 0) {
       router.push({
         pathname: "/followers",
-        params: { userID: user?.id, numFollowers: followers },
+        params: { followingParam: JSON.stringify(following), followersParam: JSON.stringify(followers)},
       });
     }
   };
@@ -89,28 +91,28 @@ const Profile = () => {
         </YStack>
         <YStack justifyContent="center">
           <TouchableOpacity
-            onPress={()=> (followers > 0 && handleFollowersPress())}
+            onPress={()=> (followers.length > 0 && handleFollowersPress())}
             style={{ alignItems: "center" }}
           >
             <Text
               fontWeight="bold"
               fontSize="$5"
             >
-              {followers}
+              {followers.length}
             </Text>
             <Text fontSize="$4">followers</Text>
           </TouchableOpacity>
         </YStack>
         <YStack justifyContent="center">
           <TouchableOpacity
-            onPress={()=> (following > 0 && handleFollowingPress())}
+            onPress={()=> (following.length > 0 && handleFollowingPress())}
             style={{ alignItems: "center" }}
           >
             <Text
               fontWeight="bold"
               fontSize="$5"
             >
-              {following}
+              {following.length}
             </Text>
             <Text fontSize="$4">following</Text>
           </TouchableOpacity>

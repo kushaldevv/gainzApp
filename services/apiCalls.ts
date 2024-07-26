@@ -154,7 +154,8 @@ export const postUser = async(userID: string, name: string) => {
       "pfp": `https://ui-avatars.com/api/?name=${name.charAt(0)}&background=00cccc&color=fff`, 
       "following": [userID],
       "followers": [],
-      "sessions": {}
+      "sessions": {},
+      "notis": [],
     }
     // Send a POST request to update the database with a new user
     await axios.post(`${API_URL}/user`, payload);
@@ -421,6 +422,61 @@ export const getUsers = async (query: string) => {
     });
     return users;
   } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ * Append userID2 to the following list of userID1, and append userID1 to the followers list of userID2
+ * 
+ * @param userID1 - The unique identifier of the first user.
+ * @param userID2 - The unique identifier of the second user
+ * @returns A Promise that resolves when both userID1 and userID2 are appended to their respective lists
+ * @throws Will throw an error if the API request fails.
+ */
+export const appendFollowing = async(userID1: string, userID2: string) => {
+  try {
+    // payload to sent to patch request
+    const payload = {
+      "userID1": userID1,
+      "userID2": userID2
+    }
+     // Send a PATCH request to append userID2 to the following list of userID1, and append userID1 to the followers list of userID2
+    await axios.patch(`${API_URL}/user/following?userID1=${userID1}&userID2=${userID2}`, payload);
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+    throw error;
+  }
+}
+
+/**
+ * Gets the notifications of a user
+ * 
+ * @param userID - The unique identifier of the first user.
+ * @returns A Promise that resolves when the notifications of a user is returned
+ * @throws Will throw an error if the API request fails.
+ */
+export const getNotis = async(userID: string) => {
+  console.log(userID)
+  try {
+    const response = await axios.get(`${API_URL}/user/notis?userID=${userID}`);
+    const data = response.data;
+    
+    // Traverses thru all notis, in data and creates and returns a noti type. An array of notis is return at the end
+    const notis: Types.Noti[] = await Promise.all(
+      data.map(async (notiData: any) => {
+        const noti: Types.Noti = {
+          sessionID: notiData.sessionID, // Assuming each notification has an ID
+          user: await getUser(userID) as Types.User,
+          date: notiData.date,
+          body: notiData.body
+        };
+        return noti;
+      })
+    );
+    return notis;
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
     throw error;
   }
 }

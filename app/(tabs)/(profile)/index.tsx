@@ -14,6 +14,7 @@ const Profile = () => {
   const [workouts, setWorkouts] = useState(0);
   const [followers, setFollowers] = useState<Types.User[]>([]);
   const [following, setFollowing] = useState<Types.User[]>([]);
+  const [followingList, setFollowingList] = useState<string[]>([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -35,8 +36,10 @@ const Profile = () => {
         setWorkouts(userProfile.sessions.length);
         setFollowers(userProfile.followers);
         setFollowing(userProfile.following);
-        router.setParams({ followers: JSON.stringify(userProfile.followers) });
-        router.setParams({ following: JSON.stringify(userProfile.following) });
+        setFollowingList(userProfile.following.map((user) => user.id));
+        router.setParams({ followersParam: JSON.stringify(userProfile.followers) });
+        router.setParams({ followingParam: JSON.stringify(userProfile.following) });
+        router.setParams({ followingListParam: JSON.stringify(followingList) });
       } catch (error) {
         console.error("Error fetching user profile: ", error);
       }
@@ -56,7 +59,7 @@ const Profile = () => {
     if (followers.length > 0) {
       router.push({
         pathname: "/followers",
-        params: { followingParam: JSON.stringify(following), followersParam: JSON.stringify(followers)},
+        params: { followingListParam: JSON.stringify(followingList), followersParam: JSON.stringify(followers)},
       });
     }
   };
@@ -70,6 +73,7 @@ const Profile = () => {
       <XStack
         gap="$6"
         justifyContent="center"
+        mt="$3"
       >
         <Avatar
           circular

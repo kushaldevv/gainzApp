@@ -62,8 +62,8 @@ export  type FormCardProps = {
 };
 
 export type UserScrollViewProps = {
-    followers?: User[];
-    following: User[];
+    userList: User[];
+    followingList?: string[];
     loading: boolean;
     notisContent?: NotiContent[];
 
@@ -72,18 +72,16 @@ export type UserScrollViewProps = {
 //use index as key when mapping
 
 export enum NotiType {
-    FOLLOW_REQUEST,
-    SESSION_LIKE,
-    SESSION_COMMENT,
-    SESSION_FEEDBACK,
+    FOLLOW_REQUEST = 1,
+    SESSION_LIKE = 2,
+    SESSION_COMMENT = 3,
+    SESSION_FEEDBACK = 4,
 }
 
 export interface NotiContent  {
     sessionID: string;
     date: string;
-    body: string;
     type : NotiType;
-    
 }
 
 export interface Noti extends NotiContent {

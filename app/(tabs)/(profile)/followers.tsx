@@ -1,9 +1,8 @@
-import { useFocusEffect, useLocalSearchParams } from "expo-router";
-import React, { useCallback, useState } from "react";
-import { Avatar, Button, ScrollView, SizableText, XStack, YStack } from "tamagui";
-import * as Types from "@/types";
 import UserScrollView from "@/components/userScrollView";
-import { getUserFollowers } from "@/services/apiCalls";
+import * as Types from "@/types";
+import { useLocalSearchParams } from "expo-router";
+import React from "react";
+import { YStack } from "tamagui";
 
 const emptyUser: Types.User = {
   id: "",
@@ -13,33 +12,9 @@ const emptyUser: Types.User = {
 
 const UserFollowers = () => {
   const params = useLocalSearchParams();
-  const { followingParam, followersParam } = params;
+  const { followingListParam, followersParam } = params;
   const followers = JSON.parse(followersParam as string) as Types.User[];
-  const following = JSON.parse(followingParam as string) as Types.User[];
-  // const [followers, setFollowers] = useState<Types.User[]>([])
-  const [loading, setLoading] = useState(true);
-
-  const skeletonUsers = Array.from({ length: Math.min(followers.length, 10) }, (_, i) => emptyUser);
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     console.log(following);
-  //   }, [])
-  // );
-
-  // const fetchFollowers = async () => {
-  //   try {
-  //     setLoading(true);
-  //     if (userID) {
-  //       const data = await getUserFollowers(userID as string);
-  //       setFollowers(data);
-  //     }
-  //   } catch (error) {
-  //     console.log("Error: ", error);
-  //   }  finally {
-  //     setLoading(false);
-  //   }
-  // }
+  const followingList = JSON.parse(followingListParam as string) as string[];
 
   return (
     <YStack
@@ -49,8 +24,8 @@ const UserFollowers = () => {
     >
       {
         <UserScrollView
-          followers={followers}
-          following={following}
+          userList={followers}
+          followingList={followingList}
           loading={false}
         />
       }

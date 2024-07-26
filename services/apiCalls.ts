@@ -294,7 +294,18 @@ export const getUserFollowing = async (userID: string) => {
     // Make a GET request to fetch the following for a user
     const response = await axios.get(`${API_URL}/user/following?userID=${userID}`);
     const following = await Promise.all(response.data.map(async (followingID: string) => await getUser(followingID)));
-    return following;
+    return following as Types.User[];
+  } catch (error) {
+    // Re-throw the error for the caller to handle
+    throw error;
+  }
+}
+
+export const getUserFollowingList = async (userID: string) => {
+  try {
+    // Make a GET request to fetch the following for a user
+    const response = await axios.get(`${API_URL}/user/following?userID=${userID}`);
+    return response.data as string[];
   } catch (error) {
     // Re-throw the error for the caller to handle
     throw error;
@@ -306,15 +317,15 @@ export const getUserFollowing = async (userID: string) => {
  * Fetches the followers for a user
  *
  * @param id - The unique identifier of the user to fetch.
- * @returns A Promise that resolves to a list of following.
+ * @returns A Promise that resolves to a list of follower.
  * @throws Will throw an error if the API request fails or if there's an issue processing the response.
  */
 export const getUserFollowers = async (userID: string) => {
   try {
     // Make a GET request to fetch the following for a user
     const response = await axios.get(`${API_URL}/user/followers?userID=${userID}`);
-    const following = await Promise.all(response.data.map(async (followingID: string) => await getUser(followingID)));
-    return following;
+    const followers = await Promise.all(response.data.map(async (followerID: string) => await getUser(followerID)));
+    return followers as Types.User[];
   } catch (error) {
     // Re-throw the error for the caller to handle
     throw error;
@@ -469,7 +480,6 @@ export const getNotis = async(userID: string) => {
           sessionID: notiData.sessionID, // Assuming each notification has an ID
           user: await getUser(notiData.userID) as Types.User,
           date: notiData.date,
-          body: notiData.body,
           type: notiData.type 
         };
         return noti;

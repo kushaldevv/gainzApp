@@ -156,6 +156,7 @@ export const postUser = async(userID: string, name: string) => {
       "followers": [],
       "sessions": {},
       "notis": [],
+      "exercises" : {}
     }
     // Send a POST request to update the database with a new user
     await axios.post(`${API_URL}/user`, payload);
@@ -260,6 +261,9 @@ export const getUserSessions = async (sessionUserID: string, userID: string) => 
         const likes: Types.User[] = await Promise.all(
           sessionData.likes.map((like: string) => getUser(like))
         );
+
+        const exercisesList = sessionData.exercises as string[];
+
         const session: Types.Session = {
           id: sessionID,
           name: sessionData.name as string,

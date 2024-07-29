@@ -33,8 +33,8 @@ export type Exercise = {
 };
 
 export type ExerciseSet = {
-    reps: number;
-    weight: number;
+    reps: number[];
+    weight: number[];
 }
 
 export type CardProps = {

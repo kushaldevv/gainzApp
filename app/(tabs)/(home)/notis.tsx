@@ -2,29 +2,30 @@ import UserScrollView from "@/components/userScrollView";
 import { getNotis } from "@/services/apiCalls";
 import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
-import { useFocusEffect, useLocalSearchParams } from "expo-router";
-import React, { useCallback } from "react";
+import React, { useEffect, useRef } from "react";
 import { YStack } from "tamagui";
+
+const emptyUser: Types.User = {
+  id: "",
+  name: "",
+  pfp: " ",
+};
+const skeletonUsers = Array.from(
+  { length: 5 },
+  (_, i) => emptyUser
+);
 
 const NotiScreen = () => {
   const { user } = useUser();
   const [notisUsers, setNotisUsers] = React.useState<Types.User[]>([]);
   const [notisContent, setNotisContent] = React.useState<Types.NotiContent[]>([]);
-  const params = useLocalSearchParams();
-  const { followingListParam }  = params;
-  const followingList = JSON.parse(followingListParam as string) as string[];
   const [loading, setLoading] = React.useState(true);
-
-  useFocusEffect(
-    useCallback(() => {
-      fetchNotis();
-    }, [notisUsers.length])
-  );
-
+  const isInitialLoad = useRef(true);
+ 
   const fetchNotis = async () => {
     setLoading(true);
     try {
-      const notisData = await getNotis(user?.id as string);
+      const notisData = (await getNotis(user?.id as string)).reverse();
       const notisUsersData: Types.User[] = notisData.map((noti) => noti.user);
       const notisContent: Types.NotiContent[] = notisData.map((noti) => ({
         sessionID: noti.sessionID,
@@ -37,24 +38,33 @@ const NotiScreen = () => {
       console.log(error);
     } finally{
       setLoading(false);
+      isInitialLoad.current = false;
     }
   };
 
+  useEffect(() => {
+    fetchNotis();
+  }, []);
+
+  const showSkeleton = loading && isInitialLoad.current;
   return (
     <YStack
       flex={1}
       alignItems="center"
       backgroundColor={"$background"}
-    >
-      <UserScrollView
-        userList={notisUsers}
-        followingList={followingList}
-        notisContent={notisContent}
-        loading={loading}
+    >{
+      showSkeleton && <UserScrollView
+        userList={skeletonUsers}
+        loading={true}
       />
+    }
+     {!showSkeleton && <UserScrollView
+        userList={notisUsers}
+        notisContent={notisContent}
+        loading={false}
+      />}
     </YStack>
   );
 };
 
 export default NotiScreen;
-

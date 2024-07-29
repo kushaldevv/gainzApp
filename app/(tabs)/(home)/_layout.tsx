@@ -1,47 +1,24 @@
-import { Stack, router, useFocusEffect } from "expo-router";
+import { BellDot, Search, UserRoundSearch, X } from "@tamagui/lucide-icons";
+import { router, Stack } from "expo-router";
+import { useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
-import { UserRoundSearch, Search, BellDot, X } from "@tamagui/lucide-icons";
 import { Input, useTheme, XStack } from "tamagui";
-import { useCallback, useState } from "react";
-import { useUser } from "@clerk/clerk-expo";
-import { getUserFollowingList } from "@/services/apiCalls";
 export default function HomeLayout() {
   const colorScheme = useColorScheme();
   const theme = useTheme();
   const backgroundColor = colorScheme == "dark" ? "rgb(15,15,15)" : "rgb(250,250,250)";
   const headerTintColor = colorScheme == "dark" ? "rgb(255,255,255)" : "rgb(18,18,18)";
   const [query, setQuery] = useState("");
-  const [following, setFollowing] = useState<string[]>([]);
-  const { user } = useUser();
-
-  useFocusEffect(
-    useCallback(() => {
-        fetchFollowingList();
-    }, [])
-  );
-  
-  const fetchFollowingList = async () => {
-    try {
-      if (user?.id) {
-        const data = await getUserFollowingList(user?.id as string);
-        setFollowing(data);
-        router.setParams({ followingListParam: JSON.stringify(data) });
-      }
-    } catch (error) {
-      console.log("Error: ", error);
-    } finally {
-    }
-  }
 
   const handleChange = (text: string) => {
     setQuery(text);
     router.setParams({ query: text });
   };
   const handleSearchPress = () => {
-    router.push({ pathname: "/search", params: { query, followingListParam: JSON.stringify(following)} });
+    router.push({ pathname: "/search", params: { query } });
   };
   const handleNotiPress = () => {
-    router.push({ pathname: "/notis", params: { followingListParam: JSON.stringify(following)} });
+    router.push({ pathname: "/notis" });
   };
 
   return (

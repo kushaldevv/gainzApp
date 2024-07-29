@@ -1,10 +1,10 @@
-import { useClerk, useUser } from "@clerk/clerk-expo";
-import React, { useCallback, useState } from "react";
-import { Avatar, Button, Text, View, XStack, YStack } from "tamagui";
-import { getUserPfp, getUserProfile } from "@/services/apiCalls";
-import { router, useFocusEffect } from "expo-router";
+import { getUserProfile } from "@/services/apiCalls";
 import * as Types from "@/types";
+import { useClerk, useUser } from "@clerk/clerk-expo";
+import { router, useFocusEffect } from "expo-router";
+import React, { useCallback, useState } from "react";
 import { TouchableOpacity } from "react-native";
+import { Avatar, Button, Text, XStack, YStack } from "tamagui";
 
 const Profile = () => {
   const { user } = useUser();
@@ -18,16 +18,9 @@ const Profile = () => {
 
   useFocusEffect(
     useCallback(() => {
-      fetchPFP();
       fetchUserProfile();
     }, [])
   );
-
-  const fetchPFP = async () => {
-    if (user) {
-      setPfp(await getUserPfp(user.id));
-    }
-  };
 
   const fetchUserProfile = async () => {
     if (user) {
@@ -36,10 +29,14 @@ const Profile = () => {
         setWorkouts(userProfile.sessions.length);
         setFollowers(userProfile.followers);
         setFollowing(userProfile.following);
-        setFollowingList(userProfile.following.map((user) => user.id));
-        router.setParams({ followersParam: JSON.stringify(userProfile.followers) });
-        router.setParams({ followingParam: JSON.stringify(userProfile.following) });
-        router.setParams({ followingListParam: JSON.stringify(followingList) });
+        setPfp(userProfile.pfp);
+        const newFollowingList = userProfile.following.map((user) => user.id);
+        setFollowingList(newFollowingList);
+        router.setParams({
+          followersParam: JSON.stringify(userProfile.followers),
+          followingParam: JSON.stringify(userProfile.following),
+          followingListParam: JSON.stringify(newFollowingList),
+        });
       } catch (error) {
         console.error("Error fetching user profile: ", error);
       }
@@ -50,7 +47,10 @@ const Profile = () => {
     if (following.length > 0) {
       router.push({
         pathname: "/following",
-        params: {followingParam: JSON.stringify(following)},
+        params: {
+          followingParam: JSON.stringify(following),
+          followingListParam: JSON.stringify(followingList),
+        },
       });
     }
   };
@@ -59,7 +59,10 @@ const Profile = () => {
     if (followers.length > 0) {
       router.push({
         pathname: "/followers",
-        params: { followingListParam: JSON.stringify(followingList), followersParam: JSON.stringify(followers)},
+        params: {
+          followingListParam: JSON.stringify(followingList),
+          followersParam: JSON.stringify(followers),
+        },
       });
     }
   };
@@ -95,7 +98,7 @@ const Profile = () => {
         </YStack>
         <YStack justifyContent="center">
           <TouchableOpacity
-            onPress={()=> (followers.length > 0 && handleFollowersPress())}
+            onPress={() => followers.length > 0 && handleFollowersPress()}
             style={{ alignItems: "center" }}
           >
             <Text
@@ -109,7 +112,7 @@ const Profile = () => {
         </YStack>
         <YStack justifyContent="center">
           <TouchableOpacity
-            onPress={()=> (following.length > 0 && handleFollowingPress())}
+            onPress={() => following.length > 0 && handleFollowingPress()}
             style={{ alignItems: "center" }}
           >
             <Text

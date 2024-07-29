@@ -6,12 +6,6 @@ import {
   YStack
 } from "tamagui";
 
-const emptyUser: Types.User = {
-  id: "",
-  name: "",
-  pfp: " ",
-};
-
 const UserFollowing = () => {
   const params = useLocalSearchParams();
   const { followingParam } = params;
@@ -21,6 +15,7 @@ const UserFollowing = () => {
     <YStack flex={1} alignItems="center" backgroundColor={"$background"}>
         <UserScrollView
           userList={following}
+          followingScreen={true}
           loading={false}
         />
     </YStack>

@@ -235,8 +235,8 @@ export const getUserProfile = async (userID: string) => {
 
 export const getFollowingSessions = async (userID: string) => {
   try {
-    const following = await getUserFollowing(userID) as Types.User[];
-    const followingSessions = await Promise.all(following.map(async (friend) => getUserSessions(friend.id)));
+    const following = await getUserFollowingList(userID) as string[];
+    const followingSessions = await Promise.all(following.map(async (friend) => getUserSessions(friend, userID)));
     const flattenedSessions = followingSessions.flat() as Types.Session[];
 
     // Sort sessions by date
@@ -250,27 +250,28 @@ export const getFollowingSessions = async (userID: string) => {
   }
 }
 
-export const getUserSessions = async (userID: string) => {
+export const getUserSessions = async (sessionUserID: string, userID: string) => {
   try {
-    const response = await axios.get(`${API_URL}/user/sessions?userID=${userID}`);
+    const response = await axios.get(`${API_URL}/user/sessions?userID=${sessionUserID}`);
     const data = response.data;
     const sessions = await Promise.all(
 
       Object.entries(data).map(async ([sessionID, sessionData]: [string, any]) => {
         const likes: Types.User[] = await Promise.all(
-          sessionData.likes.slice(0,3).map((like: string) => getUser(like))
+          sessionData.likes.map((like: string) => getUser(like))
         );
         const session: Types.Session = {
           id: sessionID,
           name: sessionData.name as string,
-          user: await getUser(userID) as Types.User,
+          user: await getUser(sessionUserID) as Types.User,
           location: sessionData.location as string,
           date: sessionData.date as string,
           exercises: [], 
           duration: sessionData.duration as number,
-          comments: sessionData.comments.length,
+          comments: sessionData.comments,
           likes: likes,
-          numLikes: sessionData.likes.length as number,
+          numLikes: sessionData.numLikes as number,
+          userLiked: sessionData.likes.includes(userID)
         };
         return session;
       })
@@ -281,6 +282,36 @@ export const getUserSessions = async (userID: string) => {
     throw error;
   }
 };
+
+// export const getSpecificUserSession = async (sessionID: string) => {
+//   try {
+//     console.log("getting a specific session");
+//     const sessionUserID = sessionID.split('session')[0]
+//     const response = await axios.get(`${API_URL}/user/session?userID=${sessionUserID}&sessionID=${sessionID}`);
+//     const respData = response.data;
+
+//     const likes: Types.User[] = await Promise.all(
+//       respData.likes.map((like: string) => getUser(like))
+//     );
+    
+//     const session: Types.Session = {
+//       id: sessionID,
+//       name: respData.name as string,
+//       user: await getUser(sessionUserID) as Types.User,
+//       location: respData.location as string,
+//       date: respData.date as string,
+//       exercises: [], 
+//       duration: respData.duration as number,
+//       comments: respData.comments.length,
+//       likes: likes,
+//       numLikes: respData.likes.length as number,
+//     };
+//     return session;
+//   } catch (error) {
+//     // Re-throw the error for the caller to handle
+//     throw error;
+//   }
+// };
 
 /**
  * Fetches the following for a user
@@ -366,34 +397,6 @@ export const getSessionComments = async (userID: string, sessionID: string) => {
     throw error;
   }
 }
-// export const getSpecificUserSession = async (sessionID: string) => {
-//   try {
-//     console.log("getting a specific session");
-//     const sessionUserID = sessionID.split('session')[0]
-//     const response = await axios.get(`${API_URL}/user/session?userID=${sessionUserID}&sessionID=${sessionID}`);
-//     const respData = response.data;
-
-//     const likes: Types.User[] = await Promise.all(
-//       respData.likes.map((like: string) => getUser(like))
-//     );
-    
-//     const session: Types.Session = {
-//       id: sessionID,
-//       name: respData.name as string,
-//       user: await getUser(sessionUserID) as Types.User,
-//       location: respData.location as string,
-//       date: respData.date as string,
-//       exercises: [], 
-//       duration: respData.duration as number,
-//       comments: respData.comments.length,
-//       likes: likes,
-//     };
-//     return session;
-//   } catch (error) {
-//     // Re-throw the error for the caller to handle
-//     throw error;
-//   }
-// };
 
 export const getLikesAndComments = async (sessionID: string) => {
   try {
@@ -468,7 +471,6 @@ export const appendFollowing = async(userID1: string, userID2: string) => {
  * @throws Will throw an error if the API request fails.
  */
 export const getNotis = async(userID: string) => {
-  console.log(userID)
   try {
     const response = await axios.get(`${API_URL}/user/notis?userID=${userID}`);
     const data = response.data;

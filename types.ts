@@ -42,6 +42,10 @@ export type CardProps = {
   userDetails: User | null;
 };
 
+export type InnerCardProps = {
+    exercises: Exercise[];
+};
+
 export type Comment = { 
     user : User;
     date: string;

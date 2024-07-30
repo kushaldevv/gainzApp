@@ -1,4 +1,10 @@
 import {
+  appendSessionComment,
+  appendSessionLikes,
+  getExercisesInfo,
+  getSessionComments
+} from "@/services/apiCalls";
+import {
   BottomSheetFooter,
   BottomSheetModal,
   BottomSheetTextInput,
@@ -7,18 +13,21 @@ import {
 import { BottomSheetDefaultFooterProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetFooter/types";
 import { useHeaderHeight } from "@react-navigation/elements";
 import {
+  BookOpen,
   Dumbbell,
   MessageCircleMore,
   MoreHorizontal,
   Send,
   ThumbsUp,
-  X,
-  BookOpen
+  Weight,
+  X
 } from "@tamagui/lucide-icons";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "expo-router";
+import { Skeleton } from "moti/skeleton";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { TouchableOpacity, useColorScheme } from "react-native";
 import {
   Avatar,
-  Button,
   Circle,
   Paragraph,
   ScrollView,
@@ -26,21 +35,14 @@ import {
   useTheme,
   View,
   XStack,
-  YStack,
+  YStack
 } from "tamagui";
+import Svg, { Path } from "react-native-svg"
 import * as Types from "../types";
 import CustomBackdrop from "./backdrop";
 import Comment from "./comment";
-import { useUser } from "@clerk/clerk-expo";
-import { Skeleton } from "moti/skeleton";
-import {TouchableOpacity, useColorScheme } from "react-native";
-import {
-  appendSessionComment,
-  appendSessionLikes,
-  getSessionComments,
-  getExercisesInfo
-} from "@/services/apiCalls";
-import { useRouter } from "expo-router";
+import InnerCard from "./innerCard";
+
 const emptyComment: Types.Comment = {
   user: {
     id: "",
@@ -101,15 +103,6 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
       setIsCommentsLoading(false);
     }
   };
-
-  const fetchExercises = async () => {
-    try {
-      console.log(session.id)
-      await getExercisesInfo(session.id);
-    } catch (error) {
-      throw error;
-    }
-  }
 
   const postLike = async () => {
     if (!user) return;
@@ -280,56 +273,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
           </XStack>
         </Skeleton>
         <Skeleton colorMode={skeletonColorScheme}>
-          <XStack
-            height={"$15"}
-            justifyContent="space-between"
-          >
-            <YStack 
-            width={'22.5%'}
-            height={"$15"}
-            backgroundColor={"#00cccc"}
-            borderRadius={'$6'}
-            p={'$3'}
-            >
-              <View height={'$5'} backgroundColor={'#009999'} borderRadius={'$3'}/>
-                <SizableText size={"$8"} fontFamily={"$mono"} fontWeight={800} alignSelf="center" pt='$3'>
-                  {session.exercises.length}
-                </SizableText>
-                <SizableText size={"$8"} fontFamily={"$mono"} fontWeight={400} alignSelf="center" lineHeight={'$5'}>
-                  Reps
-                </SizableText>
-            </YStack>
-
-            <YStack 
-            width={'75%'}
-            height={"$15"}
-            backgroundColor={'$gray4'}
-            borderRadius={'$6'}
-            >
-              <ScrollView>
-                {
-                  initialSession.exercises.map((exercise, index) => (
-                    <YStack key={index}  pt={'$2.5'} paddingHorizontal={'$2.5'}>
-                      <XStack backgroundColor={'$gray5'} borderRadius={'$5'} height={'$6'} p='$2.5' gap='$2.5' alignItems="center">
-                        <View width={'$5'} height={'$5'} backgroundColor={"#00cccc"} borderRadius={'$3'}/>
-                        <YStack justifyContent="center" width={'$12'}>
-                          <SizableText size={"$2"} fontFamily={"$mono"} fontWeight={600}>
-                            {initialSession.exercises[index].name}
-                          </SizableText>
-                        </YStack>
-                          <BookOpen size={'$1'} alignContent="center" fill='#00cccc'/>
-                      </XStack>
-                    </YStack>
-                  ))
-                }
-              </ScrollView>
-            </YStack>
-            {/* <SizableText size={"$5"} fontFamily={"$mono"} fontWeight={700}>
-              {initialSession.exercises[0].name}
-            </SizableText> */}
-
-            {/* <Button onPress={()=>fetchExercises()}> </Button> */}
-          </XStack>
+          <InnerCard exercises={initialSession.exercises} />
         </Skeleton>
         <XStack
           justifyContent="space-between"

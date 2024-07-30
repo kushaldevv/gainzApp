@@ -262,7 +262,7 @@ export const getUserSessions = async (sessionUserID: string, userID: string) => 
           sessionData.likes.map((like: string) => getUser(like))
         );
 
-        const exercisesList = sessionData.exercises as string[];
+        const exercises = await getExercisesInfo(sessionID);
 
         const session: Types.Session = {
           id: sessionID,
@@ -270,7 +270,7 @@ export const getUserSessions = async (sessionUserID: string, userID: string) => 
           user: await getUser(sessionUserID) as Types.User,
           location: sessionData.location as string,
           date: sessionData.date as string,
-          exercises: [], 
+          exercises: exercises as Types.Exercise[], 
           duration: sessionData.duration as number,
           comments: sessionData.comments,
           likes: likes,
@@ -313,7 +313,6 @@ export const getExercisesInfo = async(sessionID: string) => {
     console.log(exercises)
     return exercises;
   } catch (error) {
-    // If an error occurs during the API request, re-throw it
     throw error;
   }
 }

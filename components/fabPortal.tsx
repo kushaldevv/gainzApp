@@ -22,20 +22,20 @@ const PostFAB = () => {
           icon={open ? 'close' : 'plus'}
           style={{paddingBottom: 0}}
           fabStyle={{backgroundColor: tintColor, shadowOpacity:0.20}}
-          color={iconColorScheme}
+          color={'white'}
           actions={[
             {
               icon: 'record-circle',
-              label: 'Live Activity',
+              label: 'Live Workout',
               color: tintColor,
-              style: {shadowOpacity:0.2},
+              style: {shadowOpacity:0.2, backgroundColor: '#edf7f7'},
               onPress: () => console.log('Pressed notifications'),
             },
             {
               icon: 'pencil',
-              label: 'Manual Activity',
+              label: 'Manual Workout',
               color: tintColor,
-              style: {shadowOpacity:0.2},
+              style: {shadowOpacity:0.2, backgroundColor: '#edf7f7'},
               onPress: () => console.log('Pressed email'),
             }
           ]}

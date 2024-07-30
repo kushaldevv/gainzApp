@@ -1,6 +1,6 @@
 import { appendSession } from "@/services/apiCalls";
 import React, { useState } from "react";
-import { Text, YStack, Button, Input, XStack } from "tamagui";
+import { YStack, Button, Input, XStack } from "tamagui";
 import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
 //
@@ -15,39 +15,39 @@ const Post = () => {
   const [weight, setWeight] = useState(0);
   const {user} = useUser();
 
-  const postSession = async () => {
-    console.log("Posting session...");
-    const sessionKey = `${user?.id}session_${new Date().getTime()}`;
-    sessionKey.split('session')[0]
-    console.log(sessionKey);
-    const newSession = {
-      "sessionKey": sessionKey,
-      "sessionData": {
-        "name": sessionName,
-        "likes": [],
-        "exercises": {
-          [exerciseName]: {
-            reps: [reps],
-            weight: [weight],
-          },
-          ['Incline dumbell bench press']: {
-            reps: [10, 8, 6],
-            weight: [135, 185, 205],
-          },
-          ['Pendelum squat']: {
-            reps: [12, 12, 15],
-            weight: [45, 90, 70],
-          },
-        },
-        "comments": [],
-        "location": location,
-        "duration": duration,
-        "date": new Date().toISOString()
-      }
-    };
-    if (user)
-      await appendSession(user?.id, newSession)
-  };
+//   const postSession = async () => {
+//     console.log("Posting session...");
+//     const sessionKey = `${user?.id}session_${new Date().getTime()}`;
+//     sessionKey.split('session')[0]
+//     console.log(sessionKey);
+//     const newSession = {
+//       "sessionKey": sessionKey,
+//       "sessionData": {
+//         "name": sessionName,
+//         "likes": [],
+//         "exercises": {
+//           [exerciseName]: {
+//             reps: [reps],
+//             weight: [weight],
+//           },
+//           ['Incline dumbell bench press']: {
+//             reps: [10, 8, 6],
+//             weight: [135, 185, 205],
+//           },
+//           ['Pendelum squat']: {
+//             reps: [12, 12, 15],
+//             weight: [45, 90, 70],
+//           },
+//         },
+//         "comments": [],
+//         "location": location,
+//         "duration": duration,
+//         "date": new Date().toISOString()
+//       }
+//     };
+//     if (user)
+//       await appendSession(user?.id, newSession)
+//   };
   return (
     <YStack
       flex={1}
@@ -83,7 +83,7 @@ const Post = () => {
         onChangeText={(text) => setDuration(parseInt(text))}
         placeholder="Duration"
       />
-      <Button themeInverse onPress={postSession}>
+      <Button themeInverse>
         Mickey Post
       </Button>
     </YStack>

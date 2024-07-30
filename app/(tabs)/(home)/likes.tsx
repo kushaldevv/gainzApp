@@ -1,9 +1,9 @@
+import UserScrollView from "@/components/userScrollView";
+import { getSessionLikes } from "@/services/apiCalls";
+import * as Types from "@/types";
 import { useFocusEffect, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useState } from "react";
 import { YStack } from "tamagui";
-import * as Types from "@/types";
-import UserScrollView from "@/components/userScrollView";
-import { getSessionLikes } from "@/services/apiCalls";
 
 const emptyUser: Types.User = {
   id: "",
@@ -32,8 +32,8 @@ const Likes = () => {
     try {
       setLoading(true);
       if (sessionID) {
-        const data = await getSessionLikes(sessionID as string);
-        setLikes(data);
+        const likesData = await getSessionLikes(sessionID as string);
+        setLikes(likesData);
       }
     } catch (error) {
     } finally {
@@ -49,14 +49,14 @@ const Likes = () => {
     >
       {loading && (
         <UserScrollView
-          userList={skeletonUsers}
+         userList={skeletonUsers}
           loading={true}
         />
       )}
       {!loading && (
         <UserScrollView
-          userList={likes}
-          loading={false}
+         userList={likes}
+         loading={false}
         />
       )}
     </YStack>

@@ -1,68 +1,58 @@
 import Card from "@/components/card";
-import {
-  getFollowingSessions,
-  getUserPfp,
-} from "@/services/apiCalls";
+import { getFollowingSessions, getUser } from "@/services/apiCalls";
 import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
-import { useFocusEffect } from "expo-router";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RefreshControl } from "react-native";
-import { Button, ScrollView, View, YStack } from "tamagui";
+import { ScrollView, View, YStack } from "tamagui";
+import PostFAB from "@/components/fabPortal";
+import { PaperProvider } from "react-native-paper";
 
-const emptySession: Types.Session = {
-  id: " ",
-  name: " ",
-  user: {
-    id: " ",
-    name: " ",
-    pfp: " ",
-  },
-  location: " ",
-  date: " ",
-  exercises: [],
-  duration: 0,
-  comments: 0,
-  likes: [],
-  numLikes: 0,
-};
+// const emptySession: Types.Session = {
+//   id: " ",
+//   name: " ",
+//   user: {
+//     id: " ",
+//     name: " ",
+//     pfp: " ",
+//   },
+//   location: " ",
+//   date: " ",
+//   exercises: [],
+//   duration: 0,
+//   comments: 0,
+//   likes: [],
+//   numLikes: 0,
+// };
 
 const Page = () => {
   const [sessions, setSessions] = useState<Types.Session[]>([]);
-  const [refreshing, setRefreshing] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const { user } = useUser();
-  const [pfp, setPfp] = useState(" ");
+  const [userDetails, setUserDetails] = useState<Types.User | null>(null);
 
   const fetchSessions = async () => {
     try {
       const placeHolderSessions: Types.Session[] = [];
-      const data =
-        (await getFollowingSessions(user?.id as string)) || placeHolderSessions;
-      setSessions(data);
+      const data = (await getFollowingSessions(user?.id as string)) || placeHolderSessions;
+      setSessions([...data]);
     } catch (error) {
       console.error("Error fetching sessions:", error);
       throw error;
-    } finally {
-      setRefreshing(false);
-      setLoading(false);
     }
   };
 
-  const fetchPFP = async () => {
+  const fetchUserDetails = async () => {
     if (user) {
-      setPfp(await getUserPfp(user.id));
+      const userDetails = await getUser(user.id);
+      setUserDetails(userDetails);
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      // console.log(loading)
-      fetchSessions();
-      setLoading(false);
-      fetchPFP();
-    }, [])
-  );
+  useEffect(() => {
+    fetchSessions();
+    fetchUserDetails();
+  }, []);
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -77,32 +67,37 @@ const Page = () => {
   };
 
   return (
-    <YStack flex={1} alignItems="center" backgroundColor={"$background"}>
+    <PaperProvider>
+    <YStack
+      flex={1}
+      alignItems="center"
+      backgroundColor={"$background"}
+    >
+       <PostFAB/>
       <ScrollView
         width={"100%"}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
         }
       >
         <View gap="$2">
-          {loading && (
-            <Card session={emptySession} loading={true} userPfp={pfp} />
-          )}
-          {loading && (
-            <Card session={emptySession} loading={true} userPfp={pfp} />
-          )}
-          {!loading &&
+          {!refreshing &&
             sessions.map((session, index) => (
               <Card
                 key={index}
                 session={session}
                 loading={false}
-                userPfp={pfp}
+                userDetails={userDetails}
               />
             ))}
         </View>
       </ScrollView>
     </YStack>
+    <PostFAB/>
+    </PaperProvider>
   );
 };
 

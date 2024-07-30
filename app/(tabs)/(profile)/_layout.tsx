@@ -1,11 +1,7 @@
-import {Stack, router} from "expo-router";
-import { TouchableOpacity, useColorScheme } from "react-native";
-import {
-  UserRoundSearch, Search, BellDot
-} from "@tamagui/lucide-icons";
+import { Stack } from "expo-router";
+import { useColorScheme } from "react-native";
 
 export default function ProfileLayout() {
-  
   const colorScheme = useColorScheme();
   const backgroundColor =
   colorScheme == "dark" ? "rgb(15,15,15)" : "rgb(250,250,250)";

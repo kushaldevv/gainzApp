@@ -2,10 +2,8 @@ import { Heart } from "@tamagui/lucide-icons";
 import React, { useState } from "react";
 import {
   Avatar,
-  Button,
   Paragraph,
   SizableText,
-  View,
   XStack,
   YStack,
 } from "tamagui";
@@ -13,7 +11,6 @@ import * as Types from "../types";
 import { Skeleton } from "moti/skeleton";
 import { useColorScheme } from "react-native";
 import { appendLikeToComment } from "@/services/apiCalls";
-import { useUser } from "@clerk/clerk-expo";
 import { useFocusEffect } from "expo-router";
 
 const Comment = ({

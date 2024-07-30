@@ -29,13 +29,12 @@ export type Session = {
 
 export type Exercise = {
     name: string;
-    sets: ExerciseSet[];
-};
-
-export type ExerciseSet = {
+    date: string;
+    pr: number;
     reps: number[];
     weight: number[];
-}
+};
+
 
 export type CardProps = {
   session: Session;

@@ -17,6 +17,7 @@ import {
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Avatar,
+  Button,
   Circle,
   Paragraph,
   ScrollView,
@@ -36,6 +37,7 @@ import {
   appendSessionComment,
   appendSessionLikes,
   getSessionComments,
+  getExercisesInfo
 } from "@/services/apiCalls";
 import { useRouter } from "expo-router";
 const emptyComment: Types.Comment = {
@@ -62,14 +64,6 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
   const [hasLiked, setHasLiked] = useState(initialSession.userLiked);
   const sessionDuration = useMemo(() => formatSessionTime(session.duration), [session.duration]);
   const sessionDate = useMemo(() => formatSessionDate(session.date), [session.date]);
-
-
- console.log('rendered', initialSession.name)
-
-  // useEffect(() => {
-  //   setHasLiked(session.likes.some((likeUser) => likeUser.id == user?.id));
-  // }, [session.likes, user?.id]);
-
   const inputRef = useRef<any>(null);
   const commentTextRef = useRef("");
   const [comments, setComments] = useState<Types.Comment[]>([]);
@@ -106,6 +100,15 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
       setIsCommentsLoading(false);
     }
   };
+
+  const fetchExercises = async () => {
+    try {
+      console.log(session.id)
+      await getExercisesInfo(session.id);
+    } catch (error) {
+      throw error;
+    }
+  }
 
   const postLike = async () => {
     if (!user) return;
@@ -283,6 +286,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
             backgroundColor={"#00cccc"}
             borderRadius={"$5"}
           >
+            <Button onPress={()=>fetchExercises()}> </Button>
             <SizableText>Card Action</SizableText>
           </View>
         </Skeleton>

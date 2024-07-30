@@ -287,6 +287,37 @@ export const getUserSessions = async (sessionUserID: string, userID: string) => 
   }
 };
 
+/**
+ * Returns an exercise response that details a PR, and exerciseInfo include date, reps, and weight
+ * 
+ * @param userID - The unique identifier of the user.
+ * @param sessionID - The unique identifier of the session.
+ * @returns A Promise that resolves when a exercise response is returned
+ * @throws Will throw an error if the API request fails.
+ */
+export const getExercisesInfo = async(sessionID: string) => {
+  const sessionUserID = sessionID.split('session')[0];
+
+  try {
+    // Send a GET request to get a info about a user's exercises
+    const response = axios.get(`${API_URL}/user/exercises?userID=${sessionUserID}&sessionID=${sessionID}`);
+    const data = (await response).data;
+    const exercises: Types.Exercise[] = data.map((exercise: any ) => ({
+      name: exercise.name as string,
+      date: exercise.exerciseInfo.date as string,
+      pr: exercise.PR as number,
+      reps: exercise.exerciseInfo.reps as number[],
+      weight: exercise.exerciseInfo.weight as number[]
+    }));
+
+    console.log(exercises)
+    return exercises;
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+    throw error;
+  }
+}
+
 // export const getSpecificUserSession = async (sessionID: string) => {
 //   try {
 //     console.log("getting a specific session");

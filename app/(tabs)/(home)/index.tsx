@@ -5,6 +5,8 @@ import { useUser } from "@clerk/clerk-expo";
 import React, { useEffect, useState } from "react";
 import { RefreshControl } from "react-native";
 import { ScrollView, View, YStack } from "tamagui";
+import PostFAB from "@/components/fabPortal";
+import { PaperProvider } from "react-native-paper";
 
 // const emptySession: Types.Session = {
 //   id: " ",
@@ -44,7 +46,6 @@ const Page = () => {
     if (user) {
       const userDetails = await getUser(user.id);
       setUserDetails(userDetails);
-      console.log("set user details");
     }
   };
 
@@ -66,11 +67,13 @@ const Page = () => {
   };
 
   return (
+    <PaperProvider>
     <YStack
       flex={1}
       alignItems="center"
       backgroundColor={"$background"}
     >
+       <PostFAB/>
       <ScrollView
         width={"100%"}
         refreshControl={
@@ -93,6 +96,8 @@ const Page = () => {
         </View>
       </ScrollView>
     </YStack>
+    <PostFAB/>
+    </PaperProvider>
   );
 };
 

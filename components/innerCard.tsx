@@ -227,10 +227,10 @@ const InnerCard = ({ exercises }: Types.InnerCardProps) => {
                   <View
                     width={"$5"}
                     height={"$5"}
-                    borderColor={"$color"}
-                    borderWidth={"$0.5"}
+                    // borderColor={"#00cccc"}
+                    // borderWidth={"$0.5"}
+                    // borderRadius={"$3"}
                     // backgroundColor={"#00cccc"}
-                    borderRadius={"$3"}
                     alignItems="center"
                     justifyContent="center"
                   >

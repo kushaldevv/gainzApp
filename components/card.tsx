@@ -88,6 +88,13 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
     }
   };
 
+  const handleProfileScreen = () => {
+    router.push({
+      pathname: './(profile)',
+      params: {userID: session.user.id, fromHome: 'true'},
+    });
+  };
+
   const loadComments = async () => {
     setIsCommentsLoading(true);
     try {
@@ -210,10 +217,12 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
       <YStack backgroundColor={"$gray1"} p="$3" gap="$2">
         <XStack gap="$3" width="100%">
           <Skeleton colorMode={skeletonColorScheme} radius={"round"}>
-            <Avatar circular size="$5">
-              <Avatar.Image src={session.user.pfp} />
-              <Avatar.Fallback backgroundColor="#00cccc" />
-            </Avatar>
+            <TouchableOpacity onPress={handleProfileScreen} disabled={session.user.id === user?.id}>
+                <Avatar circular size="$5">
+                  <Avatar.Image src={session.user.pfp} />
+                  <Avatar.Fallback backgroundColor="#00cccc" />
+                </Avatar>
+            </TouchableOpacity>
           </Skeleton>
           <YStack>
             <Skeleton colorMode={skeletonColorScheme} width={"50%"} height={15}>

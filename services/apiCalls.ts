@@ -204,10 +204,10 @@ export const getUserProfile = async (userID: string): Promise<Types.UserProfile>
     const response = await axios.get(`${API_URL}/user/profile?userID=${userID}`);
     const data = response.data;
 
-    const followersPromises = data.followers.map((friendId: string) => getUser(friendId));
-    const followers: Types.User[] = await Promise.all(followersPromises);
-    const followingPromises = data.following.map((friendId: string) => getUser(friendId));
-    const following: Types.User[] = await Promise.all(followingPromises);
+    // const followersPromises = data.followers.map((friendId: string) => getUser(friendId));
+    // const followers: Types.User[] = await Promise.all(followersPromises);
+    // const followingPromises = data.following.map((friendId: string) => getUser(friendId));
+    // const following: Types.User[] = await Promise.all(followingPromises);
 
     const getDayAbbr = (date: Date): string => {
       return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()];
@@ -230,10 +230,10 @@ export const getUserProfile = async (userID: string): Promise<Types.UserProfile>
     let highestDuration = 0;
     let highestDurationDay = '';
 
-    // Sort dateDuration array by date in descending order
-    const sortedDateDurations = data.dateDuration.sort((a: any, b: any) => 
-      new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
+    // // Sort dateDuration array by date in descending order
+    // const sortedDateDurations = data.dateDuration.sort((a: any, b: any) => 
+    //   new Date(b.date).getTime() - new Date(a.date).getTime()
+    // );
 
     let streak = 0;
     let currentDate = new Date();
@@ -273,12 +273,12 @@ export const getUserProfile = async (userID: string): Promise<Types.UserProfile>
       id: data.userID as string,
       name: data.name as string,
       pfp: data.pfp as string,
-      followers: followers,
-      following: following,
+      followers: data.followers as number,
+      following: data.following as number,
       recentSessions: groupedByDay,
       highestDuration: { date: highestDurationDay, duration: highestDuration },
       streak: streak,
-      randomPr: data.randomPr as {name: string; pr: number}
+      randomPr: data.randomPr as { name: string; pr: number }
     };
 
     return userProfile;
@@ -323,7 +323,7 @@ export const getUserSessions = async (sessionUserID: string, userID: string) => 
           user: await getUser(sessionUserID) as Types.User,
           location: sessionData.location as string,
           date: sessionData.date as string,
-          exercises: exercises as Types.Exercise[], 
+          exercises:exercises as Types.Exercise[], 
           duration: sessionData.duration as number,
           comments: sessionData.comments,
           likes: likes,
@@ -352,6 +352,7 @@ export const getExercisesInfo = async(sessionID: string) => {
   const sessionUserID = sessionID.split('session')[0];
 
   try {
+    console.log(sessionUserID)
     // Send a GET request to get a info about a user's exercises
     const response = axios.get(`${API_URL}/user/exercises?userID=${sessionUserID}&sessionID=${sessionID}`);
     const data = (await response).data;

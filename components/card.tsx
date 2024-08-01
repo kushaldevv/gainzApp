@@ -34,7 +34,7 @@ import {
   XStack,
   YStack
 } from "tamagui";
-import * as Types from "../types";
+import * as Types from "@/types";
 import CustomBackdrop from "./backdrop";
 import Comment from "./comment";
 import InnerCard from "./innerCard";

@@ -13,10 +13,6 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL;
  */
 export const appendLikeToComment = async(userID: string, sessionID: string, index: number) => {
   try {
-    console.log('appending like to comment')
-    console.log('index', index)
-    console.log('sessionID', sessionID)
-    console.log('userID', userID)
     const sessionUserID = sessionID.split('session')[0]
     // Send a PATCH request to update the like of a comment
     await axios.patch(`${API_URL}/user/sessions/comments/likes?userID=${sessionUserID}&sessionID=${sessionID}&index=${index}`, {userID});
@@ -203,36 +199,92 @@ export const getUser = async (userID: string) => {
  * @returns A Promise that resolves to a User profile object.
  * @throws Will throw an error if the API request fails or if there's an issue processing the response.
  */
-export const getUserProfile = async (userID: string) => {
+export const getUserProfile = async (userID: string): Promise<Types.UserProfile> => {
   try {
-    // Make a GET request to fetch user profile data
-    const response = await axios.get(`${API_URL}/user?userID=${userID}`);
+    const response = await axios.get(`${API_URL}/user/profile?userID=${userID}`);
     const data = response.data;
 
-    // maps thru the friends list of user ids(strings), and calls getUser on each
-    // end result is a friends list of type User
-    const followersPromises = data.followers.map((friendId : string) => getUser(friendId));
+    const followersPromises = data.followers.map((friendId: string) => getUser(friendId));
     const followers: Types.User[] = await Promise.all(followersPromises);
-
-    const followingPromises = data.following.map((friendId : string) => getUser(friendId));
+    const followingPromises = data.following.map((friendId: string) => getUser(friendId));
     const following: Types.User[] = await Promise.all(followingPromises);
 
-    // Construct a User profile object from the API response
+    const getDayAbbr = (date: Date): string => {
+      return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()];
+    };
+
+    const today = new Date();
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(today.getDate() - 7);
+
+    const pastSevenDays: string[] = [];
+    const groupedByDay: { [key: string]: Types.dateDuration[] } = {};
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+      const dayAbbr = getDayAbbr(date);
+      pastSevenDays.push(dayAbbr);
+      groupedByDay[dayAbbr] = [];
+    }
+
+    let highestDuration = 0;
+    let highestDurationDay = '';
+
+    // Sort dateDuration array by date in descending order
+    const sortedDateDurations = data.dateDuration.sort((a: any, b: any) => 
+      new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+
+    let streak = 0;
+    let currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);  // Set to start of day for comparison
+
+    data.dateDuration.reduce((acc: Types.dateDuration[], item: any) => {
+      const itemDate = new Date(item.date);
+      itemDate.setHours(0, 0, 0, 0);  // Set to start of day for comparison
+
+      // Streak calculation
+      if (itemDate.getTime() === currentDate.getTime()) {
+        streak++;
+        currentDate.setDate(currentDate.getDate() - 1);
+      } else if (itemDate.getTime() < currentDate.getTime()) {
+        // Break streak if a day is missed
+        currentDate = itemDate;
+        streak = 1;
+      }
+
+      if (itemDate >= sevenDaysAgo && itemDate <= today) {
+        if (item.duration > highestDuration) {
+          highestDuration = item.duration;
+          highestDurationDay = item.date;
+        }
+        const dateDuration: Types.dateDuration = {
+          date: item.date as string,
+          duration: item.duration as number
+        };
+        const dayAbbr = getDayAbbr(itemDate);
+        groupedByDay[dayAbbr].push(dateDuration);
+        acc.push(dateDuration);
+      }
+      return acc;
+    }, []);
+
     const userProfile: Types.UserProfile = {
       id: data.userID as string,
       name: data.name as string,
       pfp: data.pfp as string,
       followers: followers,
       following: following,
-      sessions: [],
-    }
-    // Return the constructed User profile object
+      recentSessions: groupedByDay,
+      highestDuration: { date: highestDurationDay, duration: highestDuration },
+      streak: streak
+    };
+
     return userProfile;
   } catch (error) {
-    // Re-throw the error for the caller to handle
     throw error;
   }
-}
+};
 
 export const getFollowingSessions = async (userID: string) => {
   try {
@@ -282,7 +334,7 @@ export const getUserSessions = async (sessionUserID: string, userID: string) => 
     );
     return sessions;
   } catch (error) {
-    // Re-throw the error for the caller to handle
+    console.log('getting user sessions', error);
     throw error;
   }
 };
@@ -310,7 +362,6 @@ export const getExercisesInfo = async(sessionID: string) => {
       weight: exercise.exerciseInfo.weight as number[]
     }));
 
-    console.log(exercises)
     return exercises;
   } catch (error) {
     throw error;

@@ -12,6 +12,7 @@ import { Skeleton } from "moti/skeleton";
 import { useColorScheme } from "react-native";
 import { appendLikeToComment } from "@/services/apiCalls";
 import { useFocusEffect } from "expo-router";
+import { formatSimpleDate } from "@/services/utilities";
 
 const Comment = ({
   index,
@@ -97,26 +98,3 @@ const Comment = ({
 
 export default Comment;
 
-function formatSimpleDate(isoString: string): string {
-  const likeDate = new Date(isoString);
-  const now = new Date();
-  const diffInSeconds = Math.floor((now.getTime() - likeDate.getTime()) / 1000);
-
-  if (diffInSeconds < 60) {
-    return `${diffInSeconds}s`;
-  }
-  const diffInMinutes = Math.floor(diffInSeconds / 60);
-  if (diffInMinutes < 60) {
-    return `${diffInMinutes}m`;
-  }
-  const diffInHours = Math.floor(diffInMinutes / 60);
-  if (diffInHours < 24) {
-    return `${diffInHours}h`;
-  }
-  const diffInDays = Math.floor(diffInHours / 24);
-  if (diffInDays < 7) {
-    return `${diffInDays}d`;
-  }
-  const diffInWeeks = Math.floor(diffInDays / 7);
-  return `${diffInWeeks}w`;
-}

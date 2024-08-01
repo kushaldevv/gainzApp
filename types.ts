@@ -9,8 +9,15 @@ export interface User  {
 export interface UserProfile extends User {
     following: User[];
     followers: User[];
-    sessions: Session[];
+    recentSessions: { [key: string]: dateDuration[] };
+    highestDuration: dateDuration;
+    streak: number;
 };
+
+export interface dateDuration {
+    date: string;
+    duration: number;
+}
 
 export type Session = {
     id: string;

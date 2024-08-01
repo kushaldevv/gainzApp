@@ -1,7 +1,6 @@
 import {
   appendSessionComment,
   appendSessionLikes,
-  getExercisesInfo,
   getSessionComments
 } from "@/services/apiCalls";
 import {
@@ -13,13 +12,11 @@ import {
 import { BottomSheetDefaultFooterProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetFooter/types";
 import { useHeaderHeight } from "@react-navigation/elements";
 import {
-  BookOpen,
   Dumbbell,
   MessageCircleMore,
   MoreHorizontal,
   Send,
   ThumbsUp,
-  Weight,
   X
 } from "@tamagui/lucide-icons";
 import { useRouter } from "expo-router";
@@ -37,11 +34,11 @@ import {
   XStack,
   YStack
 } from "tamagui";
-import Svg, { Path } from "react-native-svg"
 import * as Types from "../types";
 import CustomBackdrop from "./backdrop";
 import Comment from "./comment";
 import InnerCard from "./innerCard";
+import { formatSessionDate, formatSessionTime } from "@/services/utilities";
 
 const emptyComment: Types.Comment = {
   user: {
@@ -346,7 +343,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
             </Skeleton>
             {!loading && (
               <TouchableOpacity onPress={() => handlePresentModalPress()}>
-                <MessageCircleMore size={"$2"} />
+                <MessageCircleMore size={"$2"}/>
               </TouchableOpacity>
             )}
           </YStack>
@@ -421,44 +418,3 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
 };
 
 export default Card;
-
-function formatSessionDate(isoString: string) {
-  const sessionDate = new Date(isoString);
-  const now = new Date();
-  const isToday = now.toDateString() === sessionDate.toDateString();
-  const isYesterday =
-    new Date(now.setDate(now.getDate() - 1)).toDateString() ===
-    sessionDate.toDateString();
-
-  const timeString = sessionDate.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  if (isToday) {
-    return `Today at ${timeString}`;
-  } else if (isYesterday) {
-    return `Yesterday at ${timeString}`;
-  } else {
-    return (
-      sessionDate.toLocaleDateString([], {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }) + ` at ${timeString}`
-    );
-  }
-}
-
-function formatSessionTime(seconds: number) {
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const remainingSeconds = seconds % 60;
-
-  let result = "";
-  if (hours > 0) result += `${hours}hr `;
-  if (minutes > 0) result += `${minutes}m `;
-  result += `${remainingSeconds}s`;
-
-  return result.trim();
-}

@@ -2,34 +2,6 @@ import axios from 'axios';
 import * as Types from '@/types';
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
-const getRandomInt = (max: number) => {
-  return Math.floor(Math.random() * max);
-}
-
-export const getAllExercises = async(sessionID: string) => {
-  try {
-    const sessionUserID = sessionID.split('session')[0];
-    // Send a GET request to get a map of all exercises for a user
-    const response = await axios.get(`${API_URL}/user/exercises/all?userID=${sessionUserID}`);
-    const responseData = response.data;
-    const randomNum = getRandomInt(10);
-
-    // responseData.entries() returns an iterator of a Map's key-value pairs
-    // [...responseData.entries()] spreads the iterator into an array of kv pairs
-    // we destructure the kv pair, and provide an index
-    [...responseData.entries()].forEach(([key, value], index) => {
-      if (randomNum === index) {
-        console.log("PR: ", value.PR);
-        return value.PR;
-      }
-    });
-
-  } catch (error) {
-    // If an error occurs during the API request, re-throw it
-    throw error;
-  }
-}
-
 /**
  * Append a like to a user's comment
  * 
@@ -207,7 +179,7 @@ export const getUser = async (userID: string) => {
     
     // Construct a User object from the API response
     const user: Types.User = {
-      id: data.userID as string,
+      id: data.id as string,
       name: data.name as string,
       pfp: data.pfp as string, // pfp likely stands for "profile picture"
     };
@@ -278,7 +250,7 @@ export const getUserProfile = async (userID: string): Promise<Types.UserProfile>
       } else if (itemDate.getTime() < currentDate.getTime()) {
         // Break streak if a day is missed
         currentDate = itemDate;
-        streak = 1;
+        streak = 0;
       }
 
       if (itemDate >= sevenDaysAgo && itemDate <= today) {
@@ -305,7 +277,8 @@ export const getUserProfile = async (userID: string): Promise<Types.UserProfile>
       following: following,
       recentSessions: groupedByDay,
       highestDuration: { date: highestDurationDay, duration: highestDuration },
-      streak: streak
+      streak: streak,
+      randomPr: data.randomPr as {name: string; pr: number}
     };
 
     return userProfile;

@@ -1,9 +1,10 @@
 import { appendSession } from "@/services/apiCalls";
 import React, { useState } from "react";
-import { YStack, Button, Input, XStack } from "tamagui";
+import { YStack, Button, Input, XStack, Group, YGroup, Separator, ListItem } from "tamagui";
 import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
-//
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 const Post = () => {
   const [sessionName, setSessionName] = useState("");
@@ -14,40 +15,19 @@ const Post = () => {
   const [reps, setReps] = useState(0);
   const [weight, setWeight] = useState(0);
   const {user} = useUser();
+  
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+  const [mode, setMode] = useState('date');
 
-//   const postSession = async () => {
-//     console.log("Posting session...");
-//     const sessionKey = `${user?.id}session_${new Date().getTime()}`;
-//     sessionKey.split('session')[0]
-//     console.log(sessionKey);
-//     const newSession = {
-//       "sessionKey": sessionKey,
-//       "sessionData": {
-//         "name": sessionName,
-//         "likes": [],
-//         "exercises": {
-//           [exerciseName]: {
-//             reps: [reps],
-//             weight: [weight],
-//           },
-//           ['Incline dumbell bench press']: {
-//             reps: [10, 8, 6],
-//             weight: [135, 185, 205],
-//           },
-//           ['Pendelum squat']: {
-//             reps: [12, 12, 15],
-//             weight: [45, 90, 70],
-//           },
-//         },
-//         "comments": [],
-//         "location": location,
-//         "duration": duration,
-//         "date": new Date().toISOString()
-//       }
-//     };
-//     if (user)
-//       await appendSession(user?.id, newSession)
-//   };
+  const onChange = () => {
+
+  };
+
+  // const showMode = (modeToShow) => {
+
+  // };
+
   return (
     <YStack
       flex={1}
@@ -56,36 +36,23 @@ const Post = () => {
       gap={"$4"}
       pt={"$4"}
     >
-      <Input
-        onChangeText={(text) => setSessionName(text)}
-        placeholder="Session name"
-      />
-      <Input
-        onChangeText={(text) => setLocation(text)}
-        placeholder="Location"
-      />
-      <Input
-        onChangeText={(text) => setExerciseName(text)}
-        placeholder="Exercise name"
-      />
-      <XStack gap="$5">
-        <Input
-          onChangeText={(text) => setReps(parseInt(text))}
-          placeholder="Reps: "
-        />
-        <Input
-          onChangeText={(text) => setWeight(parseInt(text))}
-          placeholder="Weight: "
-        />
-      </XStack>
-      <Input
-        inputMode="numeric"
-        onChangeText={(text) => setDuration(parseInt(text))}
-        placeholder="Duration"
-      />
-      <Button themeInverse>
-        Mickey Post
-      </Button>
+      <YStack width="90%">
+        <YGroup separator={<Separator />}>
+          <YGroup.Item>
+            {/* <ListItem title="Name" /> */}
+            <Input placeholder="Name"></Input>
+          </YGroup.Item>
+          <YGroup.Item>
+            {/* <ListItem title="Second" subTitle="Second subtitle" /> */}
+            <Input>Start Time</Input>
+            <DateTimePicker title={'Select time'} placeholder={'Placeholder'} mode={'time'}/>
+          </YGroup.Item>
+          <YGroup.Item>
+            {/* <ListItem>Third</ListItem> */}
+            <Input>End Time</Input>
+          </YGroup.Item>
+        </YGroup>
+      </YStack>
     </YStack>
   );
 };

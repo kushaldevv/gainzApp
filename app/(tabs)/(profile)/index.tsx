@@ -17,6 +17,7 @@ const Profile = () => {
   const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
   const [userProfile, setUserProfile] = useState<Types.UserProfile | null>(null);
   const [followingList, setFollowingList] = useState<string[]>([]);
+  // const [userExerciseInfo, setUserExerciseInfo] = useState<Types.UserExercise | null>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -103,7 +104,7 @@ const Profile = () => {
             fontSize="$8"
             width={"$15"}
           >
-            {"Hamood Uzbekistan"}
+            {"Kushal Devkota"}
           </Text>
           <XStack gap="$6">
             <TouchableOpacity
@@ -146,7 +147,7 @@ const Profile = () => {
           alignItems="center"
           p="$3"
         >
-          <Text fontSize="$10">🔥</Text>
+          <Text fontSize="$10">💪</Text>
           <Text
             fontFamily={"$mono"}
             fontSize="$10"
@@ -158,31 +159,64 @@ const Profile = () => {
           <Text
             fontFamily={"$mono"}
             fontSize="$8"
-            fontWeight="800"
+            fontWeight="400"
             col="$background"
           >
             {'Day Streak'}
           </Text>
         </View>
         <LinearGradient
-          width={"40%"}
-          borderRadius="$9"
-          colors={["#00cccc", gradientColor]}
-          start={[1, 0]}
-          end={[0, 1]}
-          alignItems="center"
-          p="$3"
-        >
-          <Circle
-            backgroundColor={"white"}
-            size="$4.5"
+            width={"40%"}
+            borderRadius="$9"
+            colors={["#00cccc", gradientColor]}
+            start={[1, 0]}
+            end={[0, 1]}
+            alignItems="center"
+            p="$3"
+            gap="$2"
           >
-            <Dumbbell
-              size="$1.5"
-              col={"black"}
-            />
-          </Circle>
-        </LinearGradient>
+            <Circle
+              backgroundColor={"white"}
+              size="$4.5"
+              mb="$1.5"
+            >
+              <Dumbbell
+                size="$1.5"
+                col={"black"}
+              />
+            </Circle>
+            <XStack
+              alignItems="center"
+              gap="$1.5"
+            >
+              <Text
+                fontFamily={"$mono"}
+                fontSize="$9"
+                fontWeight="700"
+                col="$color"
+              >
+                {userProfile?.randomPr.pr}
+              </Text>
+              <Text
+                fontFamily={"$mono"}
+                fontSize="$6"
+                fontWeight="500"
+                col="$color"
+                mt="$2"
+              >
+                lbs
+              </Text>
+            </XStack>
+            <Text
+              fontFamily={"$mono"}
+              fontSize="$4"
+              fontWeight="400"
+              col="$color"
+              textAlign="center"
+            >
+              {userProfile?.randomPr.name}
+            </Text>
+          </LinearGradient>
       </XStack>
       <YStack
         borderRadius="$9"

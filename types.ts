@@ -12,6 +12,7 @@ export interface UserProfile extends User {
     recentSessions: { [key: string]: dateDuration[] };
     highestDuration: dateDuration;
     streak: number;
+    randomPr: {name: string; pr: number};
 };
 
 export interface dateDuration {
@@ -97,3 +98,4 @@ export interface NotiContent  {
 export interface Noti extends NotiContent {
     user: User;
 };
+

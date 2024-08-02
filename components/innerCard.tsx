@@ -3,7 +3,8 @@ import * as Types from "../types";
 import { BookOpen, X, Weight } from "@tamagui/lucide-icons";
 import Svg, { Path } from "react-native-svg";
 import { XStack, YStack, SizableText, Circle, View, ScrollView, useTheme } from "tamagui";
-import { TouchableOpacity } from "react-native";
+import { LinearGradient } from "tamagui/linear-gradient";
+import { TouchableOpacity, useColorScheme } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 // const DetailView = () => {
@@ -76,6 +77,8 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 const InnerCard = ({ exercises }: Types.InnerCardProps) => {
   const theme = useTheme();
+  const colorMode = useColorScheme();
+  const gradientColor = colorMode === "dark" ? "#006666" : '#33e6e6';
   const [showDetails, setShowDetails] = useState(false);
   const [detailExercise, setDetailExercise] = useState<Types.Exercise | null>(null);
   return (
@@ -83,13 +86,22 @@ const InnerCard = ({ exercises }: Types.InnerCardProps) => {
       height={"$15"}
       justifyContent="space-between"
     >
-      <YStack
+      {/* <YStack
         width={"22.5%"}
         height={"$15"}
         backgroundColor={"#00cccc"}
         borderRadius={"$6"}
         p={"$3"}
-      >
+      > */}
+        <LinearGradient
+          width={"22.5%"}
+          height={"$15"}
+          p={"$3"}
+          borderRadius="$6"
+          colors={['#00cccc', gradientColor]}
+          start={[1, 0]}
+          end={[0, 1]}
+        >
         <View
           height={"$5"}
           backgroundColor={"#009999"}
@@ -125,7 +137,8 @@ const InnerCard = ({ exercises }: Types.InnerCardProps) => {
         >
           Reps
         </SizableText>
-      </YStack>
+        </LinearGradient>
+      
 
       <YStack
         width={"75%"}
@@ -143,9 +156,11 @@ const InnerCard = ({ exercises }: Types.InnerCardProps) => {
             >
               {detailExercise?.name}
             </SizableText>
-            <ScrollView pt='$1' height={"$13"}
+            <ScrollView
+              pt="$1"
+              height={"$13"}
             >
-              <YStack gap='$3'>
+              <YStack gap="$3">
                 {detailExercise?.weight.map((weight, index) => (
                   <XStack
                     key={index}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useColorScheme } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
 import { useTheme } from 'tamagui';
+import { LinearGradient } from 'tamagui/linear-gradient';
 
 const PostFAB = () => {
   const [state, setState] = useState({ open: false });
@@ -21,7 +22,10 @@ const PostFAB = () => {
           visible
           icon={open ? 'close' : 'plus'}
           style={{paddingBottom: 0}}
-          fabStyle={{backgroundColor: tintColor, shadowOpacity:0.20}}
+          fabStyle={{
+            backgroundColor: tintColor, 
+            shadowOpacity:0.20
+          }}
           color={'white'}
           actions={[
             {

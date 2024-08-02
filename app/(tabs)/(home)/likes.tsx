@@ -2,7 +2,7 @@ import UserScrollView from "@/components/userScrollView";
 import { getSessionLikes } from "@/services/apiCalls";
 import * as Types from "@/types";
 import { useFocusEffect, useLocalSearchParams } from "expo-router";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { YStack } from "tamagui";
 
 const emptyUser: Types.User = {
@@ -22,11 +22,9 @@ const Likes = () => {
     (_, i) => emptyUser
   );
 
-  useFocusEffect(
-    useCallback(() => {
+    useEffect(() => {
       fetchLikes();
     }, [])
-  );
 
   const fetchLikes = async () => {
     try {

@@ -7,10 +7,18 @@ export interface User  {
 }
 
 export interface UserProfile extends User {
-    following: User[];
-    followers: User[];
-    sessions: Session[];
+    following: number;
+    followers: number;
+    recentSessions: { [key: string]: dateDuration[] };
+    highestDuration: dateDuration;
+    streak: number;
+    randomPr: { name: string ; pr: number};
 };
+
+export interface dateDuration {
+    date: string;
+    duration: number;
+}
 
 export type Session = {
     id: string;
@@ -90,3 +98,8 @@ export interface NotiContent  {
 export interface Noti extends NotiContent {
     user: User;
 };
+
+export type ProfileProps = {
+    userID?: string;
+  };
+  

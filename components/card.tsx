@@ -1,9 +1,4 @@
-import {
-  appendSessionComment,
-  appendSessionLikes,
-  getExercisesInfo,
-  getSessionComments
-} from "@/services/apiCalls";
+import { appendSessionComment, appendSessionLikes, getSessionComments } from "@/services/apiCalls";
 import {
   BottomSheetFooter,
   BottomSheetModal,
@@ -13,14 +8,13 @@ import {
 import { BottomSheetDefaultFooterProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetFooter/types";
 import { useHeaderHeight } from "@react-navigation/elements";
 import {
-  BookOpen,
   Dumbbell,
   MessageCircleMore,
   MoreHorizontal,
   Send,
   ThumbsUp,
-  Weight,
-  X
+  X,
+  Share,
 } from "@tamagui/lucide-icons";
 import { useRouter } from "expo-router";
 import { Skeleton } from "moti/skeleton";
@@ -35,13 +29,15 @@ import {
   useTheme,
   View,
   XStack,
-  YStack
+  YStack,
 } from "tamagui";
-import Svg, { Path } from "react-native-svg"
-import * as Types from "../types";
+import * as Types from "@/types";
 import CustomBackdrop from "./backdrop";
 import Comment from "./comment";
 import InnerCard from "./innerCard";
+import { formatSessionDate, formatSessionTime } from "@/services/utilities";
+import DropDownMenu from "./dropDownMenu";
+import { useUser } from "@clerk/clerk-expo";
 
 const emptyComment: Types.Comment = {
   user: {
@@ -55,12 +51,11 @@ const emptyComment: Types.Comment = {
 };
 
 const Card = ({ session: initialSession, loading, userDetails: user }: Types.CardProps) => {
-  // const { user } = useUser();
+  // const userID = useUser().user?.id;
   const headerHeight = useHeaderHeight();
   const theme = useTheme();
   const router = useRouter();
-  const skeletonColorScheme =
-    useColorScheme() == "dark" ? "light" : "dark" || "light";
+  const skeletonColorScheme = useColorScheme() == "dark" ? "light" : "dark" || "light";
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const [session, setSession] = useState(initialSession);
@@ -86,9 +81,16 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
     if (session.likes.length > 0) {
       router.push({
         pathname: "/likes",
-        params: {sessionID: session.id, numLikes: session.numLikes},
+        params: { sessionID: session.id, numLikes: session.numLikes },
       });
     }
+  };
+
+  const handleProfileScreen = () => {
+    router.push({
+      pathname: "./(profile)",
+      params: { userID: session.user.id, fromHome: "true" },
+    });
   };
 
   const loadComments = async () => {
@@ -108,17 +110,16 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
     if (!user) return;
     try {
       setHasLiked(true);
-      setSession(prevSession => {
+      setSession((prevSession) => {
         const newNumLikes = prevSession.numLikes + 1;
         return {
           ...prevSession,
           likes: newNumLikes <= 3 ? [...prevSession.likes, user] : prevSession.likes,
           numLikes: newNumLikes,
-          userLiked: true
+          userLiked: true,
         };
-      })
+      });
       await appendSessionLikes(user.id, session.id);
-      
     } catch (error) {
       throw error;
     }
@@ -127,12 +128,11 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
   const postComment = async () => {
     if (!user) return;
     try {
-      setSession(prevSession => ({
+      setSession((prevSession) => ({
         ...prevSession,
-        comments: prevSession.comments + 1
+        comments: prevSession.comments + 1,
       }));
       await appendSessionComment(user.id, session.id, commentTextRef.current);
-     
     } catch (error) {
       throw error;
     } finally {
@@ -152,7 +152,11 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
           borderColor={"$gray5"}
         >
           <XStack gap="$2">
-            <Avatar circular size="$4" alignSelf="center">
+            <Avatar
+              circular
+              size="$4"
+              alignSelf="center"
+            >
               <Avatar.Image src={user?.pfp} />
               <Avatar.Fallback backgroundColor="$blue10" />
             </Avatar>
@@ -210,16 +214,38 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
 
   return (
     <Skeleton.Group show={loading}>
-      <YStack backgroundColor={"$gray1"} p="$3" gap="$2">
-        <XStack gap="$3" width="100%">
-          <Skeleton colorMode={skeletonColorScheme} radius={"round"}>
-            <Avatar circular size="$5">
-              <Avatar.Image src={session.user.pfp} />
-              <Avatar.Fallback backgroundColor="#00cccc" />
-            </Avatar>
+      <YStack
+        backgroundColor={"$gray1"}
+        p="$3"
+        gap="$2"
+      >
+        <XStack
+          gap="$3"
+          width="100%"
+        >
+          <Skeleton
+            colorMode={skeletonColorScheme}
+            radius={"round"}
+          >
+            <TouchableOpacity
+              onPress={handleProfileScreen}
+              disabled={session.user.id === user?.id}
+            >
+              <Avatar
+                circular
+                size="$5"
+              >
+                <Avatar.Image src={session.user.pfp} />
+                <Avatar.Fallback backgroundColor="#00cccc" />
+              </Avatar>
+            </TouchableOpacity>
           </Skeleton>
           <YStack>
-            <Skeleton colorMode={skeletonColorScheme} width={"50%"} height={15}>
+            <Skeleton
+              colorMode={skeletonColorScheme}
+              width={"50%"}
+              height={15}
+            >
               <SizableText
                 size={"$2"}
                 fontFamily={"$mono"}
@@ -230,43 +256,83 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
               </SizableText>
             </Skeleton>
             <Skeleton colorMode={skeletonColorScheme}>
-              <XStack gap="$2" alignItems="center">
+              <XStack
+                gap="$2"
+                alignItems="center"
+              >
                 <Dumbbell size="$1" />
                 <YStack>
-                  <Paragraph lineHeight={"$1"} fontSize={"$1"}>
+                  <Paragraph
+                    fontFamily={"$mono"}
+                    lineHeight={"$1"}
+                    fontSize={"$1"}
+                  >
                     {sessionDate}
                   </Paragraph>
-                  <Paragraph lineHeight={"$1"} fontSize={"$1"}>
+                  <Paragraph
+                    fontFamily={"$mono"}
+                    lineHeight={"$1"}
+                    fontSize={"$1"}
+                  >
                     {session.location}
                   </Paragraph>
                 </YStack>
               </XStack>
             </Skeleton>
           </YStack>
-          <View pos="absolute" right="$0">
-            {!loading && <MoreHorizontal />}
+          <View
+            pos="absolute"
+            right="$0"
+          >
+            <DropDownMenu isUser={initialSession.user.id == user?.id}/>
           </View>
         </XStack>
-        <Skeleton colorMode={skeletonColorScheme} width={"80%"}>
-          <SizableText size={"$6"} fontFamily={"$mono"} fontWeight={700}>
+        <Skeleton
+          colorMode={skeletonColorScheme}
+          width={"80%"}
+        >
+          <SizableText
+            size={"$6"}
+            fontFamily={"$mono"}
+            fontWeight={700}
+          >
             {session.name}
           </SizableText>
         </Skeleton>
-        <Skeleton colorMode={skeletonColorScheme} width={"50%"}>
+        <Skeleton
+          colorMode={skeletonColorScheme}
+          width={"50%"}
+        >
           <XStack gap="$5">
             <YStack>
-              <Paragraph lineHeight={"$1"} fontSize={"$1"}>
+              <Paragraph
+                fontFamily={"$mono"}
+                lineHeight={"$1"}
+                fontSize={"$1"}
+              >
                 Exercises
               </Paragraph>
-              <SizableText size={"$5"} fontFamily={"$mono"} fontWeight={700}>
+              <SizableText
+                size={"$5"}
+                fontFamily={"$mono"}
+                fontWeight={700}
+              >
                 {session.exercises.length}
               </SizableText>
             </YStack>
             <YStack>
-              <Paragraph lineHeight={"$1"} fontSize={"$1"}>
+              <Paragraph
+                fontFamily={"$mono"}
+                lineHeight={"$1"}
+                fontSize={"$1"}
+              >
                 Time
               </Paragraph>
-              <SizableText size={"$4"} fontFamily={"$mono"} fontWeight={700}>
+              <SizableText
+                size={"$4"}
+                fontFamily={"$mono"}
+                fontWeight={700}
+              >
                 {sessionDuration}
               </SizableText>
             </YStack>
@@ -280,7 +346,11 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
           paddingHorizontal="$10"
           paddingTop="$2"
         >
-          <YStack alignItems="center" gap="$2" width={"$10"}>
+          <YStack
+            alignItems="center"
+            gap="$2"
+            width={"$10"}
+          >
             <Skeleton colorMode={skeletonColorScheme}>
               <TouchableOpacity
                 onPress={handleLikesScreen}
@@ -308,16 +378,15 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
                       borderWidth="$0.25"
                       borderColor={"$color"}
                     >
-                      <SizableText size={"$1"}>
-                        {session.numLikes - 3}+
-                      </SizableText>
+                      <SizableText size={"$1"}>{session.numLikes - 3}+</SizableText>
                     </Circle>
                   )}
                   {session.numLikes == 0 && (
-                    <View height={"$1.5"} justifyContent="center">
-                      <SizableText size={"$1"}>
-                        Be the first to like!
-                      </SizableText>
+                    <View
+                      height={"$1.5"}
+                      justifyContent="center"
+                    >
+                      <SizableText size={"$1"}>Be the first to like!</SizableText>
                     </View>
                   )}
                 </XStack>
@@ -332,14 +401,27 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
               height={"$2"}
             >
               {!loading && (
-                <ThumbsUp size={"$2"} fill={hasLiked ? "#00cccc" : "none"} />
+                <ThumbsUp
+                  size={"$2"}
+                  fill={hasLiked ? "#00cccc" : "none"}
+                />
               )}
             </View>
           </YStack>
-          <YStack alignItems="center" gap="$2" width={"$10"}>
+          <YStack
+            alignItems="center"
+            gap="$2"
+            width={"$10"}
+          >
             <Skeleton colorMode={skeletonColorScheme}>
-              <View height={"$1.5"} justifyContent="center">
-                <SizableText size={"$1"}>
+              <View
+                height={"$1.5"}
+                justifyContent="center"
+              >
+                <SizableText
+                  fontFamily={"$mono"}
+                  size={"$1"}
+                >
                   {session.comments} Comments
                 </SizableText>
               </View>
@@ -366,8 +448,15 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
           topInset={headerHeight}
         >
           <BottomSheetView>
-            <YStack width={"100%"} height={"100%"} gap="$2">
-              <View p="$4" paddingVertical="$2">
+            <YStack
+              width={"100%"}
+              height={"100%"}
+              gap="$2"
+            >
+              <View
+                p="$4"
+                paddingVertical="$2"
+              >
                 <XStack justifyContent="center">
                   <SizableText
                     size={"$6"}
@@ -385,21 +474,27 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
                   </View>
                 </XStack>
               </View>
-              <ScrollView borderTopWidth="$0.25" borderColor={"$gray5"}>
-                <View gap="$5" mt="$3" p="$4" pt="$2">
+              <ScrollView
+                borderTopWidth="$0.25"
+                borderColor={"$gray5"}
+              >
+                <View
+                  gap="$5"
+                  mt="$3"
+                  p="$4"
+                  pt="$2"
+                >
                   {isCommentsLoading
-                    ? Array.from({ length: session.comments }).map(
-                        (_, index) => (
-                          <Comment
-                            key={index}
-                            index={index}
-                            comment={emptyComment}
-                            sessionID=""
-                            userID={""}
-                            loading={true}
-                          />
-                        )
-                      )
+                    ? Array.from({ length: session.comments }).map((_, index) => (
+                        <Comment
+                          key={index}
+                          index={index}
+                          comment={emptyComment}
+                          sessionID=""
+                          userID={""}
+                          loading={true}
+                        />
+                      ))
                     : comments.map((comment, index) => (
                         <Comment
                           key={index}
@@ -421,44 +516,3 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
 };
 
 export default Card;
-
-function formatSessionDate(isoString: string) {
-  const sessionDate = new Date(isoString);
-  const now = new Date();
-  const isToday = now.toDateString() === sessionDate.toDateString();
-  const isYesterday =
-    new Date(now.setDate(now.getDate() - 1)).toDateString() ===
-    sessionDate.toDateString();
-
-  const timeString = sessionDate.toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  if (isToday) {
-    return `Today at ${timeString}`;
-  } else if (isYesterday) {
-    return `Yesterday at ${timeString}`;
-  } else {
-    return (
-      sessionDate.toLocaleDateString([], {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }) + ` at ${timeString}`
-    );
-  }
-}
-
-function formatSessionTime(seconds: number) {
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const remainingSeconds = seconds % 60;
-
-  let result = "";
-  if (hours > 0) result += `${hours}hr `;
-  if (minutes > 0) result += `${minutes}m `;
-  result += `${remainingSeconds}s`;
-
-  return result.trim();
-}

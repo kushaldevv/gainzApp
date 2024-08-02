@@ -96,8 +96,7 @@ const UserScrollView = ({
                 {notisContent && !loading && (
                   <SizableText
                     size={"$3"}
-                    // fontFamily={"$mono"}
-                    lineHeight={"$1"}
+                    lineHeight={"$1"} fontFamily={'$mono'}
                   >
                     {notiBody(notiType!)}
                   </SizableText>
@@ -105,7 +104,7 @@ const UserScrollView = ({
                 {notisContent && !loading && (
                   <SizableText
                     size="$3"
-                    // fontFamily="$mono"
+                    fontFamily="$mono"
                     col={"$gray10"}
                     lineHeight={"$1"}
                   >

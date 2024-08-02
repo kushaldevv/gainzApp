@@ -293,7 +293,7 @@ const Profile = ({ userID }: Types.ProfileProps) => {
             >
               Your activity
             </Text>
-            <XStack
+            {userProfile?.highestDuration.date ? <XStack
               pt="$2.5"
               alignItems="center"
               gap="$3"
@@ -307,7 +307,7 @@ const Profile = ({ userID }: Types.ProfileProps) => {
                   fontFamily={"$mono"}
                   fontSize={"$4"}
                 >
-                  {formatSessionTime(userProfile?.highestDuration.duration!, true)}
+                  {(formatSessionTime(userProfile?.highestDuration.duration!, true)) || ''}
                 </Text>
               </View>
               <Text
@@ -317,7 +317,7 @@ const Profile = ({ userID }: Types.ProfileProps) => {
               >
                 {formatSessionDate(userProfile?.highestDuration.date!)}
               </Text>
-            </XStack>
+            </XStack> : <Text></Text>}
             <XStack
               gap="$3"
               pos={"absolute"}

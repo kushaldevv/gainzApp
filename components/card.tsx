@@ -37,6 +37,7 @@ import Comment from "./comment";
 import InnerCard from "./innerCard";
 import { formatSessionDate, formatSessionTime } from "@/services/utilities";
 import DropDownMenu from "./dropDownMenu";
+import { useUser } from "@clerk/clerk-expo";
 
 const emptyComment: Types.Comment = {
   user: {
@@ -50,7 +51,7 @@ const emptyComment: Types.Comment = {
 };
 
 const Card = ({ session: initialSession, loading, userDetails: user }: Types.CardProps) => {
-  // const { user } = useUser();
+  // const userID = useUser().user?.id;
   const headerHeight = useHeaderHeight();
   const theme = useTheme();
   const router = useRouter();
@@ -283,7 +284,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
             pos="absolute"
             right="$0"
           >
-            <DropDownMenu/>
+            <DropDownMenu isUser={initialSession.user.id == user?.id}/>
           </View>
         </XStack>
         <Skeleton

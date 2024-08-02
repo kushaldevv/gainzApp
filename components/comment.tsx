@@ -74,7 +74,7 @@ const Comment = ({
             </XStack>
           </Skeleton>
           <Skeleton colorMode={skeletonColorScheme} width={"80%"}>
-            <Paragraph lineHeight={"$1"} fontSize={"$2"} textAlign="left">
+            <Paragraph fontFamily={'$mono'} lineHeight={"$1"} fontSize={"$2"} textAlign="left">
               {comment.body}
             </Paragraph>
           </Skeleton>

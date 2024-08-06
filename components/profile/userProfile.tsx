@@ -2,17 +2,17 @@ import { getUserProfile } from "@/services/apiCalls";
 import * as Types from "@/types";
 import { useClerk, useUser } from "@clerk/clerk-expo";
 import MaskedView from "@react-native-masked-view/masked-view";
-import { X, ArrowUpRight, Dumbbell } from "@tamagui/lucide-icons";
+import { LogOut, ArrowUpRight, Dumbbell } from "@tamagui/lucide-icons";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
-import { Avatar, Button, Circle, Text, View, XStack, YStack } from "tamagui";
+import { Avatar, Button, Circle, Spinner, Text, View, XStack, YStack } from "tamagui";
 import { LinearGradient } from "tamagui/linear-gradient";
 import { formatSessionDate, formatSessionTime, getPastSevenDays } from "@/services/utilities";
 import { Skeleton } from "moti/skeleton";
+import ContextMenuView from "./contextMenu";
 
 const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
-  // const { signOut } = useClerk();
   const colorMode = useColorScheme();
   const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
   const skeletonColorScheme = useColorScheme() == "dark" ? "light" : "dark" || "light";
@@ -79,6 +79,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
             colorMode={skeletonColorScheme}
             radius={"round"}
           >
+            <ContextMenuView label={'Update picture'}>
             <Circle
               size="$9"
               backgroundColor={"$background"}
@@ -94,10 +95,13 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                 <Avatar.Fallback backgroundColor="$blue10" />
               </Avatar>
             </Circle>
+            </ContextMenuView>
+
           </Skeleton>
 
           <YStack gap="$4">
             <Skeleton colorMode={skeletonColorScheme}>
+              <ContextMenuView label={'Update name'}>
               <Text
                 fontWeight="$11"
                 fontFamily={"$mono"}
@@ -107,6 +111,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
               >
                 {userProfile?.name}
               </Text>
+              </ContextMenuView>
             </Skeleton>
             <Skeleton colorMode={skeletonColorScheme}>
               <XStack gap="$6">

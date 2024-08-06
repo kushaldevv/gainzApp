@@ -77,8 +77,8 @@ const UserScrollView = ({
                   onPress={() => {
                     if (loggedInUser !== user.id) {
                       router.push({
-                        pathname: "[user]",
-                        params: { userIdParam: user.id },
+                        pathname: "/[user]",
+                        params: { userIdParam: user.id, userNameParam: user.name },
                       });
                     }
                   }}

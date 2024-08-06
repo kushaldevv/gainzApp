@@ -99,7 +99,8 @@ export interface Noti extends NotiContent {
     user: User;
 };
 
-export type ProfileProps = {
-    userID?: string;
+export type UserProfileProps = {
+    userID: string;
+    isPublicProfile: boolean;
   };
   

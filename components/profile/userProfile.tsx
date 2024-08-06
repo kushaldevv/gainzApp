@@ -3,7 +3,7 @@ import * as Types from "@/types";
 import { useClerk, useUser } from "@clerk/clerk-expo";
 import MaskedView from "@react-native-masked-view/masked-view";
 import { X, ArrowUpRight, Dumbbell } from "@tamagui/lucide-icons";
-import { router, useFocusEffect } from "expo-router";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
 import { Avatar, Button, Circle, Text, View, XStack, YStack } from "tamagui";
@@ -11,12 +11,7 @@ import { LinearGradient } from "tamagui/linear-gradient";
 import { formatSessionDate, formatSessionTime, getPastSevenDays } from "@/services/utilities";
 import { Skeleton } from "moti/skeleton";
 
-
-const Profile = ({ userID }: Types.ProfileProps) => {
-  const { user } = useUser();
-  if (!userID) {
-    userID = user?.id;
-  }
+const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
   // const { signOut } = useClerk();
   const colorMode = useColorScheme();
   const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
@@ -46,7 +41,7 @@ const Profile = ({ userID }: Types.ProfileProps) => {
     if (!userProfile) return;
     if (userProfile.following > 0) {
       router.push({
-        pathname: "/following",
+        pathname: isPublicProfile ? "(home)/(profile)/following" : "(tabs)/(profile)/following",
         params: {
           userID: userID, followingParam: JSON.stringify(userProfile.following),
         },
@@ -58,7 +53,7 @@ const Profile = ({ userID }: Types.ProfileProps) => {
     if (!userProfile) return;
     if (userProfile.followers > 0) {
       router.push({
-        pathname: "/followers",
+        pathname: isPublicProfile ?  "(home)/(profile)/followers" : "(tabs)/(profile)/followers",
         params: {
           userID: userID, followersParam: JSON.stringify(userProfile.followers),
         },
@@ -140,7 +135,7 @@ const Profile = ({ userID }: Types.ProfileProps) => {
                     fontWeight="bold"
                     fontSize="$5"
                   >
-                    {userProfile?.following}
+                    {(userProfile?.following)}
                   </Text>
                   <Text
                     fontFamily={"$mono"}
@@ -367,4 +362,4 @@ const Profile = ({ userID }: Types.ProfileProps) => {
   );
 };
 
-export default Profile;
+export default UserProfile;

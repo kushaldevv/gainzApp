@@ -24,8 +24,6 @@ export default function HomeLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: true,
-        headerBackTitleVisible: true,
         headerStyle: {
           backgroundColor: backgroundColor,
         },
@@ -61,7 +59,6 @@ export default function HomeLayout() {
         name="search"
         options={{
           headerShown: true,
-          title: "Search",
           headerTitle: () => (
             <XStack
               alignItems="center"
@@ -104,13 +101,19 @@ export default function HomeLayout() {
         name="notis"
         options={{
           title: "Notifications",
-          headerBackTitle: "Home",
         }}
       />
       <Stack.Screen
         name="likes"
         options={{
           title: "Likes",
+        }}
+      />
+      <Stack.Screen
+        name="[user]"
+        options={{
+          title: "Profile",
+          
         }}
       />
     </Stack>

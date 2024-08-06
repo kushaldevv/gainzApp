@@ -9,19 +9,13 @@ export default function ProfileLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: true,
-        headerBackTitleVisible: true,
-        headerStyle: {
-          backgroundColor: backgroundColor,
-        },
-        headerTitleStyle: { color: headerTintColor },
-        headerTintColor: headerTintColor,
+        headerShown: false,
       }}
     >
       <Stack.Screen
-        name="[user]"
+        name="index"
         options={{
-          title: "You",
+          title: "Profile",
         }}
       />
       <Stack.Screen

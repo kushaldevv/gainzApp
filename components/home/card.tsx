@@ -88,8 +88,8 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
 
   const handleProfileScreen = () => {
     router.push({
-      pathname: "./(profile)",
-      params: { userID: session.user.id, fromHome: "true" },
+      pathname: "/[user]",
+      params: { userIdParam: session.user.id, userName: session.user.name},
     });
   };
 
@@ -284,7 +284,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
             pos="absolute"
             right="$0"
           >
-            <DropDownMenu isUser={initialSession.user.id == user?.id}/>
+            <DropDownMenu isUser={initialSession.user.id == user?.id} />
           </View>
         </XStack>
         <Skeleton
@@ -465,13 +465,12 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
                   >
                     Comments
                   </SizableText>
-                  <View
-                    pos="absolute"
-                    right="$0"
+                  <TouchableOpacity
+                    style={{ position: "absolute", right: 0 }}
                     onPress={() => handleDismissModalPress()}
                   >
                     <X size="$2" />
-                  </View>
+                  </TouchableOpacity>
                 </XStack>
               </View>
               <ScrollView

@@ -148,7 +148,7 @@ export const postUser = async(userID: string, name: string) => {
       "searchName"  : name.toLowerCase(),
       "name": name,
       "pfp": `https://ui-avatars.com/api/?name=${name.charAt(0)}&background=00cccc&color=fff`, 
-      "following": [userID],
+      "following": [],
       "followers": [],
       "sessions": {},
       "notis": [],
@@ -289,7 +289,8 @@ export const getUserProfile = async (userID: string): Promise<Types.UserProfile>
 
 export const getFollowingSessions = async (userID: string) => {
   try {
-    const following = await getUserFollowingList(userID) as string[];
+    const following = (await getUserFollowingList(userID) as string[])
+    following.push(userID);
     const followingSessions = await Promise.all(following.map(async (friend) => getUserSessions(friend, userID)));
     const flattenedSessions = followingSessions.flat() as Types.Session[];
 
@@ -411,7 +412,9 @@ export const getUserFollowing = async (userID: string) => {
   try {
     // Make a GET request to fetch the following for a user
     const response = await axios.get(`${API_URL}/user/following?userID=${userID}`);
-    const following = await Promise.all(response.data.map(async (followingID: string) => await getUser(followingID)));
+    const following = await Promise.all(response.data.map(async (followingID: string) => 
+       await getUser(followingID)
+    ));
     return following as Types.User[];
   } catch (error) {
     // Re-throw the error for the caller to handle

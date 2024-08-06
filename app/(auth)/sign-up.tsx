@@ -1,6 +1,6 @@
-import { Alert } from "@/components/alertDialog";
-import { FormCard } from "@/components/layoutParts";
-import { useShakeAnimation } from "@/components/shakeAnimation";
+import { Alert } from "@/components/auth/alertDialog";
+import { FormCard } from "@/components/auth/layoutParts";
+import { useShakeAnimation } from "@/components/auth/shakeAnimation";
 import { postUser } from "@/services/apiCalls";
 import { useOAuth, useSignUp } from "@clerk/clerk-expo";
 import { AntDesign } from "@expo/vector-icons";

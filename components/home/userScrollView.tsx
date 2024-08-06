@@ -2,44 +2,46 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Avatar, ScrollView, SizableText, XStack, Button, View } from "tamagui";
 import * as Types from "@/types";
 import { Skeleton } from "moti/skeleton";
-import { useColorScheme } from "react-native";
+import { TouchableOpacity, useColorScheme } from "react-native";
 import { appendFollowing, getUserFollowingList } from "@/services/apiCalls";
 import { useUser } from "@clerk/clerk-expo";
+import { router } from "expo-router";
 
 const UserScrollView = ({
   userList,
   loading,
   notisContent,
-  followingScreen
+  followingScreen,
 }: Types.UserScrollViewProps) => {
   const { user } = useUser();
+  const loggedInUser = user?.id;
   const skeletonColorScheme = useColorScheme() === "dark" ? "light" : "dark";
-  const [following, setFollowing] = useState<string[]>([])
+  const [following, setFollowing] = useState<string[]>([]);
   const [followingLoading, setFollowingLoading] = useState(false);
   const isFollowingScreen = followingScreen || false;
 
   useEffect(() => {
     fetchFollowingList();
   }, []);
-  
+
   const fetchFollowingList = async () => {
-    setFollowingLoading(true)
+    setFollowingLoading(true);
     try {
-      if (user?.id) {
-        const data = await getUserFollowingList(user?.id as string);
+      if (loggedInUser) {
+        const data = await getUserFollowingList(loggedInUser);
         setFollowing(data);
       }
     } catch (error) {
       console.log("Error: ", error);
     } finally {
-      setFollowingLoading(false)
+      setFollowingLoading(false);
     }
-  }
+  };
 
   const postFollow = async (followingID: string) => {
     try {
-      await appendFollowing(user?.id!, followingID);
-      setFollowing(prev => [...prev, followingID]);
+      await appendFollowing(loggedInUser!, followingID);
+      setFollowing((prev) => [...prev, followingID]);
     } catch (error) {
       console.error("Error following user:", error);
     }
@@ -71,13 +73,24 @@ const UserScrollView = ({
                 radius="round"
                 colorMode={skeletonColorScheme}
               >
-                <Avatar
-                  circular
-                  size="$4"
+                <TouchableOpacity
+                  onPress={() => {
+                    if (loggedInUser !== user.id) {
+                      router.push({
+                        pathname: "[user]",
+                        params: { userIdParam: user.id },
+                      });
+                    }
+                  }}
                 >
-                  <Avatar.Image src={user.pfp} />
-                  <Avatar.Fallback backgroundColor="$blue10" />
-                </Avatar>
+                  <Avatar
+                    circular
+                    size="$4"
+                  >
+                    <Avatar.Image src={user.pfp} />
+                    <Avatar.Fallback backgroundColor="$blue10" />
+                  </Avatar>
+                </TouchableOpacity>
               </Skeleton>
               <View ml="$3">
                 <Skeleton
@@ -96,7 +109,8 @@ const UserScrollView = ({
                 {notisContent && !loading && (
                   <SizableText
                     size={"$3"}
-                    lineHeight={"$1"} fontFamily={'$mono'}
+                    lineHeight={"$1"}
+                    fontFamily={"$mono"}
                   >
                     {notiBody(notiType!)}
                   </SizableText>
@@ -113,11 +127,11 @@ const UserScrollView = ({
                 )}
               </View>
             </XStack>
-            {showButton ? (
+            {showButton && loggedInUser != user.id ? (
               <Skeleton
                 colorMode={skeletonColorScheme}
                 height={32}
-                show = {(followingLoading && !isFollowingScreen) || loading }
+                show={(followingLoading && !isFollowingScreen) || loading}
               >
                 <Button
                   disabled={isFollowingScreen || alreadyFollowing}
@@ -132,6 +146,7 @@ const UserScrollView = ({
                     borderColor: "$borderColorFocus",
                   }}
                   onPress={() => postFollow(user.id)}
+                  width={95}
                 >
                   {isFollowingScreen || alreadyFollowing ? "Following" : "Follow"}
                 </Button>
@@ -141,7 +156,7 @@ const UserScrollView = ({
         </Skeleton.Group>
       );
     },
-    [ postFollow, skeletonColorScheme, loading, isFollowingScreen]
+    [postFollow, skeletonColorScheme, loading, isFollowingScreen]
   );
 
   const memoizedUserList = useMemo(() => userList, [userList]);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import * as Types from "../types";
+import * as Types from "../../types";
 import { BookOpen, X, Weight } from "@tamagui/lucide-icons";
 import Svg, { Path } from "react-native-svg";
 import { XStack, YStack, SizableText, Circle, View, ScrollView, useTheme } from "tamagui";
@@ -78,7 +78,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 const InnerCard = ({ exercises }: Types.InnerCardProps) => {
   const theme = useTheme();
   const colorMode = useColorScheme();
-  const gradientColor = colorMode === "dark" ? "#006666" : '#33e6e6';
+  const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
   const [showDetails, setShowDetails] = useState(false);
   const [detailExercise, setDetailExercise] = useState<Types.Exercise | null>(null);
   return (
@@ -93,15 +93,15 @@ const InnerCard = ({ exercises }: Types.InnerCardProps) => {
         borderRadius={"$6"}
         p={"$3"}
       > */}
-        <LinearGradient
-          width={"22.5%"}
-          height={"$15"}
-          p={"$3"}
-          borderRadius="$6"
-          colors={['#00cccc', gradientColor]}
-          start={[1, 0]}
-          end={[0, 1]}
-        >
+      <LinearGradient
+        width={"22.5%"}
+        height={"$15"}
+        p={"$3"}
+        borderRadius="$6"
+        colors={["#00cccc", gradientColor]}
+        start={[1, 0]}
+        end={[0, 1]}
+      >
         <View
           height={"$5"}
           backgroundColor={"#009999"}
@@ -137,8 +137,7 @@ const InnerCard = ({ exercises }: Types.InnerCardProps) => {
         >
           Reps
         </SizableText>
-        </LinearGradient>
-      
+      </LinearGradient>
 
       <YStack
         width={"75%"}

@@ -1,6 +1,6 @@
 import { SignedIn, useAuth } from "@clerk/clerk-expo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-
+import Entypo from '@expo/vector-icons/Entypo';
 import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
@@ -60,11 +60,11 @@ function TabsProvider() {
             }}
           />
           <Tabs.Screen
-            name="post"
+            name="stats"
             options={{
-              title: "Post",
+              title: "Statistics",
               tabBarIcon: ({ color }) => (
-                <FontAwesome size={25} name="plus-square" color={color} />
+                <Entypo size={24} name="bar-graph" color={color} />
               ),
             }}
           />

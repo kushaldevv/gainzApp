@@ -113,3 +113,7 @@ export type UserProfileProps = {
     isPublicProfile: boolean;
   };
   
+export type ExercisesContextType = {
+    exercises: ExerciseViewProp[];
+    setExercises: React.Dispatch<React.SetStateAction<ExerciseViewProp[]>>;
+};

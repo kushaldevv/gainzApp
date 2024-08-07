@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { useState } from 'react';
 import { useColorScheme } from 'react-native';
 import { FAB, Portal } from 'react-native-paper';
@@ -33,14 +34,14 @@ const PostFAB = () => {
               label: 'Live Workout',
               color: tintColor,
               style: {shadowOpacity:0.2, backgroundColor: '#edf7f7'},
-              onPress: () => console.log('Pressed notifications'),
+              onPress: () => router.push('/live'),
             },
             {
               icon: 'pencil',
               label: 'Manual Workout',
               color: tintColor,
               style: {shadowOpacity:0.2, backgroundColor: '#edf7f7'},
-              onPress: () => console.log('Pressed email'),
+              onPress: () => router.push('/manual'),
             }
           ]}
           onStateChange={onStateChange}

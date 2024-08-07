@@ -71,6 +71,7 @@ export default function HomeLayout() {
                 pl="$8"
                 backgroundColor={"$gray4"}
                 textContentType="name"
+                fontFamily={"$mono"}
                 placeholder="Search for people on BondFit"
                 borderRadius="$10"
                 returnKeyType="search"
@@ -113,7 +114,12 @@ export default function HomeLayout() {
         name="[user]"
         options={{
           title: "Profile",
-          
+        }}
+      />
+      <Stack.Screen
+        name="(post)"
+        options={{
+          title: "Post",
         }}
       />
     </Stack>

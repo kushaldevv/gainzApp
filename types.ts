@@ -43,6 +43,15 @@ export type Exercise = {
     weight: number[];
 };
 
+export type ExerciseViewProp = {
+    name: string;
+    set: ExerciseSetViewProp[];
+}
+
+export type ExerciseSetViewProp = {
+    reps: number;
+    weight: number;
+}
 
 export type CardProps = {
   session: Session;

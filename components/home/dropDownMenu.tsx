@@ -46,7 +46,6 @@ const DropDownMenu = ({ isUser }: { isUser: boolean }) => {
         </DropdownMenu.Item>
         <DropdownMenu.Item
           key={"1"}
-          textValue="Delete"
         >
           <DropdownMenu.ItemTitle>
             {isUser ? "Delete" : "Unfollow"}
@@ -58,7 +57,6 @@ const DropDownMenu = ({ isUser }: { isUser: boolean }) => {
               pointSize: 18,
               weight: "semibold",
               scale: "medium",
-              color: isUser ? "red" : "black",
             }}
           />
         </DropdownMenu.Item>

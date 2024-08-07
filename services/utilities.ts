@@ -25,7 +25,10 @@ export function formatSessionDate(isoString: string) {
       );
     }
   }
-  
+  export const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  export const daysFull = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+
   export function formatSessionTime(seconds: number, short?: boolean) {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -42,7 +45,6 @@ export function formatSessionDate(isoString: string) {
   }
   
   export const getPastSevenDays = () => {
-    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const result = [];
     const today = new Date();
   

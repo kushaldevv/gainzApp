@@ -153,12 +153,13 @@ export default function SignInScreen() {
       </H1>
       <View flexDirection="column" gap="$3">
         <View flexDirection="column">
-          <Label>Email</Label>
+          <Label fontFamily={'$mono'}>Email</Label>
           <Animated.View style={[shake]}>
             <XStack>
               <Input
                 flex={1}
                 pl="$7"
+                fontFamily={'$mono'}
                 textContentType="emailAddress"
                 placeholder="email@example.com"
                 borderColor={error ? "$red10" : "$borderColor"}
@@ -175,7 +176,7 @@ export default function SignInScreen() {
             alignItems="center"
             justifyContent="space-between"
           >
-            <Label>Password</Label>
+            <Label fontFamily={'$mono'}>Password</Label>
             <ForgotPasswordLink />
           </View>
           <Animated.View style={[shake]}>
@@ -184,6 +185,7 @@ export default function SignInScreen() {
                 flex={1}
                 pl="$7"
                 pr="$7"
+                fontFamily={'$mono'}
                 borderColor={error ? "$red10" : "$borderColor"}
                 focusStyle={{
                   borderColor: error ? "$red10" : "$borderColorFocus",
@@ -229,7 +231,7 @@ export default function SignInScreen() {
           borderColor:'$borderColorFocus'
         }}
       >
-        <Button.Text>Sign In</Button.Text>
+        <Button.Text fontFamily={'$mono'}>Sign In</Button.Text>
         {loading && <Spinner size="small" color="$accentColor" />}
       </Button>
       <View flexDirection="column" gap="$3" width="100%" alignItems="center">
@@ -250,13 +252,13 @@ export default function SignInScreen() {
               <Button.Icon>
                 <AntDesign name="google" size={24} />
               </Button.Icon>
-              <Button.Text>Continue with Google</Button.Text>
+              <Button.Text fontFamily={'$mono'}>Continue with Google</Button.Text>
             </Button>
             <Button flex={1} minWidth="100%" onPress={onApplePress}>
               <Button.Icon>
                 <AntDesign name="apple1" size={24} />
               </Button.Icon>
-              <Button.Text>Continue with Apple</Button.Text>
+              <Button.Text fontFamily={'$mono'}>Continue with Apple</Button.Text>
             </Button>
           </View>
         </View>
@@ -268,7 +270,7 @@ export default function SignInScreen() {
 
 const SignUpLink = () => {
   return (
-    <Paragraph textDecorationStyle="unset">
+    <Paragraph textDecorationStyle="unset" fontFamily={'$mono'}>
       Don&apos;t have an account?{" "}
       <Link href={"/sign-up"}>
         <SizableText
@@ -276,6 +278,7 @@ const SignUpLink = () => {
             color: "$colorHover",
           }}
           textDecorationLine="underline"
+          fontFamily={'$mono'}
         >
           Sign Up
         </SizableText>
@@ -294,6 +297,7 @@ const ForgotPasswordLink = () => {
         cursor="pointer"
         size="$1"
         marginTop="$1"
+        fontFamily={'$mono'}
       >
         Forgot your password?
       </Paragraph>

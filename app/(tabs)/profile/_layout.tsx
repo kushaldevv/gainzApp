@@ -1,6 +1,6 @@
-import { useClerk } from "@clerk/clerk-expo";
+import { useClerk, useUser } from "@clerk/clerk-expo";
 import { LogOut } from "@tamagui/lucide-icons";
-import { Stack } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
 import { Circle, Spinner } from "tamagui";
@@ -11,6 +11,9 @@ export default function ProfileLayout() {
   const headerTintColor = colorScheme == "dark" ? "rgb(255,255,255)" : "rgb(18,18,18)";
   const { signOut } = useClerk();
   const [showSpinner, setShowSpinner] = useState(false);
+  const {user} = useUser();
+  const params = useLocalSearchParams()
+
   return (
     <Stack
       screenOptions={{
@@ -26,8 +29,8 @@ export default function ProfileLayout() {
       <Stack.Screen
         name="[user]"
         options={{
-          title: "You",
-          headerRight: () => (
+          title: params.userIdParam as string || "Profile",
+          headerRight: () => (!params.userIdParam) && ( 
             <TouchableOpacity
               style={{ zIndex: 1, position: "absolute", right: 13, marginVertical: 13 }}
               onPress={() => {

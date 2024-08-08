@@ -12,9 +12,6 @@ const emptyUser: Types.User = {
 };
 
 const UserFollowers = ({followerCount, userID} : {followerCount: number, userID : string}) => {
-//   const params = useLocalSearchParams();
-//   const { userID, followersParam } = params;
-//   const followersCount = parseInt(followersParam as string);
   const [followers, setFollowers] = React.useState<Types.User[]>([]);
   const [loading, setLoading] = React.useState(false);
 

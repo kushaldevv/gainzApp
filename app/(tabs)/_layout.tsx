@@ -69,7 +69,7 @@ function TabsProvider() {
             }}
           />
           <Tabs.Screen
-            name="(profile)"
+            name="profile"
             options={{
               headerShown: false,
               title: "Profile",

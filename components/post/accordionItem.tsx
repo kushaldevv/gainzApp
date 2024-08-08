@@ -8,7 +8,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { ListItem, YGroup, Text, XStack, YStack, Input, Square } from "tamagui";
+import { ListItem, YGroup, Text, XStack, YStack, Input, Square, Separator } from "tamagui";
 import * as Types from "@/types";
 import { ExercisesContext } from "@/app/(tabs)/(home)/(post)/_layout";
 
@@ -128,7 +128,7 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
   return (
     <YGroup
       width={"100%"}
-      // separator={<Separator />}
+      separator={<Separator />}
     >
       <YGroup.Item>
         <ListItem
@@ -142,6 +142,8 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
             fontSize={"$4"}
             fontFamily={"$mono"}
             fontWeight={600}
+            textAlign="center"
+            w={"60%"}
           >
             {exercise.name}
           </Text>

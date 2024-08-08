@@ -1,24 +1,26 @@
 import { getUserProfile } from "@/services/apiCalls";
+import { formatSessionDate, formatSessionTime, getPastSevenDays } from "@/services/utilities";
 import * as Types from "@/types";
-import { useClerk, useUser } from "@clerk/clerk-expo";
-import MaskedView from "@react-native-masked-view/masked-view";
-import { LogOut, ArrowUpRight, Dumbbell } from "@tamagui/lucide-icons";
-import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
-import React, { useCallback, useEffect, useState } from "react";
+import { ArrowUpRight, Dumbbell, UserCheck } from "@tamagui/lucide-icons";
+import { router } from "expo-router";
+import { Skeleton } from "moti/skeleton";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
 import { Avatar, Button, Circle, Spinner, Text, View, XStack, YStack } from "tamagui";
 import { LinearGradient } from "tamagui/linear-gradient";
-import { formatSessionDate, formatSessionTime, getPastSevenDays } from "@/services/utilities";
-import { Skeleton } from "moti/skeleton";
 import ContextMenuView from "./contextMenu";
+import { useClerk, useUser } from "@clerk/clerk-expo";
 
 const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
   const colorMode = useColorScheme();
   const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
   const skeletonColorScheme = useColorScheme() == "dark" ? "light" : "dark" || "light";
   const [userProfile, setUserProfile] = useState<Types.UserProfile | null>(null);
-  // const [followingList, setFollowingList] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const { signOut } = useClerk();
+  const [showSpinner, setShowSpinner] = useState(false);
+  const {user} = useUser();
 
   useEffect(() => {
     fetchUserProfile();
@@ -41,9 +43,10 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
     if (!userProfile) return;
     if (userProfile.following > 0) {
       router.push({
-        pathname: isPublicProfile ? "(home)/(profile)/following" : "(tabs)/(profile)/following",
+        pathname: isPublicProfile ? "/following" : "profile/following",
         params: {
-          userID: userID, followingParam: JSON.stringify(userProfile.following),
+          userID: userID,
+          followingParam: JSON.stringify(userProfile.following),
         },
       });
     }
@@ -53,14 +56,14 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
     if (!userProfile) return;
     if (userProfile.followers > 0) {
       router.push({
-        pathname: isPublicProfile ?  "(home)/(profile)/followers" : "(tabs)/(profile)/followers",
+        pathname: isPublicProfile ? "/followers" : "profile/followers",
         params: {
-          userID: userID, followersParam: JSON.stringify(userProfile.followers),
+          userID: userID,
+          followersParam: JSON.stringify(userProfile.followers),
         },
       });
     }
   };
-
   return (
     <YStack
       flex={1}
@@ -79,42 +82,57 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
             colorMode={skeletonColorScheme}
             radius={"round"}
           >
-            <ContextMenuView label={'Update picture'}>
-            <Circle
-              size="$9"
-              backgroundColor={"$background"}
-              borderWidth="$1"
-              borderColor={"#00cccc"}
-            >
-              <Avatar
-                circular
-                size="$8"
-                pos={"absolute"}
-              >
-                <Avatar.Image src={userProfile?.pfp} />
-                <Avatar.Fallback backgroundColor="$blue10" />
-              </Avatar>
-            </Circle>
-            </ContextMenuView>
-
+            <View>
+              <ContextMenuView label={"Update picture"}>
+                <Circle
+                  size="$8"
+                  backgroundColor={"$background"}
+                  borderWidth="$1"
+                  borderColor={"#00cccc"}
+                >
+                  <Avatar
+                    circular
+                    size="$7"
+                    pos={"absolute"}
+                  >
+                    <Avatar.Image src={userProfile?.pfp} />
+                    <Avatar.Fallback backgroundColor="$blue10" />
+                  </Avatar>
+                </Circle>
+              </ContextMenuView>
+              <TouchableOpacity>
+                <Circle
+                  size="$3"
+                  backgroundColor={"$gray3"}
+                  pos="absolute"
+                  right="$-3"
+                  bottom="$-1"
+                >
+                  <UserCheck size="$1" />
+                </Circle>
+              </TouchableOpacity>
+            </View>
           </Skeleton>
 
           <YStack gap="$4">
             <Skeleton colorMode={skeletonColorScheme}>
-              <ContextMenuView label={'Update name'}>
-              <Text
-                fontWeight="$11"
-                fontFamily={"$mono"}
-                fontSize="$8"
-                width={"$15"}
-                minHeight={"$2"}
-              >
-                {userProfile?.name}
-              </Text>
+              <ContextMenuView label={"Update name"}>
+                <Text
+                  fontWeight="$11"
+                  fontFamily={"$mono"}
+                  fontSize="$8"
+                  width={"$15"}
+                  minHeight={"$2"}
+                >
+                  {userProfile?.name}
+                </Text>
               </ContextMenuView>
             </Skeleton>
             <Skeleton colorMode={skeletonColorScheme}>
-              <XStack gap="$6">
+              <XStack
+                gap="$4"
+                alignItems="center"
+              >
                 <TouchableOpacity
                   onPress={() => handleFollowersPress()}
                   style={{ alignItems: "center" }}
@@ -140,7 +158,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                     fontWeight="bold"
                     fontSize="$5"
                   >
-                    {(userProfile?.following)}
+                    {userProfile?.following}
                   </Text>
                   <Text
                     fontFamily={"$mono"}
@@ -293,31 +311,35 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
             >
               Your activity
             </Text>
-            {userProfile?.highestDuration.date ? <XStack
-              pt="$2.5"
-              alignItems="center"
-              gap="$3"
-            >
-              <View
-                backgroundColor={"$background"}
-                borderRadius={"$6"}
-                p="$2"
+            {userProfile?.highestDuration.date ? (
+              <XStack
+                pt="$2.5"
+                alignItems="center"
+                gap="$3"
               >
+                <View
+                  backgroundColor={"$background"}
+                  borderRadius={"$6"}
+                  p="$2"
+                >
+                  <Text
+                    fontFamily={"$mono"}
+                    fontSize={"$4"}
+                  >
+                    {formatSessionTime(userProfile?.highestDuration.duration!, true) || ""}
+                  </Text>
+                </View>
                 <Text
                   fontFamily={"$mono"}
+                  themeInverse
                   fontSize={"$4"}
                 >
-                  {(formatSessionTime(userProfile?.highestDuration.duration!, true)) || ''}
+                  {formatSessionDate(userProfile?.highestDuration.date!)}
                 </Text>
-              </View>
-              <Text
-                fontFamily={"$mono"}
-                themeInverse
-                fontSize={"$4"}
-              >
-                {formatSessionDate(userProfile?.highestDuration.date!)}
-              </Text>
-            </XStack> : <Text></Text>}
+              </XStack>
+            ) : (
+              <Text></Text>
+            )}
             <XStack
               gap="$3"
               pos={"absolute"}
@@ -361,7 +383,20 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
             </XStack>
           </YStack>
         </Skeleton>
-        {/* <Button onPress={() => signOut()}>Log out</Button>  */}
+        <Button
+          backgroundColor={"$colorTransparent"}
+          borderColor={"#00cccc"}
+          borderWidth={1}
+          fontFamily={"$mono"}
+          fontWeight={600}
+          fontSize={"$5"}
+          color='#00cccc'
+          borderRadius="$6"
+          onPress={() => {signOut(); setShowSpinner(true);}}
+        >
+          Log out
+          {showSpinner && <Spinner size='small' color={'#00cccc'}/>}
+        </Button>
       </Skeleton.Group>
     </YStack>
   );

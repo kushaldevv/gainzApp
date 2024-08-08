@@ -89,7 +89,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
   const handleProfileScreen = () => {
     router.push({
       pathname: "/[user]",
-      params: { userIdParam: session.user.id, userName: session.user.name},
+      params: { userIdParam: session.user.id, userNameParam: session.user.name},
     });
   };
 

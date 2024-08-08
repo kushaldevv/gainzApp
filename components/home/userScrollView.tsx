@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Avatar, ScrollView, SizableText, XStack, Button, View } from "tamagui";
+import { Avatar, ScrollView, SizableText, XStack, Button, View, Text } from "tamagui";
 import * as Types from "@/types";
 import { Skeleton } from "moti/skeleton";
 import { TouchableOpacity, useColorScheme } from "react-native";
 import { appendFollowing, getUserFollowingList } from "@/services/apiCalls";
 import { useUser } from "@clerk/clerk-expo";
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 
 const UserScrollView = ({
   userList,
@@ -46,6 +46,7 @@ const UserScrollView = ({
       console.error("Error following user:", error);
     }
   };
+  const pathname = usePathname();
 
   const renderUser = useCallback(
     (user: Types.User, index: number) => {
@@ -64,6 +65,7 @@ const UserScrollView = ({
             alignItems="center"
             justifyContent="space-between"
           >
+            {/* <Text>{pathname}</Text> */}
             <XStack
               flex={1}
               alignItems="center"
@@ -77,7 +79,7 @@ const UserScrollView = ({
                   onPress={() => {
                     if (loggedInUser !== user.id) {
                       router.push({
-                        pathname: "/[user]",
+                        pathname: pathname.includes('profile') ? 'profile/[user]' : "/[user]",
                         params: { userIdParam: user.id, userNameParam: user.name },
                       });
                     }

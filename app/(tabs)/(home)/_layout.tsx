@@ -1,11 +1,12 @@
 import { BellDot, Search, UserRoundSearch, X } from "@tamagui/lucide-icons";
-import { router, Stack } from "expo-router";
+import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
 import { Input, useTheme, XStack } from "tamagui";
 export default function HomeLayout() {
   const colorScheme = useColorScheme();
   const theme = useTheme();
+  const params = useLocalSearchParams();
   const backgroundColor = colorScheme == "dark" ? "rgb(15,15,15)" : "rgb(250,250,250)";
   const headerTintColor = colorScheme == "dark" ? "rgb(255,255,255)" : "rgb(18,18,18)";
   const [query, setQuery] = useState("");
@@ -111,15 +112,30 @@ export default function HomeLayout() {
         }}
       />
       <Stack.Screen
-        name="[user]"
-        options={{
-          title: "Profile",
-        }}
-      />
-      <Stack.Screen
         name="(post)"
         options={{
           title: "Post",
+        }}
+      />
+      <Stack.Screen
+        name="[user]"
+        options={{
+          title: "Profile",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="followers"
+        options={{
+          title: "Followers",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="following"
+        options={{
+          title: "Following",
+          headerShown: true,
         }}
       />
     </Stack>

@@ -583,3 +583,41 @@ export const getNotis = async(userID: string) => {
     throw error;
   }
 }
+
+ /**
+ * If user1 unfollows user2, 
+ * remove user1 from user2's followers list 
+ * and remove user2 from user1's following list.
+ * 
+ * @param userId1 - The unique identifier of user1.
+ * @param userId2 - The unique identifier of user2.
+ * @returns A Promise that resolves when the unfollow operation completes
+ * @throws Will throw an error if the API request fails.
+ */
+ export const unfollowUser = async(userId1: string, userId2: string) => {
+  try {
+    // Send a PATCH request to unfollow a user
+    await axios.patch(`${API_URL}/user/unfollow?userID1=${userId1}&userID2=${userId2}`);
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+    throw error;
+  }
+}
+
+/**
+ * Append a like to a user's comment
+ * 
+ * @param sessionID - The unique identifier of the session.
+ * @returns A Promise that resolves when a session is removed from a user
+ * @throws Will throw an error if the API request fails.
+ */
+export const deleteSession = async(sessionID: string) => {
+  try {
+    const sessionUserID = sessionID.split('session')[0];
+    // Send a DELETE request to remove a user's session
+    await axios.delete(`${API_URL}/user/delete?userID=${sessionUserID}&sessionID=${sessionID}`);
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+    throw error;
+  }
+}

@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { Avatar, Paragraph, SizableText, XStack, YStack } from "tamagui";
 import * as Types from "../../types";
 import { Skeleton } from "moti/skeleton";
-import { useColorScheme } from "react-native";
+import { TouchableOpacity, useColorScheme } from "react-native";
 import { appendLikeToComment } from "@/services/apiCalls";
-import { useFocusEffect } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { formatSimpleDate } from "@/services/utilities";
 
 const Comment = ({ index, comment, sessionID, userID, loading }: Types.CommentProps) => {
@@ -20,6 +20,13 @@ const Comment = ({ index, comment, sessionID, userID, loading }: Types.CommentPr
     }
   });
 
+  const handleProfileScreen = () => {
+    router.push({
+      pathname: "/[user]",
+      params: { userIdParam: comment.user.id},
+    });
+  };
+  
   const postLike = async () => {
     console.log("previously liked ", like);
     if (!like) {
@@ -42,6 +49,7 @@ const Comment = ({ index, comment, sessionID, userID, loading }: Types.CommentPr
           radius={"round"}
           colorMode={skeletonColorScheme}
         >
+          <TouchableOpacity onPress={()=> { handleProfileScreen();}}>
           <Avatar
             circular
             size="$3"
@@ -49,6 +57,7 @@ const Comment = ({ index, comment, sessionID, userID, loading }: Types.CommentPr
             <Avatar.Image src={comment.user.pfp} />
             <Avatar.Fallback backgroundColor="$blue10" />
           </Avatar>
+          </TouchableOpacity>
         </Skeleton>
         <YStack
           width={"$20"}

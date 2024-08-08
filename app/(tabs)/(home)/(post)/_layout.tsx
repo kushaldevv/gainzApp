@@ -11,7 +11,6 @@ export const ExercisesContext = createContext<Types.ExercisesContextType>({
     setExercises: () => {},
   });
 
-const ModalStack = createNativeStackNavigator();
 
 export default function PostLayout() {
   const colorScheme = useColorScheme();

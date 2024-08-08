@@ -1,7 +1,7 @@
 import { getUserProfile } from "@/services/apiCalls";
 import { formatSessionDate, formatSessionTime, getPastSevenDays } from "@/services/utilities";
 import * as Types from "@/types";
-import { ArrowUpRight, Dumbbell, UserCheck } from "@tamagui/lucide-icons";
+import { ArrowUpRight, Dumbbell, LogOut, UserCheck, UserPlus } from "@tamagui/lucide-icons";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import React, { useEffect, useState } from "react";
@@ -11,20 +11,16 @@ import { LinearGradient } from "tamagui/linear-gradient";
 import ContextMenuView from "./contextMenu";
 import { useClerk, useUser } from "@clerk/clerk-expo";
 
-const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
+const UserProfile = ({ userID, isPublicProfile, following }: Types.UserProfileProps) => {
   const colorMode = useColorScheme();
   const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
   const skeletonColorScheme = useColorScheme() == "dark" ? "light" : "dark" || "light";
   const [userProfile, setUserProfile] = useState<Types.UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const { signOut } = useClerk();
-  const [showSpinner, setShowSpinner] = useState(false);
-  const {user} = useUser();
-
   useEffect(() => {
     fetchUserProfile();
-  }, []);
+  }, [userProfile?.id]);
 
   const fetchUserProfile = async () => {
     setLoading(true);
@@ -100,17 +96,19 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                   </Avatar>
                 </Circle>
               </ContextMenuView>
-              <TouchableOpacity>
-                <Circle
-                  size="$3"
-                  backgroundColor={"$gray3"}
-                  pos="absolute"
-                  right="$-3"
-                  bottom="$-1"
-                >
-                  <UserCheck size="$1" />
-                </Circle>
-              </TouchableOpacity>
+              {following != undefined && !loading && (
+                <TouchableOpacity>
+                  <Circle
+                    size="$3"
+                    backgroundColor={"$gray3"}
+                    pos="absolute"
+                    right="$-3"
+                    bottom="$-1"
+                  >
+                    {following ? <UserCheck size="$1" /> : <UserPlus size="$1" />}
+                  </Circle>
+                </TouchableOpacity>
+              )}
             </View>
           </Skeleton>
 
@@ -383,20 +381,35 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
             </XStack>
           </YStack>
         </Skeleton>
-        <Button
-          backgroundColor={"$colorTransparent"}
-          borderColor={"#00cccc"}
-          borderWidth={1}
-          fontFamily={"$mono"}
-          fontWeight={600}
-          fontSize={"$5"}
-          color='#00cccc'
-          borderRadius="$6"
-          onPress={() => {signOut(); setShowSpinner(true);}}
-        >
-          Log out
-          {showSpinner && <Spinner size='small' color={'#00cccc'}/>}
-        </Button>
+        {/* {userID == user?.id && (
+          <Skeleton
+            colorMode={skeletonColorScheme}
+            radius={14}
+          >
+            <Button
+              backgroundColor={"$colorTransparent"}
+              borderColor={"#00cccc"}
+              borderWidth={1}
+              fontFamily={"$mono"}
+              fontWeight={600}
+              fontSize={"$5"}
+              color="#00cccc"
+              borderRadius="$6"
+              onPress={() => {
+                signOut();
+                setShowSpinner(true);
+              }}
+            >
+              Log out
+              {showSpinner && (
+                <Spinner
+                  size="small"
+                  color={"#00cccc"}
+                />
+              )}
+            </Button>
+          </Skeleton>
+        )} */}
       </Skeleton.Group>
     </YStack>
   );

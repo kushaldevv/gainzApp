@@ -6,9 +6,9 @@ import { useLocalSearchParams } from 'expo-router'
 
 const Profile = () => {
   const params = useLocalSearchParams();
-  const { userIdParam } = params;
+  const { userIdParam, userFollowingParam } = params;
   return (
-   <UserProfile userID={userIdParam as string} isPublicProfile={true}/>
+   <UserProfile userID={userIdParam as string} isPublicProfile={true} following={userFollowingParam as string === 'true'}/>
   )
 }
 

@@ -111,9 +111,15 @@ export interface Noti extends NotiContent {
 export type UserProfileProps = {
     userID: string;
     isPublicProfile: boolean;
+    following?: boolean;
   };
   
 export type ExercisesContextType = {
     exercises: ExerciseViewProp[];
     setExercises: React.Dispatch<React.SetStateAction<ExerciseViewProp[]>>;
+};
+
+export type UserProfileContextType = {
+    userId: string;
+    setUserId: React.Dispatch<React.SetStateAction<string>>;
 };

@@ -77,12 +77,13 @@ const UserScrollView = ({
               >
                 <TouchableOpacity
                   onPress={() => {
-                    if (loggedInUser !== user.id) {
-                      router.push({
-                        pathname: pathname.includes('profile') ? 'profile/[user]' : "/[user]",
-                        params: { userIdParam: user.id, userNameParam: user.name },
-                      });
-                    }
+                    router.push({
+                      pathname: pathname.includes("profile") ? "profile/[user]" : "/[user]",
+                      params: {
+                        userIdParam: user.id,
+                        userFollowingParam: alreadyFollowing.toString(),
+                      },
+                    });
                   }}
                 >
                   <Avatar

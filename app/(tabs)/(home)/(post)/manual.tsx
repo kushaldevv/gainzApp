@@ -23,9 +23,11 @@ import { LinearGradient } from "tamagui/linear-gradient";
 import { useColorScheme } from "react-native";
 import { appendSession } from "@/services/apiCalls";
 import { useUser } from "@clerk/clerk-expo";
+import { useShakeAnimation } from "@/components/auth/shakeAnimation";
+import Animated from "react-native-reanimated";
 
 const ManualPost = () => {
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date(new Date().getTime() - 60 * 60 * 1000));
   const [endDate, setEndDate] = useState(new Date());
   const [startOpen, setStartOpen] = useState(false);
   const [endOpen, setEndOpen] = useState(false);
@@ -38,24 +40,40 @@ const ManualPost = () => {
   const workoutPlaceholder = daysFull[new Date().getDay()] + "'s workout";
   const locationPlaceholder = "Earth, Milky Way Galaxy";
   const { user } = useUser();
-
+  const [error, setError] = useState(false);
+  const shake = useShakeAnimation(error);
 
   const validatePost = () => {
-    if (exercises.length === 0) return false;
-    
-    
-  }
+    if (exercises.length === 0) {
+      return false;
+    }
+
+    let output = true;
+    exercises.forEach((exercise) => {
+      if (exercise.sets.length === 0) {
+        output = false;
+        return;
+      }
+      exercise.sets.forEach((set) => {
+        if (set.reps === 0 || set.weight === 0) {
+          output = false;
+          return;
+        }
+      });
+    });
+    return output;
+  };
 
   const onPressPost = async () => {
     setLoading(true);
 
     if (!isLoaded || !validatePost()) {
       setLoading(false);
+      setError(true);
+      await new Promise((resolve) => setTimeout(resolve, 1));
+      setError(false);
+      console.log("Error posting");
       return;
-    }
-
-    if (endDate.getTime() < startDate.getTime()) {
-      setEndDate(startDate);
     }
 
     const sessionKey = `${user?.id}session_${new Date().getTime()}`;
@@ -67,7 +85,7 @@ const ManualPost = () => {
         exercises: exercises.map((exercise) => exercise.name),
         comments: [],
         location: location ? location : locationPlaceholder,
-        duration: 4000,
+        duration: (endDate.getTime() - startDate.getTime()) / 1000,
         date: startDate,
       },
       exerciseData: exercises.map((exercise) => ({
@@ -76,12 +94,11 @@ const ManualPost = () => {
         lists: {
           reps: exercise.sets.map((set) => set.reps),
           weight: exercise.sets.map((set) => set.weight),
-        }
+        },
       })),
     };
 
-    if (user)
-      await appendSession(user.id, session);
+    if (user) await appendSession(user.id, session);
 
     setLoading(false);
   };
@@ -175,37 +192,41 @@ const ManualPost = () => {
           {/* <Button alignSelf="center"  borderRadius={"$5"} height="$3" size="$8" fontSize={"$5"} fontFamily="$mono" backgroundColor={"#00cccc"} mt={20}>
             Post
           </Button> */}
-          <TouchableOpacity
-            disabled={!isLoaded}
-            onPress={onPressPost}
-            style={{ marginTop: 20 }}
-          >
-            <LinearGradient
-              borderRadius="$5"
-              colors={["#00cccc", gradientColor]}
-              start={[0, 0]}
-              end={[0, 1]}
-              alignItems="center"
-              p="$3"
-              gap="$2"
-              height={"$4"}
+          <Animated.View style={[shake]}>
+            <TouchableOpacity
+              disabled={!isLoaded}
+              onPress={() => {
+                onPressPost();
+              }}
+              style={{ marginTop: 20 }}
             >
-              {loading ? (
-                <Spinner
-                  size="small"
-                  color="$accentColor"
-                />
-              ) : (
-                <Button.Text
-                  fontWeight={"$8"}
-                  fontSize={"$5"}
-                  fontFamily={"$mono"}
-                >
-                  Post
-                </Button.Text>
-              )}
-            </LinearGradient>
-          </TouchableOpacity>
+              <LinearGradient
+                borderRadius="$5"
+                colors={["#00cccc", gradientColor]}
+                start={[0, 0]}
+                end={[0, 1]}
+                alignItems="center"
+                p="$3"
+                gap="$2"
+                height={"$4"}
+              >
+                {loading ? (
+                  <Spinner
+                    size="small"
+                    color="$accentColor"
+                  />
+                ) : (
+                  <Button.Text
+                    fontWeight={"$8"}
+                    fontSize={"$5"}
+                    fontFamily={"$mono"}
+                  >
+                    Post
+                  </Button.Text>
+                )}
+              </LinearGradient>
+            </TouchableOpacity>
+          </Animated.View>
         </YGroup>
 
         <DatePicker
@@ -226,7 +247,13 @@ const ManualPost = () => {
           date={endDate}
           onConfirm={(date) => {
             setEndOpen(false);
-            setEndDate(date);
+
+            if (date.getTime() < startDate.getTime()) {
+              setEndDate(startDate);
+              setStartDate(date);
+            } else {
+              setEndDate(date);
+            }
           }}
           onCancel={() => {
             setEndOpen(false);

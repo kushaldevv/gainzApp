@@ -1,16 +1,9 @@
-import { useFocusEffect, useLocalSearchParams } from "expo-router";
-import React, { useCallback, useState } from "react";
-import {
-  Avatar,
-  Button,
-  ScrollView,
-  SizableText,
-  XStack,
-  YStack,
-} from "tamagui";
-import * as Types from "@/types";
 import UserScrollView from "@/components/userScrollView";
 import { getUserFollowers } from "@/services/apiCalls";
+import * as Types from "@/types";
+import { useLocalSearchParams } from "expo-router";
+import React, { useEffect } from "react";
+import { YStack } from "tamagui";
 
 const emptyUser: Types.User = {
   id: "",
@@ -20,34 +13,26 @@ const emptyUser: Types.User = {
 
 const UserFollowers = () => {
   const params = useLocalSearchParams();
-  const {userID, numFollowers} = params;
-  const [followers, setFollowers] = useState<Types.User[]>([])
-  const [loading, setLoading] = useState(true);
+  const { userID, followersParam } = params;
+  const followersCount = parseInt(followersParam as string);
+  const [followers, setFollowers] = React.useState<Types.User[]>([]);
+  const [loading, setLoading] = React.useState(false);
 
-  const skeletonUsers = Array.from(
-    { length: Math.min(parseInt(numFollowers as string), 10) },
-    (_, i) => emptyUser
-  );
+  const skeletonUsers = Array.from({ length: Math.min(followersCount, 10) }, (_, i) => emptyUser);
 
-  useFocusEffect(
-    useCallback(() => {
-        fetchFollowers();
-    }, [])
-  );
-  
+  useEffect(() => {
+    fetchFollowers();
+  }, []);
+
   const fetchFollowers = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      if (userID) {
-        const data = await getUserFollowers(userID as string);
-        setFollowers(data);
-      }
-    } catch (error) {
-      console.log("Error: ", error);
-    }  finally {
-      setLoading(false);
-    }
-  }
+      console.log(userID);
+      const data = await getUserFollowers(userID as string);
+      setFollowers(data);
+    } catch (error) {}
+    setLoading(false);
+  };
 
   return (
     <YStack

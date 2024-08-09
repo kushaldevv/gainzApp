@@ -13,10 +13,6 @@ const API_URL = process.env.EXPO_PUBLIC_API_URL;
  */
 export const appendLikeToComment = async(userID: string, sessionID: string, index: number) => {
   try {
-    console.log('appending like to comment')
-    console.log('index', index)
-    console.log('sessionID', sessionID)
-    console.log('userID', userID)
     const sessionUserID = sessionID.split('session')[0]
     // Send a PATCH request to update the like of a comment
     await axios.patch(`${API_URL}/user/sessions/comments/likes?userID=${sessionUserID}&sessionID=${sessionID}&index=${index}`, {userID});
@@ -149,11 +145,14 @@ export const postUser = async(userID: string, name: string) => {
     // Prepare the payload for the API request
     const payload = {
       "userID": userID,
+      "searchName"  : name.toLowerCase(),
       "name": name,
       "pfp": `https://ui-avatars.com/api/?name=${name.charAt(0)}&background=00cccc&color=fff`, 
       "following": [userID],
       "followers": [],
-      "sessions": {}
+      "sessions": {},
+      "notis": [],
+      "exercises" : {}
     }
     // Send a POST request to update the database with a new user
     await axios.post(`${API_URL}/user`, payload);
@@ -180,7 +179,7 @@ export const getUser = async (userID: string) => {
     
     // Construct a User object from the API response
     const user: Types.User = {
-      id: data.userID as string,
+      id: data.id as string,
       name: data.name as string,
       pfp: data.pfp as string, // pfp likely stands for "profile picture"
     };
@@ -200,41 +199,98 @@ export const getUser = async (userID: string) => {
  * @returns A Promise that resolves to a User profile object.
  * @throws Will throw an error if the API request fails or if there's an issue processing the response.
  */
-export const getUserProfile = async (userID: string) => {
+export const getUserProfile = async (userID: string): Promise<Types.UserProfile> => {
   try {
-    // Make a GET request to fetch user profile data
-    const response = await axios.get(`${API_URL}/user?userID=${userID}`);
+    const response = await axios.get(`${API_URL}/user/profile?userID=${userID}`);
     const data = response.data;
 
-    // maps thru the friends list of user ids(strings), and calls getUser on each
-    // end result is a friends list of type User
-    const followersPromises = data.followers.map((friendId : string) => getUser(friendId));
-    const followers: Types.User[] = await Promise.all(followersPromises);
+    // const followersPromises = data.followers.map((friendId: string) => getUser(friendId));
+    // const followers: Types.User[] = await Promise.all(followersPromises);
+    // const followingPromises = data.following.map((friendId: string) => getUser(friendId));
+    // const following: Types.User[] = await Promise.all(followingPromises);
 
-    const followingPromises = data.following.map((friendId : string) => getUser(friendId));
-    const following: Types.User[] = await Promise.all(followingPromises);
+    const getDayAbbr = (date: Date): string => {
+      return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()];
+    };
 
-    // Construct a User profile object from the API response
+    const today = new Date();
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(today.getDate() - 7);
+
+    const pastSevenDays: string[] = [];
+    const groupedByDay: { [key: string]: Types.dateDuration[] } = {};
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+      const dayAbbr = getDayAbbr(date);
+      pastSevenDays.push(dayAbbr);
+      groupedByDay[dayAbbr] = [];
+    }
+
+    let highestDuration = 0;
+    let highestDurationDay = '';
+
+    // // Sort dateDuration array by date in descending order
+    // const sortedDateDurations = data.dateDuration.sort((a: any, b: any) => 
+    //   new Date(b.date).getTime() - new Date(a.date).getTime()
+    // );
+
+    let streak = 0;
+    let currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);  // Set to start of day for comparison
+
+    data.dateDuration.reduce((acc: Types.dateDuration[], item: any) => {
+      const itemDate = new Date(item.date);
+      itemDate.setHours(0, 0, 0, 0);  // Set to start of day for comparison
+
+      // Streak calculation
+      if (itemDate.getTime() === currentDate.getTime()) {
+        streak++;
+        currentDate.setDate(currentDate.getDate() - 1);
+      } else if (itemDate.getTime() < currentDate.getTime()) {
+        // Break streak if a day is missed
+        currentDate = itemDate;
+        streak = 0;
+      }
+
+      if (itemDate >= sevenDaysAgo && itemDate <= today) {
+        if (item.duration > highestDuration) {
+          highestDuration = item.duration;
+          highestDurationDay = item.date;
+        }
+        const dateDuration: Types.dateDuration = {
+          date: item.date as string,
+          duration: item.duration as number
+        };
+        const dayAbbr = getDayAbbr(itemDate);
+        groupedByDay[dayAbbr].push(dateDuration);
+        acc.push(dateDuration);
+      }
+      return acc;
+    }, []);
+
     const userProfile: Types.UserProfile = {
       id: data.userID as string,
       name: data.name as string,
       pfp: data.pfp as string,
-      followers: followers,
-      following: following,
-      sessions: [],
-    }
-    // Return the constructed User profile object
+      followers: data.followers as number,
+      following: data.following as number,
+      recentSessions: groupedByDay,
+      highestDuration: { date: highestDurationDay, duration: highestDuration },
+      streak: streak,
+      randomPr: data.randomPr as { name: string; pr: number }
+    };
+
     return userProfile;
   } catch (error) {
-    // Re-throw the error for the caller to handle
     throw error;
   }
-}
+};
 
 export const getFollowingSessions = async (userID: string) => {
   try {
-    const following = await getUserFollowing(userID) as Types.User[];
-    const followingSessions = await Promise.all(following.map(async (friend) => getUserSessions(friend.id)));
+    const following = await getUserFollowingList(userID) as string[];
+    const followingSessions = await Promise.all(following.map(async (friend) => getUserSessions(friend, userID)));
     const flattenedSessions = followingSessions.flat() as Types.Session[];
 
     // Sort sessions by date
@@ -248,37 +304,101 @@ export const getFollowingSessions = async (userID: string) => {
   }
 }
 
-export const getUserSessions = async (userID: string) => {
+export const getUserSessions = async (sessionUserID: string, userID: string) => {
   try {
-    const response = await axios.get(`${API_URL}/user/sessions?userID=${userID}`);
+    const response = await axios.get(`${API_URL}/user/sessions?userID=${sessionUserID}`);
     const data = response.data;
     const sessions = await Promise.all(
 
       Object.entries(data).map(async ([sessionID, sessionData]: [string, any]) => {
         const likes: Types.User[] = await Promise.all(
-          sessionData.likes.slice(0,3).map((like: string) => getUser(like))
+          sessionData.likes.map((like: string) => getUser(like))
         );
+
+        const exercises = await getExercisesInfo(sessionID);
+
         const session: Types.Session = {
           id: sessionID,
           name: sessionData.name as string,
-          user: await getUser(userID) as Types.User,
+          user: await getUser(sessionUserID) as Types.User,
           location: sessionData.location as string,
           date: sessionData.date as string,
-          exercises: [], 
+          exercises:exercises as Types.Exercise[], 
           duration: sessionData.duration as number,
-          comments: sessionData.comments.length,
+          comments: sessionData.comments,
           likes: likes,
-          numLikes: sessionData.likes.length as number,
+          numLikes: sessionData.numLikes as number,
+          userLiked: sessionData.likes.includes(userID)
         };
         return session;
       })
     );
     return sessions;
   } catch (error) {
-    // Re-throw the error for the caller to handle
+    console.log('getting user sessions', error);
     throw error;
   }
 };
+
+/**
+ * Returns an exercise response that details a PR, and exerciseInfo include date, reps, and weight
+ * 
+ * @param userID - The unique identifier of the user.
+ * @param sessionID - The unique identifier of the session.
+ * @returns A Promise that resolves when a exercise response is returned
+ * @throws Will throw an error if the API request fails.
+ */
+export const getExercisesInfo = async(sessionID: string) => {
+  const sessionUserID = sessionID.split('session')[0];
+
+  try {
+    console.log(sessionUserID)
+    // Send a GET request to get a info about a user's exercises
+    const response = axios.get(`${API_URL}/user/exercises?userID=${sessionUserID}&sessionID=${sessionID}`);
+    const data = (await response).data;
+    const exercises: Types.Exercise[] = data.map((exercise: any ) => ({
+      name: exercise.name as string,
+      date: exercise.exerciseInfo.date as string,
+      pr: exercise.PR as number,
+      reps: exercise.exerciseInfo.reps as number[],
+      weight: exercise.exerciseInfo.weight as number[]
+    }));
+
+    return exercises;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// export const getSpecificUserSession = async (sessionID: string) => {
+//   try {
+//     console.log("getting a specific session");
+//     const sessionUserID = sessionID.split('session')[0]
+//     const response = await axios.get(`${API_URL}/user/session?userID=${sessionUserID}&sessionID=${sessionID}`);
+//     const respData = response.data;
+
+//     const likes: Types.User[] = await Promise.all(
+//       respData.likes.map((like: string) => getUser(like))
+//     );
+    
+//     const session: Types.Session = {
+//       id: sessionID,
+//       name: respData.name as string,
+//       user: await getUser(sessionUserID) as Types.User,
+//       location: respData.location as string,
+//       date: respData.date as string,
+//       exercises: [], 
+//       duration: respData.duration as number,
+//       comments: respData.comments.length,
+//       likes: likes,
+//       numLikes: respData.likes.length as number,
+//     };
+//     return session;
+//   } catch (error) {
+//     // Re-throw the error for the caller to handle
+//     throw error;
+//   }
+// };
 
 /**
  * Fetches the following for a user
@@ -292,7 +412,18 @@ export const getUserFollowing = async (userID: string) => {
     // Make a GET request to fetch the following for a user
     const response = await axios.get(`${API_URL}/user/following?userID=${userID}`);
     const following = await Promise.all(response.data.map(async (followingID: string) => await getUser(followingID)));
-    return following;
+    return following as Types.User[];
+  } catch (error) {
+    // Re-throw the error for the caller to handle
+    throw error;
+  }
+}
+
+export const getUserFollowingList = async (userID: string) => {
+  try {
+    // Make a GET request to fetch the following for a user
+    const response = await axios.get(`${API_URL}/user/following?userID=${userID}`);
+    return response.data as string[];
   } catch (error) {
     // Re-throw the error for the caller to handle
     throw error;
@@ -304,15 +435,15 @@ export const getUserFollowing = async (userID: string) => {
  * Fetches the followers for a user
  *
  * @param id - The unique identifier of the user to fetch.
- * @returns A Promise that resolves to a list of following.
+ * @returns A Promise that resolves to a list of follower.
  * @throws Will throw an error if the API request fails or if there's an issue processing the response.
  */
 export const getUserFollowers = async (userID: string) => {
   try {
     // Make a GET request to fetch the following for a user
     const response = await axios.get(`${API_URL}/user/followers?userID=${userID}`);
-    const following = await Promise.all(response.data.map(async (followingID: string) => await getUser(followingID)));
-    return following;
+    const followers = await Promise.all(response.data.map(async (followerID: string) => await getUser(followerID)));
+    return followers as Types.User[];
   } catch (error) {
     // Re-throw the error for the caller to handle
     throw error;
@@ -353,34 +484,6 @@ export const getSessionComments = async (userID: string, sessionID: string) => {
     throw error;
   }
 }
-// export const getSpecificUserSession = async (sessionID: string) => {
-//   try {
-//     console.log("getting a specific session");
-//     const sessionUserID = sessionID.split('session')[0]
-//     const response = await axios.get(`${API_URL}/user/session?userID=${sessionUserID}&sessionID=${sessionID}`);
-//     const respData = response.data;
-
-//     const likes: Types.User[] = await Promise.all(
-//       respData.likes.map((like: string) => getUser(like))
-//     );
-    
-//     const session: Types.Session = {
-//       id: sessionID,
-//       name: respData.name as string,
-//       user: await getUser(sessionUserID) as Types.User,
-//       location: respData.location as string,
-//       date: respData.date as string,
-//       exercises: [], 
-//       duration: respData.duration as number,
-//       comments: respData.comments.length,
-//       likes: likes,
-//     };
-//     return session;
-//   } catch (error) {
-//     // Re-throw the error for the caller to handle
-//     throw error;
-//   }
-// };
 
 export const getLikesAndComments = async (sessionID: string) => {
   try {
@@ -395,6 +498,85 @@ export const getLikesAndComments = async (sessionID: string) => {
     return {'likes': likes, 'numLikes':respData.likes.length as number ,'numComments': respData.comments.length as number};
   } catch (error) {
     // Re-throw the error for the caller to handle
+    throw error;
+  }
+}
+
+/**
+ * Gets all the users that correspond to the query
+ * 
+ * @param query - The query
+ * @returns A Promise that resolves when a list of users is returned
+ * @throws Will throw an error if the API request fails.
+ */
+export const getUsers = async (query: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/users?q=${query}`);
+    const responseData = response.data;
+
+    const users: Types.User[] = responseData.map((user: any) => {
+      return {
+        id: user.id as string,
+        name: user.name as string,
+        pfp: user.pfp as string
+      };
+    });
+    return users;
+  } catch (error) {
+    throw error;
+  }
+}
+
+/**
+ * Append userID2 to the following list of userID1, and append userID1 to the followers list of userID2
+ * 
+ * @param userID1 - The unique identifier of the first user.
+ * @param userID2 - The unique identifier of the second user
+ * @returns A Promise that resolves when both userID1 and userID2 are appended to their respective lists
+ * @throws Will throw an error if the API request fails.
+ */
+export const appendFollowing = async(userID1: string, userID2: string) => {
+  try {
+    // payload to sent to patch request
+    const payload = {
+      "userID1": userID1,
+      "userID2": userID2
+    }
+     // Send a PATCH request to append userID2 to the following list of userID1, and append userID1 to the followers list of userID2
+    await axios.patch(`${API_URL}/user/following?userID1=${userID1}&userID2=${userID2}`, payload);
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+    throw error;
+  }
+}
+
+/**
+ * Gets the notifications of a user
+ * 
+ * @param userID - The unique identifier of the first user.
+ * @returns A Promise that resolves when the notifications of a user is returned
+ * @throws Will throw an error if the API request fails.
+ */
+export const getNotis = async(userID: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/user/notis?userID=${userID}`);
+    const data = response.data;
+    
+    // Traverses thru all notis, in data and creates and returns a noti type. An array of notis is return at the end
+    const notis: Types.Noti[] = await Promise.all(
+      data.map(async (notiData: any) => {
+        const noti: Types.Noti = {
+          sessionID: notiData.sessionID, // Assuming each notification has an ID
+          user: await getUser(notiData.userID) as Types.User,
+          date: notiData.date,
+          type: notiData.type 
+        };
+        return noti;
+      })
+    );
+    return notis;
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
     throw error;
   }
 }

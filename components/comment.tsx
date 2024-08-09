@@ -2,10 +2,8 @@ import { Heart } from "@tamagui/lucide-icons";
 import React, { useState } from "react";
 import {
   Avatar,
-  Button,
   Paragraph,
   SizableText,
-  View,
   XStack,
   YStack,
 } from "tamagui";
@@ -13,8 +11,8 @@ import * as Types from "../types";
 import { Skeleton } from "moti/skeleton";
 import { useColorScheme } from "react-native";
 import { appendLikeToComment } from "@/services/apiCalls";
-import { useUser } from "@clerk/clerk-expo";
 import { useFocusEffect } from "expo-router";
+import { formatSimpleDate } from "@/services/utilities";
 
 const Comment = ({
   index,
@@ -76,7 +74,7 @@ const Comment = ({
             </XStack>
           </Skeleton>
           <Skeleton colorMode={skeletonColorScheme} width={"80%"}>
-            <Paragraph lineHeight={"$1"} fontSize={"$2"} textAlign="left">
+            <Paragraph fontFamily={'$mono'} lineHeight={"$1"} fontSize={"$2"} textAlign="left">
               {comment.body}
             </Paragraph>
           </Skeleton>
@@ -100,26 +98,3 @@ const Comment = ({
 
 export default Comment;
 
-function formatSimpleDate(isoString: string): string {
-  const likeDate = new Date(isoString);
-  const now = new Date();
-  const diffInSeconds = Math.floor((now.getTime() - likeDate.getTime()) / 1000);
-
-  if (diffInSeconds < 60) {
-    return `${diffInSeconds}s`;
-  }
-  const diffInMinutes = Math.floor(diffInSeconds / 60);
-  if (diffInMinutes < 60) {
-    return `${diffInMinutes}m`;
-  }
-  const diffInHours = Math.floor(diffInMinutes / 60);
-  if (diffInHours < 24) {
-    return `${diffInHours}h`;
-  }
-  const diffInDays = Math.floor(diffInHours / 24);
-  if (diffInDays < 7) {
-    return `${diffInDays}d`;
-  }
-  const diffInWeeks = Math.floor(diffInDays / 7);
-  return `${diffInWeeks}w`;
-}

@@ -7,10 +7,18 @@ export interface User  {
 }
 
 export interface UserProfile extends User {
-    following: User[];
-    followers: User[];
-    sessions: Session[];
+    following: number;
+    followers: number;
+    recentSessions: { [key: string]: dateDuration[] };
+    highestDuration: dateDuration;
+    streak: number;
+    randomPr: { name: string ; pr: number};
 };
+
+export interface dateDuration {
+    date: string;
+    duration: number;
+}
 
 export type Session = {
     id: string;
@@ -21,24 +29,29 @@ export type Session = {
     exercises: Exercise[];
     duration: number;
     comments: number;
+    //max 3, use getLikes to get all
     likes: User[];
     numLikes: number;
+    userLiked: boolean;
 };
 
 export type Exercise = {
     name: string;
-    sets: ExerciseSet[];
+    date: string;
+    pr: number;
+    reps: number[];
+    weight: number[];
 };
 
-export type ExerciseSet = {
-    reps: number;
-    weight: number;
-}
 
 export type CardProps = {
   session: Session;
   loading: boolean;
-  userPfp: string;
+  userDetails: User | null;
+};
+
+export type InnerCardProps = {
+    exercises: Exercise[];
 };
 
 export type Comment = { 
@@ -64,4 +77,29 @@ export  type FormCardProps = {
 export type UserScrollViewProps = {
     userList: User[];
     loading: boolean;
+    notisContent?: NotiContent[];
+    followingScreen?: boolean;
 }
+
+//use index as key when mapping
+export enum NotiType {
+    FOLLOW_REQUEST = 1,
+    SESSION_LIKE = 2,
+    SESSION_COMMENT = 3,
+    SESSION_FEEDBACK = 4,
+}
+
+export interface NotiContent  {
+    sessionID: string;
+    date: string;
+    type : NotiType;
+}
+
+export interface Noti extends NotiContent {
+    user: User;
+};
+
+export type ProfileProps = {
+    userID?: string;
+  };
+  

@@ -48,9 +48,11 @@ export default function SignInScreen() {
     try {
       const { createdSessionId, signUp } = await startAppleOAuthFlow();
       const userID = signUp?.createdUserId;
-      const name = signUp?.firstName;
+      const lastName = ' ' + signUp?.lastName;
+      const name = (signUp?.firstName || '') + (signUp?.lastName? lastName : '');
 
       if (userID) {
+        console.log(userID);
         if (name) {
           await postUser(userID, name);
         } else {
@@ -77,8 +79,9 @@ export default function SignInScreen() {
     try {
       const { createdSessionId, signUp } = await startGoogleOAuthFlow();
       const userID = signUp?.createdUserId;
-      const name = signUp?.firstName;
-      
+      const lastName = ' ' + signUp?.lastName;
+      const name = (signUp?.firstName || '') + (signUp?.lastName? lastName : '');
+
       if (userID) {
         console.log(userID);
         if (name) {

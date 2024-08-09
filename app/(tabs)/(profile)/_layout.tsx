@@ -1,16 +1,10 @@
-import {Stack, router} from "expo-router";
-import { TouchableOpacity, useColorScheme } from "react-native";
-import {
-  UserRoundSearch, Search, BellDot
-} from "@tamagui/lucide-icons";
+import { Stack } from "expo-router";
+import { useColorScheme } from "react-native";
 
 export default function ProfileLayout() {
-  
   const colorScheme = useColorScheme();
-  const backgroundColor =
-  colorScheme == "dark" ? "rgb(15,15,15)" : "rgb(250,250,250)";
-  const headerTintColor =
-  colorScheme == "dark" ? "rgb(255,255,255)" : "rgb(18,18,18)";
+  const backgroundColor = colorScheme == "dark" ? "rgb(15,15,15)" : "rgb(250,250,250)";
+  const headerTintColor = colorScheme == "dark" ? "rgb(255,255,255)" : "rgb(18,18,18)";
 
   return (
     <Stack
@@ -24,14 +18,24 @@ export default function ProfileLayout() {
         headerTintColor: headerTintColor,
       }}
     >
-      <Stack.Screen name="index" 
-      options={{
-        title: 'Profile',
-      }}/>
-       <Stack.Screen name="following" options={{
-        title: "Following",
-        headerBackTitle: 'Profile',
-      }} />
+      <Stack.Screen
+        name="index"
+        options={{
+          title: "You",
+        }}
+      />
+      <Stack.Screen
+        name="following"
+        options={{
+          title: "Following",
+        }}
+      />
+      <Stack.Screen
+        name="followers"
+        options={{
+          title: "Followers",
+        }}
+      />
     </Stack>
   );
 }

@@ -2,7 +2,7 @@ import { Alert } from "@/components/alertDialog";
 import { FormCard } from "@/components/layoutParts";
 import { useShakeAnimation } from "@/components/shakeAnimation";
 import { postUser } from "@/services/apiCalls";
-import { ClerkProvider, useOAuth, useSignUp, useUser } from "@clerk/clerk-expo";
+import { useOAuth, useSignUp } from "@clerk/clerk-expo";
 import { AntDesign } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import { Eye, EyeOff, Key, Mail, User } from "@tamagui/lucide-icons";
@@ -62,7 +62,8 @@ export default function SignUpScreen() {
     try {
       const { createdSessionId, signUp } = await startAppleOAuthFlow();
       const userID = signUp?.createdUserId;
-      const name = signUp?.firstName;
+      const lastName = ' ' + signUp?.lastName;
+      const name = (signUp?.firstName || '') + (signUp?.lastName? lastName : '');
 
       if (userID) {
         console.log(userID);
@@ -83,7 +84,6 @@ export default function SignUpScreen() {
   }, []);
 
   // sign in with google
-  // sign in with google
   const onGooglePress = useCallback(async () => {
     if (!setActive) {
       console.log("setActive is not available");
@@ -93,7 +93,8 @@ export default function SignUpScreen() {
     try {
       const { createdSessionId, signUp } = await startGoogleOAuthFlow();
       const userID = signUp?.createdUserId;
-      const name = signUp?.firstName;
+      const lastName = ' ' + signUp?.lastName;
+      const name = (signUp?.firstName || '') + (signUp?.lastName? lastName : '');
 
       if (userID) {
         console.log(userID);

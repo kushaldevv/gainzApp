@@ -1,16 +1,9 @@
-import { useFocusEffect, useLocalSearchParams } from "expo-router";
-import React, { useCallback, useState } from "react";
-import {
-  Avatar,
-  Button,
-  ScrollView,
-  SizableText,
-  XStack,
-  YStack,
-} from "tamagui";
-import * as Types from "@/types";
 import UserScrollView from "@/components/userScrollView";
 import { getUserFollowing } from "@/services/apiCalls";
+import * as Types from "@/types";
+import { useLocalSearchParams } from "expo-router";
+import React, { useEffect } from "react";
+import { YStack } from "tamagui";
 
 const emptyUser: Types.User = {
   id: "",
@@ -20,46 +13,43 @@ const emptyUser: Types.User = {
 
 const UserFollowing = () => {
   const params = useLocalSearchParams();
-  const {userID, numFollowing} = params;
-  const [following, setFollowing] = useState<Types.User[]>([])
-  const [loading, setLoading] = useState(true);
+  const { userID, followingParam } = params;
+  const followingCount = parseInt(followingParam as string);
+  const [following, setFollowing] = React.useState<Types.User[]>([]);
+  const [loading, setLoading] = React.useState(false);
 
-  const skeletonUsers = Array.from(
-    { length: Math.min(parseInt(numFollowing as string), 10) },
-    (_, i) => emptyUser
-  );
+  const skeletonUsers = Array.from({ length: Math.min(followingCount, 10) }, (_, i) => emptyUser);
 
-  useFocusEffect(
-    useCallback(() => {
-        fetchFollowing();
-    }, [])
-  );
-  
+  useEffect(() => {
+    fetchFollowing();
+  }, []);
+
   const fetchFollowing = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      if (userID) {
-        const data = await getUserFollowing(userID as string);
-        setFollowing(data);
-      }
-    } catch (error) {
-      console.log("Error: ", error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
+      console.log(userID);
+      const data = await getUserFollowing(userID as string);
+      setFollowing(data);
+    } catch (error) {}
+    setLoading(false);
+  };
   return (
-    <YStack flex={1} alignItems="center" backgroundColor={"$background"}>
-           {loading && (
+    <YStack
+      flex={1}
+      alignItems="center"
+      backgroundColor={"$background"}
+    >
+      {loading && (
         <UserScrollView
           userList={skeletonUsers}
+          followingScreen={true}
           loading={true}
         />
       )}
       {!loading && (
         <UserScrollView
           userList={following}
+          followingScreen={true}
           loading={false}
         />
       )}

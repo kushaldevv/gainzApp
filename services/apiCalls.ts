@@ -148,7 +148,7 @@ export const postUser = async(userID: string, name: string) => {
       "searchName"  : name.toLowerCase(),
       "name": name,
       "pfp": `https://ui-avatars.com/api/?name=${name.charAt(0)}&background=00cccc&color=fff`, 
-      "following": [userID],
+      "following": [],
       "followers": [],
       "sessions": {},
       "notis": [],
@@ -289,7 +289,8 @@ export const getUserProfile = async (userID: string): Promise<Types.UserProfile>
 
 export const getFollowingSessions = async (userID: string) => {
   try {
-    const following = await getUserFollowingList(userID) as string[];
+    const following = (await getUserFollowingList(userID) as string[])
+    following.push(userID);
     const followingSessions = await Promise.all(following.map(async (friend) => getUserSessions(friend, userID)));
     const flattenedSessions = followingSessions.flat() as Types.Session[];
 
@@ -411,7 +412,9 @@ export const getUserFollowing = async (userID: string) => {
   try {
     // Make a GET request to fetch the following for a user
     const response = await axios.get(`${API_URL}/user/following?userID=${userID}`);
-    const following = await Promise.all(response.data.map(async (followingID: string) => await getUser(followingID)));
+    const following = await Promise.all(response.data.map(async (followingID: string) => 
+       await getUser(followingID)
+    ));
     return following as Types.User[];
   } catch (error) {
     // Re-throw the error for the caller to handle
@@ -575,6 +578,44 @@ export const getNotis = async(userID: string) => {
       })
     );
     return notis;
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+    throw error;
+  }
+}
+
+ /**
+ * If user1 unfollows user2, 
+ * remove user1 from user2's followers list 
+ * and remove user2 from user1's following list.
+ * 
+ * @param userId1 - The unique identifier of user1.
+ * @param userId2 - The unique identifier of user2.
+ * @returns A Promise that resolves when the unfollow operation completes
+ * @throws Will throw an error if the API request fails.
+ */
+ export const unfollowUser = async(userId1: string, userId2: string) => {
+  try {
+    // Send a PATCH request to unfollow a user
+    await axios.patch(`${API_URL}/user/unfollow?userID1=${userId1}&userID2=${userId2}`);
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+    throw error;
+  }
+}
+
+/**
+ * Append a like to a user's comment
+ * 
+ * @param sessionID - The unique identifier of the session.
+ * @returns A Promise that resolves when a session is removed from a user
+ * @throws Will throw an error if the API request fails.
+ */
+export const deleteSession = async(sessionID: string) => {
+  try {
+    const sessionUserID = sessionID.split('session')[0];
+    // Send a DELETE request to remove a user's session
+    await axios.delete(`${API_URL}/user/delete?userID=${sessionUserID}&sessionID=${sessionID}`);
   } catch (error) {
     // If an error occurs during the API request, re-throw it
     throw error;

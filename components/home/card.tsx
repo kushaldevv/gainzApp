@@ -55,7 +55,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
   const headerHeight = useHeaderHeight();
   const theme = useTheme();
   const router = useRouter();
-  const skeletonColorScheme = useColorScheme() == "dark" ? "light" : "dark" || "light";
+  const skeletonColorScheme = useColorScheme() == "dark" ? "dark" : "light";
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const [session, setSession] = useState(initialSession);
@@ -88,8 +88,8 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
 
   const handleProfileScreen = () => {
     router.push({
-      pathname: "./(profile)",
-      params: { userID: session.user.id, fromHome: "true" },
+      pathname: "/[user]",
+      params: { userIdParam: session.user.id },
     });
   };
 
@@ -284,7 +284,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
             pos="absolute"
             right="$0"
           >
-            <DropDownMenu isUser={initialSession.user.id == user?.id}/>
+            <DropDownMenu isUser={initialSession.user.id == user?.id} />
           </View>
         </XStack>
         <Skeleton
@@ -386,7 +386,12 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
                       height={"$1.5"}
                       justifyContent="center"
                     >
-                      <SizableText size={"$1"}>Be the first to like!</SizableText>
+                      <SizableText
+                        fontFamily={"$mono"}
+                        size={"$1"}
+                      >
+                        Be the first to like!
+                      </SizableText>
                     </View>
                   )}
                 </XStack>
@@ -465,13 +470,12 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
                   >
                     Comments
                   </SizableText>
-                  <View
-                    pos="absolute"
-                    right="$0"
+                  <TouchableOpacity
+                    style={{ position: "absolute", right: 0 }}
                     onPress={() => handleDismissModalPress()}
                   >
                     <X size="$2" />
-                  </View>
+                  </TouchableOpacity>
                 </XStack>
               </View>
               <ScrollView

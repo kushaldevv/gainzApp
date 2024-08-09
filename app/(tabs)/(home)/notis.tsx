@@ -1,4 +1,4 @@
-import UserScrollView from "@/components/userScrollView";
+import UserScrollView from "@/components/home/userScrollView";
 import { getNotis } from "@/services/apiCalls";
 import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
@@ -10,10 +10,7 @@ const emptyUser: Types.User = {
   name: "",
   pfp: " ",
 };
-const skeletonUsers = Array.from(
-  { length: 5 },
-  (_, i) => emptyUser
-);
+const skeletonUsers = Array.from({ length: 5 }, (_, i) => emptyUser);
 
 const NotiScreen = () => {
   const { user } = useUser();
@@ -21,7 +18,7 @@ const NotiScreen = () => {
   const [notisContent, setNotisContent] = React.useState<Types.NotiContent[]>([]);
   const [loading, setLoading] = React.useState(true);
   const isInitialLoad = useRef(true);
- 
+
   const fetchNotis = async () => {
     setLoading(true);
     try {
@@ -36,7 +33,7 @@ const NotiScreen = () => {
       setNotisContent(notisContent);
     } catch (error) {
       console.log(error);
-    } finally{
+    } finally {
       setLoading(false);
       isInitialLoad.current = false;
     }
@@ -52,17 +49,20 @@ const NotiScreen = () => {
       flex={1}
       alignItems="center"
       backgroundColor={"$background"}
-    >{
-      showSkeleton && <UserScrollView
-        userList={skeletonUsers}
-        loading={true}
-      />
-    }
-     {!showSkeleton && <UserScrollView
-        userList={notisUsers}
-        notisContent={notisContent}
-        loading={false}
-      />}
+    >
+      {showSkeleton && (
+        <UserScrollView
+          userList={skeletonUsers}
+          loading={true}
+        />
+      )}
+      {!showSkeleton && (
+        <UserScrollView
+          userList={notisUsers}
+          notisContent={notisContent}
+          loading={false}
+        />
+      )}
     </YStack>
   );
 };

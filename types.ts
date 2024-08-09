@@ -26,7 +26,7 @@ export type Session = {
     user: User;
     location: string;
     date: string;
-    exercises: Exercise[];
+    exercises: ExerciseViewProp[];
     duration: number;
     comments: number;
     //max 3, use getLikes to get all
@@ -43,6 +43,15 @@ export type Exercise = {
     weight: number[];
 };
 
+export type ExerciseViewProp = {
+    name: string;
+    set: ExerciseSetViewProp[];
+}
+
+export type ExerciseSetViewProp = {
+    reps: number;
+    weight: number;
+}
 
 export type CardProps = {
   session: Session;
@@ -99,7 +108,12 @@ export interface Noti extends NotiContent {
     user: User;
 };
 
-export type ProfileProps = {
-    userID?: string;
+export type UserProfileProps = {
+    userID: string;
+    isPublicProfile: boolean;
   };
   
+export type ExercisesContextType = {
+    exercises: ExerciseViewProp[];
+    setExercises: React.Dispatch<React.SetStateAction<ExerciseViewProp[]>>;
+};

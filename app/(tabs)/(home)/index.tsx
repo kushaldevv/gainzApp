@@ -1,11 +1,11 @@
-import Card from "@/components/card";
+import Card from "@/components/home/card";
 import { getFollowingSessions, getUser } from "@/services/apiCalls";
 import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
 import React, { useEffect, useState } from "react";
 import { RefreshControl } from "react-native";
 import { ScrollView, View, YStack } from "tamagui";
-import PostFAB from "@/components/fabPortal";
+import PostFAB from "@/components/home/fabPortal";
 import { PaperProvider } from "react-native-paper";
 
 // const emptySession: Types.Session = {

@@ -1,4 +1,4 @@
-import UserScrollView from "@/components/userScrollView";
+import UserScrollView from "@/components/home/userScrollView";
 import { getSessionLikes } from "@/services/apiCalls";
 import * as Types from "@/types";
 import { useFocusEffect, useLocalSearchParams } from "expo-router";
@@ -22,9 +22,9 @@ const Likes = () => {
     (_, i) => emptyUser
   );
 
-    useEffect(() => {
-      fetchLikes();
-    }, [])
+  useEffect(() => {
+    fetchLikes();
+  }, []);
 
   const fetchLikes = async () => {
     try {
@@ -47,14 +47,14 @@ const Likes = () => {
     >
       {loading && (
         <UserScrollView
-         userList={skeletonUsers}
+          userList={skeletonUsers}
           loading={true}
         />
       )}
       {!loading && (
         <UserScrollView
-         userList={likes}
-         loading={false}
+          userList={likes}
+          loading={false}
         />
       )}
     </YStack>

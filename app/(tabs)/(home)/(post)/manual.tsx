@@ -39,10 +39,17 @@ const ManualPost = () => {
   const locationPlaceholder = "Earth, Milky Way Galaxy";
   const { user } = useUser();
 
+
+  const validatePost = () => {
+    if (exercises.length === 0) return false;
+    
+    
+  }
+
   const onPressPost = async () => {
     setLoading(true);
 
-    if (!isLoaded || exercises.length === 0) {
+    if (!isLoaded || !validatePost()) {
       setLoading(false);
       return;
     }
@@ -67,8 +74,8 @@ const ManualPost = () => {
         name: exercise.name,
         sessionId: sessionKey,
         lists: {
-          reps: exercise.set.map((set) => set.reps),
-          weight: exercise.set.map((set) => set.weight),
+          reps: exercise.sets.map((set) => set.reps),
+          weight: exercise.sets.map((set) => set.weight),
         }
       })),
     };

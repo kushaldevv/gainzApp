@@ -35,17 +35,9 @@ export type Session = {
     userLiked: boolean;
 };
 
-export type Exercise = {
-    name: string;
-    date: string;
-    pr: number;
-    reps: number[];
-    weight: number[];
-};
-
 export type ExerciseViewProp = {
     name: string;
-    set: ExerciseSetViewProp[];
+    sets: ExerciseSetViewProp[];
 }
 
 export type ExerciseSetViewProp = {
@@ -57,6 +49,14 @@ export type CardProps = {
   session: Session;
   loading: boolean;
   userDetails: User | null;
+};
+
+export type Exercise = {
+    name: string;
+    date: string;
+    pr: number;
+    reps: number[];
+    weight: number[];
 };
 
 export type InnerCardProps = {

@@ -76,7 +76,7 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
       if (exercise.name === exerciseName) {
         return {
           ...exercise,
-          set: [...exercise.set, newExerciseSet],
+          sets: [...exercise.sets, newExerciseSet],
         };
       }
       return exercise;
@@ -89,7 +89,7 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
       if (exercise.name === exerciseName) {
         return {
           ...exercise,
-          set: exercise.set.filter((_, i) => i !== index),
+          sets: exercise.sets.filter((_, i) => i !== index),
         };
       }
       return exercise;
@@ -100,10 +100,10 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
   const modifyExerciseSetReps = (exerciseName: string, reps: number, index: number) => {
     const updatedExercises = exercises.map((exercise) => {
       if (exercise.name === exerciseName) {
-        exercise.set[index].reps = reps;
+        exercise.sets[index].reps = reps;
         return {
           ...exercise,
-          set: [...exercise.set],
+          sets: [...exercise.sets],
         };
       }
       return exercise;
@@ -114,10 +114,10 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
   const modifyExerciseSetWeight = (exerciseName: string, weight: number, index: number) => {
     const updatedExercises = exercises.map((exercise) => {
       if (exercise.name === exerciseName) {
-        exercise.set[index].weight = weight;
+        exercise.sets[index].weight = weight;
         return {
           ...exercise,
-          set: [...exercise.set],
+          sets: [...exercise.sets],
         };
       }
       return exercise;
@@ -161,7 +161,7 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
         isExpanded={open}
         viewKey="i"
       >
-        {exercise.set.map((set: Types.ExerciseSetViewProp, y: number) => (
+        {exercise.sets.map((set: Types.ExerciseSetViewProp, y: number) => (
           <YGroup.Item key={y}>
             <ListItem p="$0">
               <XStack

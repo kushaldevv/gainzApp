@@ -21,7 +21,7 @@ const SubView = () => {
       }
       const newExercise: Types.ExerciseViewProp = {
         name: exerciseName,
-        set: [],
+        sets: [],
       };
       setExercises([...exercises, newExercise]);
     };

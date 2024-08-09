@@ -1,11 +1,11 @@
 import { SignedIn, useAuth } from "@clerk/clerk-expo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-
+import Entypo from '@expo/vector-icons/Entypo';
 import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
-import { Redirect, Tabs } from "expo-router";
-import { useColorScheme } from "react-native";
+import { Redirect, Tabs,  } from "expo-router";
+import { useColorScheme,  } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function Layout() {
@@ -27,6 +27,7 @@ function TabsProvider() {
     colorScheme == "dark" ? "rgb(15,15,15)" : "rgb(250,250,250)";
   const tabBarTintColor =
     colorScheme == "dark" ? "rgb(255,255,255)" : "rgb(18,18,18)";
+
   return (
     <GestureHandlerRootView>
       <BottomSheetModalProvider>
@@ -60,16 +61,16 @@ function TabsProvider() {
             }}
           />
           <Tabs.Screen
-            name="post"
+            name="stats"
             options={{
-              title: "Post",
+              title: "Statistics",
               tabBarIcon: ({ color }) => (
-                <FontAwesome size={25} name="plus-square" color={color} />
+                <Entypo size={24} name="bar-graph" color={color} />
               ),
             }}
           />
           <Tabs.Screen
-            name="(profile)"
+            name="profile"
             options={{
               headerShown: false,
               title: "Profile",

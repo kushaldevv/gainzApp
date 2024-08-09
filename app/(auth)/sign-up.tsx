@@ -1,6 +1,6 @@
-import { Alert } from "@/components/alertDialog";
-import { FormCard } from "@/components/layoutParts";
-import { useShakeAnimation } from "@/components/shakeAnimation";
+import { Alert } from "@/components/auth/alertDialog";
+import { FormCard } from "@/components/auth/layoutParts";
+import { useShakeAnimation } from "@/components/auth/shakeAnimation";
 import { postUser } from "@/services/apiCalls";
 import { useOAuth, useSignUp } from "@clerk/clerk-expo";
 import { AntDesign } from "@expo/vector-icons";
@@ -62,8 +62,8 @@ export default function SignUpScreen() {
     try {
       const { createdSessionId, signUp } = await startAppleOAuthFlow();
       const userID = signUp?.createdUserId;
-      const lastName = ' ' + signUp?.lastName;
-      const name = (signUp?.firstName || '') + (signUp?.lastName? lastName : '');
+      const lastName = " " + signUp?.lastName;
+      const name = (signUp?.firstName || "") + (signUp?.lastName ? lastName : "");
 
       if (userID) {
         console.log(userID);
@@ -93,8 +93,8 @@ export default function SignUpScreen() {
     try {
       const { createdSessionId, signUp } = await startGoogleOAuthFlow();
       const userID = signUp?.createdUserId;
-      const lastName = ' ' + signUp?.lastName;
-      const name = (signUp?.firstName || '') + (signUp?.lastName? lastName : '');
+      const lastName = " " + signUp?.lastName;
+      const name = (signUp?.firstName || "") + (signUp?.lastName ? lastName : "");
 
       if (userID) {
         console.log(userID);
@@ -137,10 +137,7 @@ export default function SignUpScreen() {
     if (firstName.trim() == "") {
       currErrors += "Name";
     }
-    if (
-      emailAddress.trim() == "" ||
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress)
-    ) {
+    if (emailAddress.trim() == "" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress)) {
       currErrors += "Email";
     }
     if (progress != 100) {
@@ -171,9 +168,7 @@ export default function SignUpScreen() {
     } catch (err: any) {
       const errorLongMessage = err.errors[0].longMessage;
       console.log(errorLongMessage);
-      if (
-        errorLongMessage == "That email address is taken. Please try another."
-      ) {
+      if (errorLongMessage == "That email address is taken. Please try another.") {
         setEmailError("That email address is taken. Please try another.");
       }
     }
@@ -213,8 +208,8 @@ export default function SignUpScreen() {
         const userId = completeSignUp.createdUserId;
         if (!userId) {
           return;
-        } 
-        
+        }
+
         await postUser(userId, firstName); // user is added into database
         await setActive({ session: completeSignUp.createdSessionId });
         router.replace("/");
@@ -258,21 +253,21 @@ export default function SignUpScreen() {
           >
             Create an Account
           </H1>
-          <View flexDirection="column" gap="$3">
+          <View
+            flexDirection="column"
+            gap="$3"
+          >
             <View flexDirection="column">
-              <Label>Name</Label>
+              <Label fontFamily={"$mono"}>Name</Label>
               <Animated.View style={[shakeName]}>
                 <XStack>
                   <Input
                     flex={1}
                     pl="$7"
-                    borderColor={
-                      error.includes("Name") ? "$red10" : "$borderColor"
-                    }
+                    fontFamily={"$mono"}
+                    borderColor={error.includes("Name") ? "$red10" : "$borderColor"}
                     focusStyle={{
-                      borderColor: error.includes("Name")
-                        ? "$red10"
-                        : "$borderColor",
+                      borderColor: error.includes("Name") ? "$red10" : "$borderColor",
                     }}
                     textContentType="name"
                     placeholder="Name"
@@ -287,24 +282,19 @@ export default function SignUpScreen() {
                   />
                 </XStack>
               </Animated.View>
-              <Label>Email</Label>
+              <Label fontFamily={"$mono"}>Email</Label>
               <Animated.View style={[shakeEmail]}>
                 <XStack>
                   <Input
                     flex={1}
                     pl="$7"
+                    fontFamily={"$mono"}
                     textContentType="emailAddress"
                     placeholder="email@example.com"
-                    borderColor={
-                      emailError || error.includes("Email")
-                        ? "$red10"
-                        : "$borderColor"
-                    }
+                    borderColor={emailError || error.includes("Email") ? "$red10" : "$borderColor"}
                     focusStyle={{
                       borderColor:
-                        emailError || error.includes("Email")
-                          ? "$red10"
-                          : "$borderColor",
+                        emailError || error.includes("Email") ? "$red10" : "$borderColor",
                     }}
                     onChangeText={(text) => setEmailAddress(text)}
                   />
@@ -317,7 +307,11 @@ export default function SignUpScreen() {
                 </XStack>
               </Animated.View>
               {emailError && (
-                <Paragraph size={"$2"} pt={"$2"} col={"$red10"}>
+                <Paragraph
+                  size={"$2"}
+                  pt={"$2"}
+                  col={"$red10"}
+                >
                   {emailError}
                 </Paragraph>
               )}
@@ -332,15 +326,12 @@ export default function SignUpScreen() {
                 <XStack>
                   <Input
                     flex={1}
+                    fontFamily={"$mono"}
                     pl="$7"
                     pr="$7"
-                    borderColor={
-                      error.includes("Password") ? "$red10" : "$borderColor"
-                    }
+                    borderColor={error.includes("Password") ? "$red10" : "$borderColor"}
                     focusStyle={{
-                      borderColor: error.includes("Password")
-                        ? "$red10"
-                        : "$borderColor",
+                      borderColor: error.includes("Password") ? "$red10" : "$borderColor",
                     }}
                     textContentType="password"
                     secureTextEntry={!showPassword}
@@ -380,7 +371,10 @@ export default function SignUpScreen() {
                 </XStack>
               </Animated.View>
             </View>
-            <Progress size={"$1"} value={progress}>
+            <Progress
+              size={"$1"}
+              value={progress}
+            >
               <Progress.Indicator
                 animation="bouncy"
                 backgroundColor={
@@ -394,7 +388,10 @@ export default function SignUpScreen() {
                 }
               />
             </Progress>
-            <View flexDirection="column" gap="$1"></View>
+            <View
+              flexDirection="column"
+              gap="$1"
+            ></View>
           </View>
           <Button
             themeInverse
@@ -403,11 +400,16 @@ export default function SignUpScreen() {
             width="100%"
             pressStyle={{
               backgroundColor: "$gray7",
-              borderColor:'$borderColorFocus'
+              borderColor: "$borderColorFocus",
             }}
           >
-            <Button.Text>Sign Up</Button.Text>
-            {loading && <Spinner size="small" color="$accentColor" />}
+            <Button.Text fontFamily={"$mono"}>Sign Up</Button.Text>
+            {loading && (
+              <Spinner
+                size="small"
+                color="$accentColor"
+              />
+            )}
           </Button>
           <View
             flexDirection="column"
@@ -429,21 +431,39 @@ export default function SignUpScreen() {
                 gap="$4"
               >
                 <Separator />
-                <Paragraph>Or</Paragraph>
+                <Paragraph fontFamily={"$mono"}>Or</Paragraph>
                 <Separator />
               </View>
-              <View flexDirection="row" flexWrap="wrap" gap="$3">
-                <Button flex={1} minWidth="100%" onPress={onGooglePress}>
+              <View
+                flexDirection="row"
+                flexWrap="wrap"
+                gap="$3"
+              >
+                <Button
+                  flex={1}
+                  minWidth="100%"
+                  onPress={onGooglePress}
+                >
                   <Button.Icon>
-                    <AntDesign name="google" size={24} />
+                    <AntDesign
+                      name="google"
+                      size={24}
+                    />
                   </Button.Icon>
-                  <Button.Text>Continue with Google</Button.Text>
+                  <Button.Text fontFamily={"$mono"}>Continue with Google</Button.Text>
                 </Button>
-                <Button flex={1} minWidth="100%" onPress={onApplePress}>
+                <Button
+                  flex={1}
+                  minWidth="100%"
+                  onPress={onApplePress}
+                >
                   <Button.Icon>
-                    <AntDesign name="apple1" size={24} />
+                    <AntDesign
+                      name="apple1"
+                      size={24}
+                    />
                   </Button.Icon>
-                  <Button.Text>Continue with Apple</Button.Text>
+                  <Button.Text fontFamily={"$mono"}>Continue with Apple</Button.Text>
                 </Button>
               </View>
             </View>
@@ -467,6 +487,7 @@ export default function SignUpScreen() {
             scale={pressedInResendCode ? 1.15 : 1.0}
             fontWeight={pressedInResendCode ? "bold" : "$1"}
             animation={"quick"}
+            fontFamily={"$mono"}
           >
             We sent a verification code to your email!
           </Text>
@@ -481,24 +502,29 @@ export default function SignUpScreen() {
                 onKeyPress={(e) => handleKeyPress(e, index)}
                 maxLength={1}
                 keyboardType="numeric"
-                borderColor={
-                  error.includes("Verification") ? "$red10" : "$borderColor"
-                }
+                borderColor={error.includes("Verification") ? "$red10" : "$borderColor"}
                 focusStyle={{
-                  borderColor: error.includes("Verification")
-                    ? "$red10"
-                    : "$borderColor",
+                  borderColor: error.includes("Verification") ? "$red10" : "$borderColor",
                 }}
               />
             ))}
           </XStack>
 
           <Button onPress={onPressVerify}>
-            <Button.Text>Verify</Button.Text>
-            {loading && <Spinner size="small" color="$white" />}
+            <Button.Text fontFamily={"$mono"}>Verify</Button.Text>
+            {loading && (
+              <Spinner
+                size="small"
+                color="$white"
+              />
+            )}
           </Button>
 
-          <Paragraph textDecorationStyle="unset" textAlign="center">
+          <Paragraph
+            textDecorationStyle="unset"
+            textAlign="center"
+            fontFamily={"$mono"}
+          >
             {"Didn't receive code? "}
             <SizableText
               alignSelf="center"
@@ -507,6 +533,7 @@ export default function SignUpScreen() {
                 color: "$colorHover",
               }}
               textDecorationLine="underline"
+              fontFamily={"$mono"}
               cursor="pointer"
               onPress={() => {
                 setError("");
@@ -526,7 +553,10 @@ export default function SignUpScreen() {
 
 const SignInLink = () => {
   return (
-    <Paragraph textDecorationStyle="unset">
+    <Paragraph
+      textDecorationStyle="unset"
+      fontFamily={"$mono"}
+    >
       Already have an account?{" "}
       <Link href={"/sign-in"}>
         <SizableText
@@ -534,6 +564,7 @@ const SignInLink = () => {
             color: "$colorHover",
           }}
           textDecorationLine="underline"
+          fontFamily={"$mono"}
         >
           Sign In
         </SizableText>

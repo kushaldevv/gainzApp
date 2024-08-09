@@ -1,5 +1,5 @@
-import { FormCard } from "@/components/layoutParts";
-import { useShakeAnimation } from "@/components/shakeAnimation";
+import { FormCard } from "@/components/auth/layoutParts";
+import { useShakeAnimation } from "@/components/auth/shakeAnimation";
 import { postUser } from "@/services/apiCalls";
 import { useOAuth, useSignIn, useUser } from "@clerk/clerk-expo";
 import { AntDesign } from "@expo/vector-icons";
@@ -48,8 +48,8 @@ export default function SignInScreen() {
     try {
       const { createdSessionId, signUp } = await startAppleOAuthFlow();
       const userID = signUp?.createdUserId;
-      const lastName = ' ' + signUp?.lastName;
-      const name = (signUp?.firstName || '') + (signUp?.lastName? lastName : '');
+      const lastName = " " + signUp?.lastName;
+      const name = (signUp?.firstName || "") + (signUp?.lastName ? lastName : "");
 
       if (userID) {
         console.log(userID);
@@ -79,8 +79,8 @@ export default function SignInScreen() {
     try {
       const { createdSessionId, signUp } = await startGoogleOAuthFlow();
       const userID = signUp?.createdUserId;
-      const lastName = ' ' + signUp?.lastName;
-      const name = (signUp?.firstName || '') + (signUp?.lastName? lastName : '');
+      const lastName = " " + signUp?.lastName;
+      const name = (signUp?.firstName || "") + (signUp?.lastName ? lastName : "");
 
       if (userID) {
         console.log(userID);
@@ -151,14 +151,18 @@ export default function SignInScreen() {
       >
         Sign in to your account
       </H1>
-      <View flexDirection="column" gap="$3">
+      <View
+        flexDirection="column"
+        gap="$3"
+      >
         <View flexDirection="column">
-          <Label>Email</Label>
+          <Label fontFamily={"$mono"}>Email</Label>
           <Animated.View style={[shake]}>
             <XStack>
               <Input
                 flex={1}
                 pl="$7"
+                fontFamily={"$mono"}
                 textContentType="emailAddress"
                 placeholder="email@example.com"
                 borderColor={error ? "$red10" : "$borderColor"}
@@ -167,7 +171,12 @@ export default function SignInScreen() {
                 }}
                 onChangeText={(text) => setEmailAddress(text)}
               />
-              <Mail size={"$1"} alignSelf="center" pos={"absolute"} ml="$3" />
+              <Mail
+                size={"$1"}
+                alignSelf="center"
+                pos={"absolute"}
+                ml="$3"
+              />
             </XStack>
           </Animated.View>
           <View
@@ -175,7 +184,7 @@ export default function SignInScreen() {
             alignItems="center"
             justifyContent="space-between"
           >
-            <Label>Password</Label>
+            <Label fontFamily={"$mono"}>Password</Label>
             <ForgotPasswordLink />
           </View>
           <Animated.View style={[shake]}>
@@ -184,6 +193,7 @@ export default function SignInScreen() {
                 flex={1}
                 pl="$7"
                 pr="$7"
+                fontFamily={"$mono"}
                 borderColor={error ? "$red10" : "$borderColor"}
                 focusStyle={{
                   borderColor: error ? "$red10" : "$borderColorFocus",
@@ -193,7 +203,12 @@ export default function SignInScreen() {
                 placeholder="Enter password"
                 onChangeText={(text) => setPassword(text)}
               />
-              <Key size={"$1"} alignSelf="center" pos={"absolute"} ml="$3" />
+              <Key
+                size={"$1"}
+                alignSelf="center"
+                pos={"absolute"}
+                ml="$3"
+              />
               {!showPassword && (
                 <Eye
                   size={"$1"}
@@ -217,7 +232,10 @@ export default function SignInScreen() {
             </XStack>
           </Animated.View>
         </View>
-        <View flexDirection="column" gap="$1"></View>
+        <View
+          flexDirection="column"
+          gap="$1"
+        ></View>
       </View>
       <Button
         themeInverse
@@ -226,13 +244,23 @@ export default function SignInScreen() {
         width="100%"
         pressStyle={{
           backgroundColor: "$gray7",
-          borderColor:'$borderColorFocus'
+          borderColor: "$borderColorFocus",
         }}
       >
-        <Button.Text>Sign In</Button.Text>
-        {loading && <Spinner size="small" color="$accentColor" />}
+        <Button.Text fontFamily={"$mono"}>Sign In</Button.Text>
+        {loading && (
+          <Spinner
+            size="small"
+            color="$accentColor"
+          />
+        )}
       </Button>
-      <View flexDirection="column" gap="$3" width="100%" alignItems="center">
+      <View
+        flexDirection="column"
+        gap="$3"
+        width="100%"
+        alignItems="center"
+      >
         <View
           flexDirection="column"
           gap="$3"
@@ -240,23 +268,46 @@ export default function SignInScreen() {
           alignSelf="center"
           alignItems="center"
         >
-          <View flexDirection="row" width="100%" alignItems="center" gap="$4">
+          <View
+            flexDirection="row"
+            width="100%"
+            alignItems="center"
+            gap="$4"
+          >
             <Separator />
-            <Paragraph>Or</Paragraph>
+            <Paragraph fontFamily={"$mono"}>Or</Paragraph>
             <Separator />
           </View>
-          <View flexDirection="row" flexWrap="wrap" gap="$3">
-            <Button flex={1} minWidth="100%" onPress={onGooglePress}>
+          <View
+            flexDirection="row"
+            flexWrap="wrap"
+            gap="$3"
+          >
+            <Button
+              flex={1}
+              minWidth="100%"
+              onPress={onGooglePress}
+            >
               <Button.Icon>
-                <AntDesign name="google" size={24} />
+                <AntDesign
+                  name="google"
+                  size={24}
+                />
               </Button.Icon>
-              <Button.Text>Continue with Google</Button.Text>
+              <Button.Text fontFamily={"$mono"}>Continue with Google</Button.Text>
             </Button>
-            <Button flex={1} minWidth="100%" onPress={onApplePress}>
+            <Button
+              flex={1}
+              minWidth="100%"
+              onPress={onApplePress}
+            >
               <Button.Icon>
-                <AntDesign name="apple1" size={24} />
+                <AntDesign
+                  name="apple1"
+                  size={24}
+                />
               </Button.Icon>
-              <Button.Text>Continue with Apple</Button.Text>
+              <Button.Text fontFamily={"$mono"}>Continue with Apple</Button.Text>
             </Button>
           </View>
         </View>
@@ -268,7 +319,10 @@ export default function SignInScreen() {
 
 const SignUpLink = () => {
   return (
-    <Paragraph textDecorationStyle="unset">
+    <Paragraph
+      textDecorationStyle="unset"
+      fontFamily={"$mono"}
+    >
       Don&apos;t have an account?{" "}
       <Link href={"/sign-up"}>
         <SizableText
@@ -276,6 +330,7 @@ const SignUpLink = () => {
             color: "$colorHover",
           }}
           textDecorationLine="underline"
+          fontFamily={"$mono"}
         >
           Sign Up
         </SizableText>
@@ -294,10 +349,10 @@ const ForgotPasswordLink = () => {
         cursor="pointer"
         size="$1"
         marginTop="$1"
+        fontFamily={"$mono"}
       >
         Forgot your password?
       </Paragraph>
     </Link>
   );
 };
-

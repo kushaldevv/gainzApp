@@ -3,7 +3,7 @@ export function Alert() {
   return (
     <AlertDialog native>
       <AlertDialog.Trigger asChild>
-        <Label textDecorationLine="underline">Password</Label>
+        <Label textDecorationLine="underline" fontFamily={'$mono'}>Password</Label>
       </AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay

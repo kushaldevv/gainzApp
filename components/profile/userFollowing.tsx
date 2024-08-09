@@ -1,7 +1,6 @@
-import UserScrollView from "@/components/userScrollView";
-import { getUserFollowers } from "@/services/apiCalls";
+import UserScrollView from "@/components/home/userScrollView";
+import { getUserFollowing } from "@/services/apiCalls";
 import * as Types from "@/types";
-import { useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
 import { YStack } from "tamagui";
 
@@ -11,29 +10,25 @@ const emptyUser: Types.User = {
   pfp: " ",
 };
 
-const UserFollowers = () => {
-  const params = useLocalSearchParams();
-  const { userID, followersParam } = params;
-  const followersCount = parseInt(followersParam as string);
-  const [followers, setFollowers] = React.useState<Types.User[]>([]);
+const UserFollowing = ({followingCount, userID} : {followingCount: number, userID : string}) => {
+  const [following, setFollowing] = React.useState<Types.User[]>([]);
   const [loading, setLoading] = React.useState(false);
 
-  const skeletonUsers = Array.from({ length: Math.min(followersCount, 10) }, (_, i) => emptyUser);
+  const skeletonUsers = Array.from({ length: Math.min(followingCount, 10) }, (_, i) => emptyUser);
 
   useEffect(() => {
-    fetchFollowers();
+    fetchFollowing();
   }, []);
 
-  const fetchFollowers = async () => {
+  const fetchFollowing = async () => {
     setLoading(true);
     try {
       console.log(userID);
-      const data = await getUserFollowers(userID as string);
-      setFollowers(data);
+      const data = await getUserFollowing(userID as string);
+      setFollowing(data);
     } catch (error) {}
     setLoading(false);
   };
-
   return (
     <YStack
       flex={1}
@@ -43,12 +38,14 @@ const UserFollowers = () => {
       {loading && (
         <UserScrollView
           userList={skeletonUsers}
+          followingScreen={true}
           loading={true}
         />
       )}
       {!loading && (
         <UserScrollView
-          userList={followers}
+          userList={following}
+          followingScreen={true}
           loading={false}
         />
       )}
@@ -56,4 +53,4 @@ const UserFollowers = () => {
   );
 };
 
-export default UserFollowers;
+export default UserFollowing;

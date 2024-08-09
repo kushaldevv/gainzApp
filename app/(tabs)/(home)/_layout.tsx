@@ -1,11 +1,12 @@
 import { BellDot, Search, UserRoundSearch, X } from "@tamagui/lucide-icons";
-import { router, Stack } from "expo-router";
+import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
 import { Input, useTheme, XStack } from "tamagui";
 export default function HomeLayout() {
   const colorScheme = useColorScheme();
   const theme = useTheme();
+  const params = useLocalSearchParams();
   const backgroundColor = colorScheme == "dark" ? "rgb(15,15,15)" : "rgb(250,250,250)";
   const headerTintColor = colorScheme == "dark" ? "rgb(255,255,255)" : "rgb(18,18,18)";
   const [query, setQuery] = useState("");
@@ -24,8 +25,6 @@ export default function HomeLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: true,
-        headerBackTitleVisible: true,
         headerStyle: {
           backgroundColor: backgroundColor,
         },
@@ -61,7 +60,6 @@ export default function HomeLayout() {
         name="search"
         options={{
           headerShown: true,
-          title: "Search",
           headerTitle: () => (
             <XStack
               alignItems="center"
@@ -74,6 +72,7 @@ export default function HomeLayout() {
                 pl="$8"
                 backgroundColor={"$gray4"}
                 textContentType="name"
+                fontFamily={"$mono"}
                 placeholder="Search for people on BondFit"
                 borderRadius="$10"
                 returnKeyType="search"
@@ -104,13 +103,39 @@ export default function HomeLayout() {
         name="notis"
         options={{
           title: "Notifications",
-          headerBackTitle: "Home",
         }}
       />
       <Stack.Screen
         name="likes"
         options={{
           title: "Likes",
+        }}
+      />
+      <Stack.Screen
+        name="(post)"
+        options={{
+          title: "Post",
+        }}
+      />
+      <Stack.Screen
+        name="[user]"
+        options={{
+          title: "Profile",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="followers"
+        options={{
+          title: "Followers",
+          headerShown: true,
+        }}
+      />
+      <Stack.Screen
+        name="following"
+        options={{
+          title: "Following",
+          headerShown: true,
         }}
       />
     </Stack>

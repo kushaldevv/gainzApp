@@ -371,35 +371,46 @@ export const getExercisesInfo = async(sessionID: string) => {
   }
 }
 
-// export const getSpecificUserSession = async (sessionID: string) => {
-//   try {
-//     console.log("getting a specific session");
-//     const sessionUserID = sessionID.split('session')[0]
-//     const response = await axios.get(`${API_URL}/user/session?userID=${sessionUserID}&sessionID=${sessionID}`);
-//     const respData = response.data;
-
-//     const likes: Types.User[] = await Promise.all(
-//       respData.likes.map((like: string) => getUser(like))
-//     );
+export const getSpecificUserSession = async (sessionID: string, userID: string) => {  
+  try {
+    const sessionUserID = sessionID.split('session')[0];
+    const response = await axios.get(`${API_URL}/user/session?userID=${sessionUserID}&sessionID=${sessionID}`);
+    const sessionData = response.data;
     
-//     const session: Types.Session = {
-//       id: sessionID,
-//       name: respData.name as string,
-//       user: await getUser(sessionUserID) as Types.User,
-//       location: respData.location as string,
-//       date: respData.date as string,
-//       exercises: [], 
-//       duration: respData.duration as number,
-//       comments: respData.comments.length,
-//       likes: likes,
-//       numLikes: respData.likes.length as number,
-//     };
-//     return session;
-//   } catch (error) {
-//     // Re-throw the error for the caller to handle
-//     throw error;
-//   }
-// };
+    let likes: Types.User[] = [];
+    try {
+      likes = await Promise.all(sessionData.likes.map((like: string) => getUser(like)));
+    } catch (error) {
+      console.error("Error fetching likes:", error);
+    }
+
+    let exercises: Types.Exercise[] = [];
+    try {
+      exercises = await getExercisesInfo(sessionID) as Types.Exercise[];
+    } catch (error) {
+      console.error("Error fetching exercises:", error);
+    }
+
+    const session: Types.Session = {
+      id: sessionID,
+      name: sessionData.name as string,
+      user: await getUser(sessionUserID),
+      location: sessionData.location as string,
+      date: sessionData.date as string,
+      exercises: exercises,
+      duration: sessionData.duration as number,
+      comments: sessionData.comments,
+      likes: likes,
+      numLikes: sessionData.numLikes as number,
+      userLiked: sessionData.likes.includes(userID)
+    };
+
+    return session;
+  } catch (error) {
+    console.error("Error in getSpecificUserSession:", error);
+    throw error;
+  }
+};
 
 /**
  * Fetches the following for a user

@@ -138,6 +138,13 @@ export default function HomeLayout() {
           headerShown: true,
         }}
       />
+      <Stack.Screen
+        name="session"
+        options={{
+          title: "Session",
+          headerShown: true,
+        }}
+      />
     </Stack>
   );
 }

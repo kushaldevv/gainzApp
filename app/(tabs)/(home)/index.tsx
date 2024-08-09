@@ -4,32 +4,31 @@ import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
 import React, { useEffect, useState } from "react";
 import { RefreshControl } from "react-native";
-import { ScrollView, View, YStack } from "tamagui";
+import { ScrollView, Spinner, View, YStack } from "tamagui";
 import PostFAB from "@/components/home/fabPortal";
 import { PaperProvider } from "react-native-paper";
 
-// const emptySession: Types.Session = {
-//   id: " ",
-//   name: " ",
-//   user: {
-//     id: " ",
-//     name: " ",
-//     pfp: " ",
-//   },
-//   location: " ",
-//   date: " ",
-//   exercises: [],
-//   duration: 0,
-//   comments: 0,
-//   likes: [],
-//   numLikes: 0,
-// };
-
 const Page = () => {
   const [sessions, setSessions] = useState<Types.Session[]>([]);
-  const [refreshing, setRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const { user } = useUser();
   const [userDetails, setUserDetails] = useState<Types.User | null>(null);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async (isRefresh = false) => {
+    if (!isRefresh) setIsLoading(true);
+    try {
+      await Promise.all([fetchSessions(), fetchUserDetails()]);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const fetchSessions = async () => {
     try {
@@ -49,54 +48,49 @@ const Page = () => {
     }
   };
 
-  useEffect(() => {
-    fetchSessions();
-    fetchUserDetails();
-  }, []);
-
   const onRefresh = async () => {
-    setRefreshing(true);
+    setIsRefreshing(true);
     try {
-      console.log("refreshing");
-      await fetchSessions();
+      await fetchData(true);
     } catch (error) {
-      console.error("Error refreshing sessions:", error);
+      console.error("Error refreshing data:", error);
     } finally {
-      setRefreshing(false);
+      setIsRefreshing(false);
     }
   };
 
   return (
     <PaperProvider>
-    <YStack
-      flex={1}
-      alignItems="center"
-      backgroundColor={"$background"}
-    >
-       <PostFAB/>
-      <ScrollView
-        width={"100%"}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
-        }
+      <YStack
+        flex={1}
+        backgroundColor={"$background"}
       >
-        <View gap="$2">
-          {!refreshing &&
-            sessions.map((session, index) => (
-              <Card
-                key={index}
-                session={session}
-                loading={false}
-                userDetails={userDetails}
+        {isLoading ? (
+            <Spinner mt = '$3' />
+        ) : (
+          <ScrollView
+            width={"100%"}
+            refreshControl={
+              <RefreshControl
+                refreshing={isRefreshing}
+                onRefresh={onRefresh}
               />
-            ))}
-        </View>
-      </ScrollView>
-    </YStack>
-    <PostFAB/>
+            }
+          >
+            <View gap="$2">
+              {sessions.map((session, index) => (
+                <Card
+                  key={index}
+                  session={session}
+                  loading={false}
+                  userDetails={userDetails}
+                />
+              ))}
+            </View>
+          </ScrollView>
+        )}
+        <PostFAB />
+      </YStack>
     </PaperProvider>
   );
 };

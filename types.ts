@@ -26,7 +26,7 @@ export type Session = {
     user: User;
     location: string;
     date: string;
-    exercises: ExerciseViewProp[];
+    exercises: Exercise[];
     duration: number;
     comments: number;
     //max 3, use getLikes to get all
@@ -76,6 +76,7 @@ export type CommentProps = {
     sessionID: string;
     userID: string;
     loading: boolean;
+    handleDismissModalPress? : () => void;
 };
 
 export  type FormCardProps = {

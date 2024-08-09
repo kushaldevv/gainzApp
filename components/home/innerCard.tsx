@@ -235,7 +235,7 @@ const InnerCard = ({ exercises }: Types.InnerCardProps) => {
                   borderRadius={"$5"}
                   height={"$6"}
                   p="$2.5"
-                  gap="$2"
+                  // gap="$2"
                   alignItems="center"
                 >
                   <View

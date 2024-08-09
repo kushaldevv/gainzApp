@@ -315,7 +315,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
               fontSize={"$9"}
               fontWeight="600"
             >
-              Your activity
+              {userID == user?.id ? "Your" : "Their"} Activity
             </Text>
             {userProfile?.highestDuration.date ? (
               <XStack

@@ -507,6 +507,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
                           sessionID={session.id}
                           userID={user?.id!}
                           loading={false}
+                          handleDismissModalPress={handleDismissModalPress}
                         />
                       ))}
                 </View>

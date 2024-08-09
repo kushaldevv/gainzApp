@@ -39,7 +39,7 @@ const UserScrollView = ({
   const postFollow = async (followingID: string) => {
     try {
       await appendFollowing(loggedInUser!, followingID);
-      setFollowing((prev) => [...prev|| '', followingID]);
+      setFollowing((prev) => [...(prev || ""), followingID]);
     } catch (error) {
       console.error("Error following user:", error);
     }
@@ -48,110 +48,128 @@ const UserScrollView = ({
 
   const renderUser = useCallback(
     (user: Types.User, index: number) => {
-      const alreadyFollowing = following?  followingScreen || following?.includes(user.id) : null;
+      const alreadyFollowing = following ? followingScreen || following?.includes(user.id) : null;
       const notiType = notisContent ? notisContent[index]?.type : null;
       const notiDate = notisContent ? notisContent[index]?.date : null;
       const showButton = notisContent ? notiType === Types.NotiType.FOLLOW_REQUEST : true;
+      const userProfilePath =  pathname.includes("/profile")
+      ? "profile/[user]"
+      : "(home)/[user]"
+
+      const handleNotiPress = () => {
+        if (notiType == 1) {
+          router.push({ pathname: userProfilePath, params: { userIdParam: user.id } });
+        } else {
+          const notiSessionId = notisContent?.[index]?.sessionID;
+          if (notiSessionId)
+          router.push({ pathname: "/session", params : { sessionIdParam:notiSessionId }});
+        }
+      };
+
       return (
         <Skeleton.Group
           show={loading || followingLoading}
           key={index}
         >
-          <XStack
-            padding="$3"
-            alignItems="center"
-            justifyContent="space-between"
-          >
+          <TouchableOpacity onPress={handleNotiPress}>
             <XStack
-              flex={1}
+              padding="$3"
               alignItems="center"
-              mr="$3"
+              justifyContent="space-between"
             >
-              <Skeleton
-                radius="round"
-                colorMode={skeletonColorScheme}
+              <XStack
+                flex={1}
+                alignItems="center"
+                mr="$3"
               >
-                <TouchableOpacity
-                  onPress={() => {
-                    router.push({
-                      pathname: pathname.includes("/profile") ? "profile/[user]" : "(home)/[user]",
-                      params: {
-                        userIdParam: user.id,
-                      },
-                    });
-                  }}
-                >
-                  <Avatar
-                    circular
-                    size="$4"
-                  >
-                    <Avatar.Image src={user.pfp} />
-                    <Avatar.Fallback backgroundColor="$blue10" />
-                  </Avatar>
-                </TouchableOpacity>
-              </Skeleton>
-              <View ml="$3">
                 <Skeleton
-                  height={18}
-                  width={120}
+                  radius="round"
                   colorMode={skeletonColorScheme}
                 >
-                  <SizableText
-                    size={"$3"}
-                    fontFamily={"$mono"}
-                    fontWeight={700}
+                  <TouchableOpacity
+                    onPress={() => {
+                      router.push({
+                        pathname: userProfilePath,
+                        params: {
+                          userIdParam: user.id,
+                        },
+                      });
+                    }}
                   >
-                    {user.name}
-                  </SizableText>
+                    <Avatar
+                      circular
+                      size="$4"
+                    >
+                      <Avatar.Image src={user.pfp} />
+                      <Avatar.Fallback backgroundColor="$blue10" />
+                    </Avatar>
+                  </TouchableOpacity>
                 </Skeleton>
-                {notisContent && !loading && (
-                  <SizableText
-                    size={"$3"}
-                    lineHeight={"$1"}
-                    fontFamily={"$mono"}
+                <View ml="$3">
+                  <Skeleton
+                    height={18}
+                    width={120}
+                    colorMode={skeletonColorScheme}
                   >
-                    {notiBody(notiType!)}
-                  </SizableText>
-                )}
-                {notisContent && !loading && (
-                  <SizableText
-                    size="$3"
-                    fontFamily="$mono"
-                    col={"$gray10"}
-                    lineHeight={"$1"}
-                  >
-                    {notiDate ? `${formatSimpleDate(notiDate)}` : " "}
-                  </SizableText>
-                )}
-              </View>
-            </XStack>
-            {showButton && loggedInUser != user.id ? (
-              <Skeleton
-                colorMode={skeletonColorScheme}
-                height={32}
-                width={95}
-                show = {loading || followingLoading || alreadyFollowing == null}
-              >
-                {alreadyFollowing ?  <Button
-                  disabled={alreadyFollowing}
-                  themeInverse={!(alreadyFollowing)}
-                  height={"$2.5"}
-                  fontSize={"$2"}
-                  fontFamily={"$mono"}
-                  fontWeight={600}
-                  borderColor={"$borderColor"}
-                  pressStyle={{
-                    backgroundColor: "$gray7",
-                    borderColor: "$borderColorFocus",
-                  }}
-                  onPress={() => postFollow(user.id)}
+                    <SizableText
+                      size={"$3"}
+                      fontFamily={"$mono"}
+                      fontWeight={700}
+                    >
+                      {user.name}
+                    </SizableText>
+                  </Skeleton>
+                  {notisContent && !loading && (
+                    <SizableText
+                      size={"$3"}
+                      lineHeight={"$1"}
+                      fontFamily={"$mono"}
+                    >
+                      {notiBody(notiType!)}
+                    </SizableText>
+                  )}
+                  {notisContent && !loading && (
+                    <SizableText
+                      size="$3"
+                      fontFamily="$mono"
+                      col={"$gray10"}
+                      lineHeight={"$1"}
+                    >
+                      {notiDate ? `${formatSimpleDate(notiDate)}` : " "}
+                    </SizableText>
+                  )}
+                </View>
+              </XStack>
+              {showButton && loggedInUser != user.id ? (
+                <Skeleton
+                  colorMode={skeletonColorScheme}
+                  height={32}
                   width={95}
+                  show={loading || followingLoading || alreadyFollowing == null}
                 >
-                  {alreadyFollowing ? "Following" : "Follow"}
-                </Button> : null}
-              </Skeleton>
-            ) : null}
-          </XStack>
+                  {alreadyFollowing != null ? (
+                    <Button
+                      disabled={alreadyFollowing}
+                      themeInverse={!alreadyFollowing}
+                      height={"$2.5"}
+                      fontSize={"$2"}
+                      fontFamily={"$mono"}
+                      fontWeight={600}
+                      borderColor={"$borderColor"}
+                      pressStyle={{
+                        backgroundColor: "$gray7",
+                        borderColor: "$borderColorFocus",
+                      }}
+                      onPress={() => postFollow(user.id)}
+                      width={95}
+                    >
+                      {alreadyFollowing ? "Following" : "Follow"}
+                    </Button>
+                  ) : null}
+                </Skeleton>
+              ) : null}
+            </XStack>
+          </TouchableOpacity>
         </Skeleton.Group>
       );
     },

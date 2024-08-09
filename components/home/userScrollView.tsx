@@ -13,12 +13,10 @@ const UserScrollView = ({
   notisContent,
   followingScreen,
 }: Types.UserScrollViewProps) => {
-  const { user } = useUser();
-  const loggedInUser = user?.id;
-  const skeletonColorScheme = useColorScheme() === "dark" ? "light" : "dark";
-  const [following, setFollowing] = useState<string[]>([]);
+  const loggedInUser = useUser().user?.id;
+  const skeletonColorScheme = useColorScheme() == "dark" ? "dark" : "light";
+  const [following, setFollowing] = useState<string[] | null>(null);
   const [followingLoading, setFollowingLoading] = useState(false);
-  const isFollowingScreen = followingScreen || false;
 
   useEffect(() => {
     fetchFollowingList();
@@ -41,7 +39,7 @@ const UserScrollView = ({
   const postFollow = async (followingID: string) => {
     try {
       await appendFollowing(loggedInUser!, followingID);
-      setFollowing((prev) => [...prev, followingID]);
+      setFollowing((prev) => [...prev|| '', followingID]);
     } catch (error) {
       console.error("Error following user:", error);
     }
@@ -50,14 +48,13 @@ const UserScrollView = ({
 
   const renderUser = useCallback(
     (user: Types.User, index: number) => {
-      const alreadyFollowing = following.includes(user.id);
+      const alreadyFollowing = following?  followingScreen || following?.includes(user.id) : null;
       const notiType = notisContent ? notisContent[index]?.type : null;
       const notiDate = notisContent ? notisContent[index]?.date : null;
       const showButton = notisContent ? notiType === Types.NotiType.FOLLOW_REQUEST : true;
-
       return (
         <Skeleton.Group
-          show={loading}
+          show={loading || followingLoading}
           key={index}
         >
           <XStack
@@ -65,7 +62,6 @@ const UserScrollView = ({
             alignItems="center"
             justifyContent="space-between"
           >
-            {/* <Text>{pathname}</Text> */}
             <XStack
               flex={1}
               alignItems="center"
@@ -78,10 +74,9 @@ const UserScrollView = ({
                 <TouchableOpacity
                   onPress={() => {
                     router.push({
-                      pathname: pathname.includes("profile") ? "profile/[user]" : "/[user]",
+                      pathname: pathname.includes("/profile") ? "profile/[user]" : "(home)/[user]",
                       params: {
                         userIdParam: user.id,
-                        userFollowingParam: alreadyFollowing.toString(),
                       },
                     });
                   }}
@@ -134,11 +129,12 @@ const UserScrollView = ({
               <Skeleton
                 colorMode={skeletonColorScheme}
                 height={32}
-                show={(followingLoading && !isFollowingScreen) || loading}
+                width={95}
+                show = {loading || followingLoading || alreadyFollowing == null}
               >
-                <Button
-                  disabled={isFollowingScreen || alreadyFollowing}
-                  themeInverse={!(isFollowingScreen || alreadyFollowing)}
+                {alreadyFollowing ?  <Button
+                  disabled={alreadyFollowing}
+                  themeInverse={!(alreadyFollowing)}
                   height={"$2.5"}
                   fontSize={"$2"}
                   fontFamily={"$mono"}
@@ -151,15 +147,15 @@ const UserScrollView = ({
                   onPress={() => postFollow(user.id)}
                   width={95}
                 >
-                  {isFollowingScreen || alreadyFollowing ? "Following" : "Follow"}
-                </Button>
+                  {alreadyFollowing ? "Following" : "Follow"}
+                </Button> : null}
               </Skeleton>
             ) : null}
           </XStack>
         </Skeleton.Group>
       );
     },
-    [postFollow, skeletonColorScheme, loading, isFollowingScreen]
+    [postFollow, skeletonColorScheme, loading]
   );
 
   const memoizedUserList = useMemo(() => userList, [userList]);

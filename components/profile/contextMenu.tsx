@@ -21,7 +21,7 @@ const ContextMenuView = ({ children, label }: { children: any; label: string }) 
     }
   };
   return (
-    <ContextMenu.Root>
+    <ContextMenu.Root style={{borderRadius:42}}>
       <ContextMenu.Trigger>{children}</ContextMenu.Trigger>
       <ContextMenu.Content
         loop={false}

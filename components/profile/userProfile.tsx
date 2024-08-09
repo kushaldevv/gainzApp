@@ -1,8 +1,8 @@
-import { getUserProfile } from "@/services/apiCalls";
+import { getUserFollowingList, getUserProfile } from "@/services/apiCalls";
 import { formatSessionDate, formatSessionTime, getPastSevenDays } from "@/services/utilities";
 import * as Types from "@/types";
 import { ArrowUpRight, Dumbbell, LogOut, UserCheck, UserPlus } from "@tamagui/lucide-icons";
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
@@ -10,13 +10,16 @@ import { Avatar, Button, Circle, Spinner, Text, View, XStack, YStack } from "tam
 import { LinearGradient } from "tamagui/linear-gradient";
 import ContextMenuView from "./contextMenu";
 import { useClerk, useUser } from "@clerk/clerk-expo";
+import DropDownMenu from "./dropDownMenu";
 
-const UserProfile = ({ userID, isPublicProfile, following }: Types.UserProfileProps) => {
+const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
   const colorMode = useColorScheme();
   const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
-  const skeletonColorScheme = useColorScheme() == "dark" ? "light" : "dark" || "light";
+  const skeletonColorScheme = useColorScheme() == "dark" ? "dark" : "light";
   const [userProfile, setUserProfile] = useState<Types.UserProfile | null>(null);
+  const [following, setFollowing] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
+  const { user } = useUser();
 
   useEffect(() => {
     fetchUserProfile();
@@ -26,8 +29,14 @@ const UserProfile = ({ userID, isPublicProfile, following }: Types.UserProfilePr
     setLoading(true);
     if (userID) {
       try {
-        const data = await getUserProfile(userID);
-        setUserProfile(data);
+        const userProfileData = await getUserProfile(userID);
+        if (user) {
+          if (user.id != userID) {
+            const followingListData = await getUserFollowingList(user.id);
+            setFollowing(followingListData.includes(userID));
+          }
+        }
+        setUserProfile(userProfileData);
       } catch (error) {
         console.error("Error fetching user profile: ", error);
       }
@@ -75,8 +84,8 @@ const UserProfile = ({ userID, isPublicProfile, following }: Types.UserProfilePr
           pb="$3"
         >
           <Skeleton
-            colorMode={skeletonColorScheme}
             radius={"round"}
+            colorMode={skeletonColorScheme}
           >
             <View>
               <ContextMenuView label={"Update picture"}>
@@ -96,22 +105,21 @@ const UserProfile = ({ userID, isPublicProfile, following }: Types.UserProfilePr
                   </Avatar>
                 </Circle>
               </ContextMenuView>
-              {following != undefined && !loading && (
-                <TouchableOpacity>
-                  <Circle
-                    size="$3"
-                    backgroundColor={"$gray3"}
-                    pos="absolute"
-                    right="$-3"
-                    bottom="$-1"
-                  >
-                    {following ? <UserCheck size="$1" /> : <UserPlus size="$1" />}
-                  </Circle>
+
+              {following != null && !loading && (
+                <TouchableOpacity style={{ position: "absolute", right: -13, bottom: -2 }}>
+                  <DropDownMenu>
+                    <Circle
+                      size="$3"
+                      backgroundColor={"$gray3"}
+                    >
+                      {following ? <UserCheck size="$1" /> : <UserPlus size="$1" />}
+                    </Circle>
+                  </DropDownMenu>
                 </TouchableOpacity>
               )}
             </View>
           </Skeleton>
-
           <YStack gap="$4">
             <Skeleton colorMode={skeletonColorScheme}>
               <ContextMenuView label={"Update name"}>
@@ -239,7 +247,7 @@ const UserProfile = ({ userID, isPublicProfile, following }: Types.UserProfilePr
                     fontWeight="700"
                     col="$color"
                   >
-                    {userProfile?.randomPr.pr}
+                    {userProfile?.randomPr.pr || '0'}
                   </Text>
                   <Text
                     fontFamily={"$mono"}
@@ -253,12 +261,12 @@ const UserProfile = ({ userID, isPublicProfile, following }: Types.UserProfilePr
                 </XStack>
                 <Text
                   fontFamily={"$mono"}
-                  fontSize="$4"
+                  fontSize="$5"
                   fontWeight="400"
                   col="$color"
                   textAlign="center"
                 >
-                  {userProfile?.randomPr.name}
+                  {userProfile?.randomPr.name || 'No PRs yet'}
                 </Text>
               </LinearGradient>
             </Skeleton>

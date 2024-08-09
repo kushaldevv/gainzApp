@@ -26,7 +26,7 @@ export type Session = {
     user: User;
     location: string;
     date: string;
-    exercises: Exercise[];
+    exercises: ExerciseViewProp[];
     duration: number;
     comments: number;
     //max 3, use getLikes to get all
@@ -111,15 +111,9 @@ export interface Noti extends NotiContent {
 export type UserProfileProps = {
     userID: string;
     isPublicProfile: boolean;
-    following?: boolean;
   };
   
 export type ExercisesContextType = {
     exercises: ExerciseViewProp[];
     setExercises: React.Dispatch<React.SetStateAction<ExerciseViewProp[]>>;
-};
-
-export type UserProfileContextType = {
-    userId: string;
-    setUserId: React.Dispatch<React.SetStateAction<string>>;
 };

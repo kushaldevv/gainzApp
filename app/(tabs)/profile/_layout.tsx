@@ -1,26 +1,19 @@
-import { useClerk, useUser } from "@clerk/clerk-expo";
-import { LogOut, Type } from "@tamagui/lucide-icons";
-import { router, Stack, useLocalSearchParams } from "expo-router";
-import { createContext, useEffect, useState } from "react";
+import { useClerk } from "@clerk/clerk-expo";
+import { LogOut } from "@tamagui/lucide-icons";
+import { Stack, usePathname } from "expo-router";
+import { useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
-import { Circle, Spinner } from "tamagui";
-import * as Types from "@/types";
-
-export const ProfileContext = createContext<Types.UserProfileContextType>({
-  userId: "",
-  setUserId: () => {},
-});
+import { Spinner } from "tamagui";
 
 export default function ProfileLayout() {
   const colorScheme = useColorScheme();
   const backgroundColor = colorScheme == "dark" ? "rgb(15,15,15)" : "rgb(250,250,250)";
   const headerTintColor = colorScheme == "dark" ? "rgb(255,255,255)" : "rgb(18,18,18)";
+  
   const { signOut } = useClerk();
   const [showSpinner, setShowSpinner] = useState(false);
-  const { user } = useUser();
-  const [userId, setUserId] = useState('');
+  const pathname = usePathname();
   return (
-    <ProfileContext.Provider value={{ userId, setUserId }}>
       <Stack
         screenOptions={{
           headerShown: true,
@@ -37,7 +30,7 @@ export default function ProfileLayout() {
           options={{
             title: "Profile",
             headerRight: () =>
-              userId == user?.id && (
+               pathname == '/profile' && (
                 <TouchableOpacity
                   style={{ zIndex: 1, position: "absolute", right: 13, marginVertical: 13 }}
                   onPress={() => {
@@ -72,6 +65,5 @@ export default function ProfileLayout() {
           }}
         />
       </Stack>
-    </ProfileContext.Provider>
   );
 }

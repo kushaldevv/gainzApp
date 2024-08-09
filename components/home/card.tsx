@@ -55,7 +55,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
   const headerHeight = useHeaderHeight();
   const theme = useTheme();
   const router = useRouter();
-  const skeletonColorScheme = useColorScheme() == "dark" ? "light" : "dark" || "light";
+  const skeletonColorScheme = useColorScheme() == "dark" ? "dark" : "light";
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   const [session, setSession] = useState(initialSession);
@@ -89,7 +89,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
   const handleProfileScreen = () => {
     router.push({
       pathname: "/[user]",
-      params: { userIdParam: session.user.id, userNameParam: session.user.name},
+      params: { userIdParam: session.user.id },
     });
   };
 
@@ -386,7 +386,12 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
                       height={"$1.5"}
                       justifyContent="center"
                     >
-                      <SizableText size={"$1"}>Be the first to like!</SizableText>
+                      <SizableText
+                        fontFamily={"$mono"}
+                        size={"$1"}
+                      >
+                        Be the first to like!
+                      </SizableText>
                     </View>
                   )}
                 </XStack>

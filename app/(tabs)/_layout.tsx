@@ -4,8 +4,8 @@ import Entypo from '@expo/vector-icons/Entypo';
 import {
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
-import { Redirect, Tabs } from "expo-router";
-import { useColorScheme } from "react-native";
+import { Redirect, Tabs,  } from "expo-router";
+import { useColorScheme,  } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function Layout() {
@@ -27,6 +27,7 @@ function TabsProvider() {
     colorScheme == "dark" ? "rgb(15,15,15)" : "rgb(250,250,250)";
   const tabBarTintColor =
     colorScheme == "dark" ? "rgb(255,255,255)" : "rgb(18,18,18)";
+
   return (
     <GestureHandlerRootView>
       <BottomSheetModalProvider>

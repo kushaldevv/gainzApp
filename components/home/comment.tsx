@@ -41,7 +41,7 @@ const Comment = ({ index, comment, sessionID, userID, loading }: Types.CommentPr
     }
   };
 
-  const skeletonColorScheme = useColorScheme() == "dark" ? "light" : "dark" || "light";
+  const skeletonColorScheme = useColorScheme() == "dark" ? "dark" : "light";
   return (
     <Skeleton.Group show={loading}>
       <XStack gap="$2">

@@ -108,7 +108,12 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
 
               {following != null && !loading && (
                 <TouchableOpacity style={{ position: "absolute", right: -13, bottom: -2 }}>
-                  <DropDownMenu>
+                  <DropDownMenu
+                    setFollowing={setFollowing}
+                    action={following ? "Unfollow" : "Follow"}
+                    userId1={user?.id!}
+                    userId2={userID}
+                  >
                     <Circle
                       size="$3"
                       backgroundColor={"$gray3"}
@@ -247,7 +252,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                     fontWeight="700"
                     col="$color"
                   >
-                    {userProfile?.randomPr.pr || '0'}
+                    {userProfile?.randomPr.pr || "0"}
                   </Text>
                   <Text
                     fontFamily={"$mono"}
@@ -266,7 +271,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                   col="$color"
                   textAlign="center"
                 >
-                  {userProfile?.randomPr.name || 'No PRs yet'}
+                  {userProfile?.randomPr.name || "No PRs yet"}
                 </Text>
               </LinearGradient>
             </Skeleton>
@@ -389,35 +394,6 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
             </XStack>
           </YStack>
         </Skeleton>
-        {/* {userID == user?.id && (
-          <Skeleton
-            colorMode={skeletonColorScheme}
-            radius={14}
-          >
-            <Button
-              backgroundColor={"$colorTransparent"}
-              borderColor={"#00cccc"}
-              borderWidth={1}
-              fontFamily={"$mono"}
-              fontWeight={600}
-              fontSize={"$5"}
-              color="#00cccc"
-              borderRadius="$6"
-              onPress={() => {
-                signOut();
-                setShowSpinner(true);
-              }}
-            >
-              Log out
-              {showSpinner && (
-                <Spinner
-                  size="small"
-                  color={"#00cccc"}
-                />
-              )}
-            </Button>
-          </Skeleton>
-        )} */}
       </Skeleton.Group>
     </YStack>
   );

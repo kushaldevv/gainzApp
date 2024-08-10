@@ -284,7 +284,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
             pos="absolute"
             right="$0"
           >
-            <DropDownMenu isUser={initialSession.user.id == user?.id} />
+            {/* <DropDownMenu isUser={initialSession.user.id == user?.id} /> */}
           </View>
         </XStack>
         <Skeleton

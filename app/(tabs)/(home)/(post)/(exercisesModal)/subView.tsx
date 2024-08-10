@@ -1,19 +1,23 @@
 import { Text } from "react-native";
 import React, { useContext } from "react";
-import { router, useLocalSearchParams } from "expo-router";
+import { router, useGlobalSearchParams, useLocalSearchParams } from "expo-router";
 import { ListItem, ScrollView, YGroup, View, YStack } from "tamagui";
 import { ChevronRight } from "@tamagui/lucide-icons";
 import gainzExercises from "@/services/GainzExercises.json";
 import { ExercisesContext } from "../_layout";
 import * as Types from "@/types";
 
+// interface RouteParams {
+//   source?: string;
+// }
+
 const SubView = () => {
-  const params = useLocalSearchParams();
+  const params = useGlobalSearchParams();
   const { exercise } = params;
   const query = ((params.query as string) || "").toLowerCase().trim();
   const targetMuscleExercises = Object.keys((gainzExercises as any)[exercise as string]);
   const { exercises, setExercises } = useContext(ExercisesContext);
-  const { source } = useLocalSearchParams();
+  // const { source } = useLocalSearchParams();
 
   const handleExercisePress = (exercise: string) => {
     const addExercise = (exerciseName: string) => {
@@ -32,9 +36,11 @@ const SubView = () => {
     //   pathname: "live",
     // });
     // router.back();
-    if (source == 'live') {
+    if (params.source as string == 'live') {
+      console.log("source: ", params.source)
       router.replace('/live');
     } else {
+      console.log("source: ", params.source)
       router.replace('/manual');
     }
     

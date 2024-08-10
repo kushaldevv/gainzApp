@@ -11,6 +11,7 @@ import { useColorScheme } from "react-native";
 import "react-native-reanimated";
 import tokenCache from "../services/tokenCache";
 import { PortalProvider } from "tamagui";
+import { TimerProvider } from "./(tabs)/(home)/(post)/(exercisesModal)/timeContext";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 if (!publishableKey) {
@@ -72,11 +73,14 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   return (
+    
     <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
       <PortalProvider>
         <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
           <ClerkLoaded>
-            <Slot />
+            <TimerProvider>
+              <Slot />
+            </TimerProvider>
           </ClerkLoaded>
         </ClerkProvider>
       </PortalProvider>

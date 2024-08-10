@@ -32,6 +32,7 @@ import Stopwatch from "@/components/post/stopwatch";
 import StopWatch from "@/components/post/stopwatch";
 import { Pause, Play, Scale } from "@tamagui/lucide-icons";
 import PauseFinishAlert from "./pauseFinishAlert";
+import { useTimer } from "./(exercisesModal)/timeContext";
 
 const LivePost = () => {
 	const [startDate, setStartDate] = useState(
@@ -51,8 +52,10 @@ const LivePost = () => {
 	const { user } = useUser();
 	const [error, setError] = useState(false);
 	const shake = useShakeAnimation(error);
-	const [time, setTime] = useState(0);
-	const [isRunning, setIsRunning] = useState(false);
+	// const [time, setTime] = useState(0);
+	// const [isRunning, setIsRunning] = useState(false);
+  // const [showAlert, setShowAlert] = useState(false);
+  const { time, setTime, isRunning, setIsRunning } = useTimer();
   const [showAlert, setShowAlert] = useState(false);
 
 	const startStopTimer = () => {
@@ -143,14 +146,14 @@ const LivePost = () => {
 		if (user) await appendSession(user.id, session);
 
 		setLoading(false);
-    router.replace('/index');
+    router.replace('/(tabs)/(home)/index');
 	};
 
 	return (
 		<ScrollView backgroundColor={"$background"}>
 			<YStack flex={1} alignItems="center" gap={"$4"} padding={"$3"}>
 
-				<StopWatch time={time} isRunning={isRunning} modifyTime={(time: number) => setTime(time)} />
+				<StopWatch />
 
 				{exercises.map((exercise: Types.ExerciseViewProp, i: number) => (
 					<ExerciseAccordion exercise={exercise} key={i} />

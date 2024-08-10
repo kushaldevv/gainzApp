@@ -11,22 +11,19 @@ import {
     YGroup,
     YStack,
   } from "tamagui";
+import { useTimer } from '@/app/(tabs)/(home)/(post)/(exercisesModal)/timeContext';
 
-interface StopWatchProps {
-    time: number;
-    isRunning: boolean;
-    modifyTime: (value: number) => void;
-}
-  
-const StopWatch = ({time, isRunning, modifyTime}: StopWatchProps) => {
+
+const StopWatch = () => {
 //   const [time, setTime] = useState(0);
 //   const [isRunning, setIsRunning] = useState(false);
+  const { time, setTime, isRunning } = useTimer();
 
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval> | undefined;
     if (isRunning) {
         // setting time from 0 to 1 every 1 second using javascript setInterval method
-        intervalId = setInterval(() => modifyTime(time + 1), 1000);
+        intervalId = setInterval(() => setTime(time + 1), 1000);
     }
     return () => clearInterval(intervalId);
   })

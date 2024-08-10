@@ -13,6 +13,7 @@ const SubView = () => {
   const query = ((params.query as string) || "").toLowerCase().trim();
   const targetMuscleExercises = Object.keys((gainzExercises as any)[exercise as string]);
   const { exercises, setExercises } = useContext(ExercisesContext);
+  const { source } = useLocalSearchParams();
 
   const handleExercisePress = (exercise: string) => {
     const addExercise = (exerciseName: string) => {
@@ -26,9 +27,17 @@ const SubView = () => {
       setExercises([...exercises, newExercise]);
     };
     addExercise(exercise);
-    router.replace({
-      pathname: "manual",
-    });
+    // make this dynamic, return to manual if visited from manual page, return to live vice versa
+    // router.replace({
+    //   pathname: "live",
+    // });
+    // router.back();
+    if (source == 'live') {
+      router.replace('/live');
+    } else {
+      router.replace('/manual');
+    }
+    
   };
 
   return (

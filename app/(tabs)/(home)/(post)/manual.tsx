@@ -178,7 +178,10 @@ const ManualPost = () => {
           width={"100%"}
           separator={<Separator />}
         >
-          <TouchableOpacity onPress={() => router.push("/(exercisesModal)")}>
+          <TouchableOpacity onPress={() => router.push({
+            pathname: '/(exercisesModal)',
+            params: { source: 'manual' }
+          })}>
             <YGroup.Item>
               <ListItem
                 fontFamily={"$mono"}

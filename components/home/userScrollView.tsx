@@ -68,7 +68,7 @@ const UserScrollView = ({
 
       return (
         <Skeleton.Group
-          show={loading || followingLoading}
+          show={loading}
           key={index}
         >
           <TouchableOpacity onPress={handleNotiPress}>

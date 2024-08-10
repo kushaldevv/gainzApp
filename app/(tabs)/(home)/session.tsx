@@ -25,100 +25,18 @@ const skeletonSession: Types.Session = {
   userLiked: false,
 };
 
-// const SessionView = () => {
-//   const sessionId = useLocalSearchParams().sessionIdParam as string;
-//   const { user } = useUser();
-//   const [session, setSession] = useState<Types.Session>(skeletonSession);
-//   const [userDetails, setUserDetails] = useState<Types.User | null>(null);
-//   const [loading, setLoading] = useState(true);
-//   const [refreshing, setRefreshing] = useState(false);
-//   const [initialLoad, setInitialLoad] = useState(true);
-
-//   useEffect(() => {
-//     fetchSession();
-//     fetchUserDetails();
-//   }, []);
-
-//   const fetchUserDetails = async () => {
-//     if (user) {
-//       const userDetails = await getUser(user.id);
-//       setUserDetails(userDetails);
-//     }
-//   };
-//   const fetchSession = async () => {
-//     setLoading(true);
-//     try {
-//       const sessionData = await getSpecificUserSession(sessionId, user?.id as string);
-//       setSession(sessionData);
-//     } catch (error) {
-//       console.error("Error fetching session:", error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-//   const onRefresh = async () => {
-//     setRefreshing(true);
-//     try {
-//       console.log("refreshing");
-//       await fetchSession();
-//     } catch (error) {
-//       console.error("Error refreshing sessions:", error);
-//     } finally {
-//       setRefreshing(false);
-//     }
-//   };
-//   return (
-//     <YStack
-//       flex={1}
-//       alignItems="center"
-//       backgroundColor={"$background"}
-//     >
-//       <ScrollView
-//        width={"100%"}
-//         refreshControl={
-//           <RefreshControl
-//             refreshing={refreshing}
-//             onRefresh={onRefresh}
-//           />
-//         }
-//       >
-//        {initialLoad && <Spinner/>}
-//         {!loading && (
-//           <Card
-//             session={session}
-//             userDetails={userDetails}
-//             loading={loading}
-//           />
-//         )}
-//       </ScrollView>
-//     </YStack>
-//   );
-// };
-
-// export default SessionView;
-
 const SessionView = () => {
   const sessionId = useLocalSearchParams().sessionIdParam as string;
   const { user } = useUser();
   const [session, setSession] = useState<Types.Session>(skeletonSession);
   const [userDetails, setUserDetails] = useState<Types.User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    fetchData();
+    fetchSession();
+    fetchUserDetails();
   }, []);
-
-  const fetchData = async (isRefresh = false) => {
-    if (!isRefresh) setIsLoading(true);
-    try {
-      await Promise.all([fetchSession(), fetchUserDetails()]);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const fetchUserDetails = async () => {
     if (user) {
@@ -126,51 +44,58 @@ const SessionView = () => {
       setUserDetails(userDetails);
     }
   };
-
   const fetchSession = async () => {
+    setLoading(true);
     try {
       const sessionData = await getSpecificUserSession(sessionId, user?.id as string);
       setSession(sessionData);
     } catch (error) {
       console.error("Error fetching session:", error);
+    } finally {
+      setLoading(false);
     }
   };
-
   const onRefresh = async () => {
-    setIsRefreshing(true);
+    setRefreshing(true);
     try {
-      await fetchData(true);
+      console.log("refreshing");
+      await fetchSession();
     } catch (error) {
       console.error("Error refreshing sessions:", error);
     } finally {
-      setIsRefreshing(false);
+      setRefreshing(false);
     }
   };
-
   return (
     <YStack
       flex={1}
+      alignItems="center"
       backgroundColor={"$background"}
     >
-      {isLoading ? (
-        <Spinner mt = '$3'/>
-      ) : (
-        <ScrollView
-          width={"100%"}
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={onRefresh}
-            />
-          }
-        >
+      <ScrollView
+        width={"100%"}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+      >
+        {loading && (
+          <Card
+            session={skeletonSession}
+            userDetails={skeletonSession.user}
+            loading={true}
+          />
+        )}
+        {!loading && (
           <Card
             session={session}
             userDetails={userDetails}
-            loading={isLoading}
+            loading={false}
           />
-        </ScrollView>
-      )}
+        )}
+      </ScrollView>
     </YStack>
   );
 };

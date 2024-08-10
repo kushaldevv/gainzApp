@@ -3,7 +3,15 @@ import React, { ReactNode, useState } from "react";
 import * as ContextMenu from "zeego/context-menu";
 import * as ImagePicker from "expo-image-picker";
 
-const ContextMenuView = ({ children, label }: { children: any; label: string }) => {
+const ContextMenuView = ({
+  children,
+  label,
+  setIsEditing,
+}: {
+  children: any;
+  label: string;
+  setIsEditing?: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [image, setImage] = useState<string | null>(null);
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -21,7 +29,7 @@ const ContextMenuView = ({ children, label }: { children: any; label: string }) 
     }
   };
   return (
-    <ContextMenu.Root style={{borderRadius:42}}>
+    <ContextMenu.Root style={{ borderRadius: label === 'Update name' ? 16 : 42 }}>
       <ContextMenu.Trigger>{children}</ContextMenu.Trigger>
       <ContextMenu.Content
         loop={false}
@@ -29,7 +37,16 @@ const ContextMenuView = ({ children, label }: { children: any; label: string }) 
         avoidCollisions={true}
         collisionPadding={20}
       >
-        <ContextMenu.Item key="0" onSelect={() => label == "Update name" ? null : pickImage()}>
+        <ContextMenu.Item
+          key="0"
+          onSelect={() => {
+            if (label == "Update name") {
+              setIsEditing && setIsEditing(true);
+            } else {
+              pickImage();
+            }
+          }}
+        >
           <ContextMenu.ItemTitle>{label}</ContextMenu.ItemTitle>
           <ContextMenu.ItemIcon
             ios={{

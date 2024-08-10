@@ -227,8 +227,8 @@ export const getUserProfile = async (userID: string): Promise<Types.UserProfile>
       groupedByDay[dayAbbr] = [];
     }
 
-    let highestDuration = 0;
-    let highestDurationDay = '';
+    // let highestDuration = 0;
+    // let highestDurationDay = '';
 
     // // Sort dateDuration array by date in descending order
     // const sortedDateDurations = data.dateDuration.sort((a: any, b: any) => 
@@ -254,20 +254,33 @@ export const getUserProfile = async (userID: string): Promise<Types.UserProfile>
       }
 
       if (itemDate >= sevenDaysAgo && itemDate <= today) {
-        if (item.duration > highestDuration) {
-          highestDuration = item.duration;
-          highestDurationDay = item.date;
-        }
+        // if (item.duration > highestDuration) {
+        //   highestDuration = item.duration;
+        //   highestDurationDay = item.date;
+        // }
         const dateDuration: Types.dateDuration = {
           date: item.date as string,
           duration: item.duration as number
         };
         const dayAbbr = getDayAbbr(itemDate);
+        
+        if (groupedByDay[dayAbbr].length > 0) {
+          groupedByDay[dayAbbr][0].duration += item.duration;
+        } else {
         groupedByDay[dayAbbr].push(dateDuration);
-        acc.push(dateDuration);
+        // acc.push(dateDuration);
+        }
+      }
+      // return acc;
+    }, []);
+    
+    const highestDuration = Object.values(groupedByDay).flat().reduce((acc, item) => {
+      if (item.duration > acc.duration) {
+        return item;
       }
       return acc;
-    }, []);
+    }
+    , { date: '', duration: 0 });
 
     const userProfile: Types.UserProfile = {
       id: data.userID as string,
@@ -276,7 +289,7 @@ export const getUserProfile = async (userID: string): Promise<Types.UserProfile>
       followers: data.followers as number,
       following: data.following as number,
       recentSessions: groupedByDay,
-      highestDuration: { date: highestDurationDay, duration: highestDuration },
+      highestDuration: highestDuration,
       streak: streak,
       randomPr: data.randomPr as { name: string; pr: number }
     };
@@ -630,5 +643,15 @@ export const deleteSession = async(sessionID: string) => {
   } catch (error) {
     // If an error occurs during the API request, re-throw it
     throw error;
+  }
+}
+
+export const updateName = async(userId: string, newName: string) => {
+  try {
+    // Send a PATCH request to update the name of a user
+    await axios.patch(`${API_URL}/user/update-name?userID=${userId}`, `"${newName}"`);
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+      throw error;
   }
 }

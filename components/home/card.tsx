@@ -158,7 +158,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
               alignSelf="center"
             >
               <Avatar.Image src={user?.pfp} />
-              <Avatar.Fallback backgroundColor="$blue10" />
+              <Avatar.Fallback backgroundColor="#00cccc" />
             </Avatar>
             <BottomSheetTextInput
               placeholder="Add a comment..."

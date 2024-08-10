@@ -85,8 +85,8 @@ const ManualPost = () => {
         exercises: exercises.map((exercise) => exercise.name),
         comments: [],
         location: location ? location : locationPlaceholder,
-        duration: (endDate.getTime() - startDate.getTime()) / 1000,
-        date: startDate,
+        duration: Math.floor((endDate.getTime() - startDate.getTime()) / 1000),
+        date: startDate.toISOString(),
       },
       exerciseData: exercises.map((exercise) => ({
         name: exercise.name,
@@ -97,10 +97,18 @@ const ManualPost = () => {
         },
       })),
     };
-
-    if (user) await appendSession(user.id, session);
-
+    console.log(session);
+    console.log(session.exerciseData[0].lists);
+    try {
+      if (user) await appendSession(user.id, session);
+    } catch (error) {
+      console.log(error);
+    }
     setLoading(false);
+    router.replace({
+      pathname: "session",
+      params: { sessionIdParam: sessionKey },
+    })
   };
 
   return (

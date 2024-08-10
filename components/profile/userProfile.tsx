@@ -48,9 +48,11 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
 	const [loading, setLoading] = useState(true);
 	const { user } = useUser();
 	const [isEditing, setIsEditing] = useState(false);
-	const [editingField, setEditingField] = useState<"name" | "picture" | null>(null);
+	const [editingField, setEditingField] = useState<"name" | "picture" | null>(
+		null
+	);
 	const [editedName, setEditedName] = useState("");
-  const [nameInDb, setNameInDb] = useState("");
+	const [nameInDb, setNameInDb] = useState("");
 
 	useEffect(() => {
 		fetchUserProfile();
@@ -69,7 +71,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
 				}
 				setUserProfile(userProfileData);
 				setEditedName(userProfileData.name);
-        setNameInDb(userProfileData.name);
+				setNameInDb(userProfileData.name);
 			} catch (error) {
 				console.error("Error fetching user profile: ", error);
 			}
@@ -108,14 +110,14 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
 			console.log("user id: ", userId);
 			console.log("name: ", newName);
 
-      if (!(newName === nameInDb)) {
-        console.log("newName: ", newName);
-        console.log("nameInDB: ", nameInDb);
-        console.log("API call")
-        await updateName(userId, newName);
-        setNameInDb(newName) // allows us to avoid making an extra api call to get the updated name
-        setIsEditing(false)
-      }
+			if (!(newName === nameInDb)) {
+				console.log("newName: ", newName);
+				console.log("nameInDB: ", nameInDb);
+				console.log("API call");
+				await updateName(userId, newName);
+				setNameInDb(newName); // allows us to avoid making an extra api call to get the updated name
+			}
+			setIsEditing(false);
 		} catch (error) {
 			console.error("Error changing the user's name: ", error);
 		}
@@ -192,7 +194,9 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
 											width={"$15"}
 											backgroundColor={"$colorTransparent"}
 										/>
-										<TouchableOpacity onPress={() => postNewName(user?.id!, editedName)}>
+										<TouchableOpacity
+											onPress={() => postNewName(user?.id!, editedName)}
+										>
 											<CheckSquare size="$1" />
 										</TouchableOpacity>
 									</XStack>

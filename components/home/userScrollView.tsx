@@ -132,7 +132,7 @@ const UserScrollView = ({
                 width={95}
                 show = {loading || followingLoading || alreadyFollowing == null}
               >
-                {alreadyFollowing ?  <Button
+                {alreadyFollowing != null ?  <Button
                   disabled={alreadyFollowing}
                   themeInverse={!(alreadyFollowing)}
                   height={"$2.5"}

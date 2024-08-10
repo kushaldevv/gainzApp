@@ -43,3 +43,8 @@ expo-env.d.ts
 
 # json files
 GainzExercises.json
+
+# amplify
+.amplify
+amplify_outputs*
+amplifyconfiguration*

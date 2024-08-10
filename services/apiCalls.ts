@@ -3,6 +3,42 @@ import * as Types from '@/types';
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 /**
+ * Update a user's name and searchName fields in DynamoDB.
+ * 
+ * @param sessionID - The unique identifier of the session.
+ * @param index - The updated name of a user: string
+ * @returns A Promise that resolves when a user's pfp is updated
+ * @throws Will throw an error if the API request fails.
+ */
+export const updateName = async(userId: string, newName: string) => {
+  try {
+    // Send a PATCH request to update the name of a user
+    await axios.patch(`${API_URL}/user/update-name?userID=${userId}`, `"${newName}"`);
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+      throw error;
+  }
+}
+
+/**
+ * Update a user's pfp in DynamoDB.
+ * 
+ * @param sessionID - The unique identifier of the session.
+ * @param index - The updated pfp url of a user: string
+ * @returns A Promise that resolves when a user's pfp is updated
+ * @throws Will throw an error if the API request fails.
+ */
+export const updatePfp = async(userId: string, newPfp: string) => {
+  try {
+    // Send a PATCH request to update the pfp url of a user
+    await axios.patch(`${API_URL}/user/change-pfp?userID=${userId}`, `"${newPfp}"`);
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+      throw error;
+  }
+}
+
+/**
  * Append a like to a user's comment
  * 
  * @param userID - The unique identifier of the user.
@@ -324,7 +360,7 @@ export const getUserSessions = async (sessionUserID: string, userID: string) => 
           user: await getUser(sessionUserID) as Types.User,
           location: sessionData.location as string,
           date: sessionData.date as string,
-          exercises:exercises as Types.Exercise[], 
+          exercises: exercises as Types.Exercise[], 
           duration: sessionData.duration as number,
           comments: sessionData.comments,
           likes: likes,

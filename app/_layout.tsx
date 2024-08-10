@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import "react-native-reanimated";
 import tokenCache from "../services/tokenCache";
+import { PortalProvider } from "tamagui";
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 if (!publishableKey) {
@@ -72,11 +73,13 @@ function RootLayoutNav() {
   const colorScheme = useColorScheme();
   return (
     <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
-      <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
-        <ClerkLoaded>
-          <Slot />
-        </ClerkLoaded>
-      </ClerkProvider>
+      <PortalProvider>
+        <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+          <ClerkLoaded>
+            <Slot />
+          </ClerkLoaded>
+        </ClerkProvider>
+      </PortalProvider>
     </TamaguiProvider>
   );
 }

@@ -2,7 +2,7 @@ import { daysFull, formatSessionDate } from "@/services/utilities";
 import * as Types from "@/types";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { router } from "expo-router";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DatePicker from "react-native-date-picker";
 import {
 	Button,
@@ -17,6 +17,7 @@ import {
 	YStack,
 	Circle,
 	Square,
+  AlertDialog
 } from "tamagui";
 import { ExercisesContext } from "./_layout";
 import ExerciseAccordion from "@/components/post/accordionItem";
@@ -30,6 +31,7 @@ import Animated from "react-native-reanimated";
 import Stopwatch from "@/components/post/stopwatch";
 import StopWatch from "@/components/post/stopwatch";
 import { Pause, Play, Scale } from "@tamagui/lucide-icons";
+import PauseFinishAlert from "./pauseFinishAlert";
 
 const LivePost = () => {
 	const [startDate, setStartDate] = useState(
@@ -51,11 +53,31 @@ const LivePost = () => {
 	const shake = useShakeAnimation(error);
 	const [time, setTime] = useState(0);
 	const [isRunning, setIsRunning] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
 	const startStopTimer = () => {
-    console.log(isRunning);
-		setIsRunning(!isRunning);
+    if (isRunning) {
+      // timer is running, stop the timer, show the alert
+      setIsRunning(false);
+      setShowAlert(true);
+      console.log("Alert should show now"); // Add this line
+      // console.log("timer: ", isRunning);
+      // console.log("alert: ", showAlert);
+    } else {
+      // timer is not running, start the timer, hide the alert
+      setIsRunning(true);
+      setShowAlert(false);
+    }
+    // setIsRunning(!isRunning)
+    console.log("outside if timer: ", isRunning);
+    console.log("outside if alert: ", showAlert);
 	};
+  
+  const handleResume = () => {
+    // close alert box and resume timer
+    setShowAlert(false);
+    setIsRunning(true);
+  }
 
   const reset = () => {
     setTime(0);
@@ -84,7 +106,9 @@ const LivePost = () => {
 
 	const onPressPost = async () => {
 		setLoading(true);
-
+    // close alert box and stop timer
+    setShowAlert(false);
+    setIsRunning(false);
 		if (!isLoaded || !validatePost()) {
 			setLoading(false);
 			setError(true);
@@ -103,7 +127,7 @@ const LivePost = () => {
 				exercises: exercises.map((exercise) => exercise.name),
 				comments: [],
 				location: location ? location : locationPlaceholder,
-				duration: 4000,
+				duration: time,
 				date: startDate,
 			},
 			exerciseData: exercises.map((exercise) => ({
@@ -119,6 +143,7 @@ const LivePost = () => {
 		if (user) await appendSession(user.id, session);
 
 		setLoading(false);
+    router.replace('/index');
 	};
 
 	return (
@@ -194,18 +219,22 @@ const LivePost = () => {
 						) : (
 							<>
 								{isRunning ? (
-									<Square
-										size={"$2"}
-										backgroundColor="$white1"
-										elevation="$4"
-									/>
+                  <>
+                    <Square
+                      size={"$2"}
+                      backgroundColor="$white1"
+                      elevation="$4"
+                    />
+                  </>
 								) : (
 									<Play size="$3" fill="white" color="$white" />
 								)}
 							</>
 						)}
 					</LinearGradient>
+          <PauseFinishAlert isOpen={showAlert} handleResume={handleResume} handleFinish={onPressPost} />
           <Button onPress={reset}>Reset</Button>
+          
 			</YStack>
 		</ScrollView>
 	);

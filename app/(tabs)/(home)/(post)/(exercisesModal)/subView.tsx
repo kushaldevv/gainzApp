@@ -21,7 +21,9 @@ const SubView = () => {
       }
       const newExercise: Types.Exercise = {
         name: exerciseName,
+        muscle: exercise as string,
         sets: [],
+        PR: 0,
       };
       setExercises([...exercises, newExercise]);
     };

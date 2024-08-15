@@ -18,7 +18,7 @@
     "Arm slingers hanging straight legs": {
       "equipment": "body weight"
     },
-    "Arms overhead full sit-up (male)": {
+    "Arms overhead full sit-up": {
       "equipment": "body weight"
     },
     "Assisted hanging knee raise": {
@@ -93,13 +93,10 @@
     "Barbell seated twist": {
       "equipment": "barbell"
     },
-    "Barbell side bent v. 2": {
+    "Barbell side bent": {
       "equipment": "barbell"
     },
     "Barbell sitted alternate leg raise": {
-      "equipment": "barbell"
-    },
-    "Barbell sitted alternate leg raise (female)": {
       "equipment": "barbell"
     },
     "Barbell standing ab rollerout": {
@@ -240,7 +237,7 @@
     "Groin crunch": {
       "equipment": "body weight"
     },
-    "Half sit-up (male)": {
+    "Half sit-up": {
       "equipment": "body weight"
     },
     "Hanging leg hip raise": {
@@ -268,9 +265,6 @@
       "equipment": "body weight"
     },
     "Inchworm": {
-      "equipment": "body weight"
-    },
-    "Inchworm v. 2": {
       "equipment": "body weight"
     },
     "Incline leg hip raise (leg straight)": {
@@ -303,7 +297,7 @@
     "Knee touch crunch": {
       "equipment": "body weight"
     },
-    "Kneeling plank tap shoulder (male)": {
+    "Kneeling plank tap shoulder": {
       "equipment": "body weight"
     },
     "L-sit on floor": {
@@ -327,9 +321,6 @@
     "Lever seated crunch (chest pad)": {
       "equipment": "leverage machine"
     },
-    "Lever seated crunch v. 2": {
-      "equipment": "leverage machine"
-    },
     "Lever seated leg raise crunch": {
       "equipment": "leverage machine"
     },
@@ -348,10 +339,7 @@
     "Negative crunch": {
       "equipment": "body weight"
     },
-    "Oblique crunch v. 2": {
-      "equipment": "body weight"
-    },
-    "Oblique crunches floor": {
+    "Oblique crunches": {
       "equipment": "body weight"
     },
     "One arm slam (with medicine ball)": {
@@ -372,7 +360,7 @@
     "Power point plank": {
       "equipment": "body weight"
     },
-    "Prisoner half sit-up (male)": {
+    "Prisoner half sit-up": {
       "equipment": "body weight"
     },
     "Prone twist on stability ball": {
@@ -411,19 +399,16 @@
     "Shoulder tap": {
       "equipment": "body weight"
     },
-    "Side bridge v. 2": {
+    "Side bridge": {
       "equipment": "body weight"
     },
     "Side hip (on parallel bars)": {
       "equipment": "body weight"
     },
-    "Side-to-side toe touch (male)": {
+    "Side-to-side toe touch": {
       "equipment": "body weight"
     },
-    "Sit-up v. 2": {
-      "equipment": "body weight"
-    },
-    "Sit-up with arms on chest": {
+    "Sit-up": {
       "equipment": "body weight"
     },
     "Sledge hammer": {
@@ -462,9 +447,6 @@
     "Twisted leg raise": {
       "equipment": "body weight"
     },
-    "Twisted leg raise (female)": {
-      "equipment": "body weight"
-    },
     "V-sit on floor": {
       "equipment": "body weight"
     },
@@ -490,9 +472,6 @@
       "equipment": "weighted"
     },
     "Weighted russian twist (legs up)": {
-      "equipment": "weighted"
-    },
-    "Weighted russian twist v. 2": {
       "equipment": "weighted"
     },
     "Weighted seated twist (on stability ball)": {
@@ -704,19 +683,7 @@
     "Dumbbell cross body hammer curl": {
       "equipment": "dumbbell"
     },
-    "Dumbbell cross body hammer curl v. 2": {
-      "equipment": "dumbbell"
-    },
     "Dumbbell hammer curl": {
-      "equipment": "dumbbell"
-    },
-    "Dumbbell hammer curl on exercise ball": {
-      "equipment": "dumbbell"
-    },
-    "Dumbbell hammer curl v. 2": {
-      "equipment": "dumbbell"
-    },
-    "Dumbbell hammer curls (with arm blaster)": {
       "equipment": "dumbbell"
     },
     "Dumbbell high curl": {
@@ -726,9 +693,6 @@
       "equipment": "dumbbell"
     },
     "Dumbbell incline curl": {
-      "equipment": "dumbbell"
-    },
-    "Dumbbell incline curl v. 2": {
       "equipment": "dumbbell"
     },
     "Dumbbell incline hammer curl": {
@@ -857,7 +821,7 @@
     "Dumbbell standing concentration curl": {
       "equipment": "dumbbell"
     },
-    "Dumbbell standing inner biceps curl v. 2": {
+    "Dumbbell standing inner biceps curl": {
       "equipment": "dumbbell"
     },
     "Dumbbell standing one arm concentration curl": {
@@ -938,9 +902,6 @@
     "Lever preacher curl": {
       "equipment": "leverage machine"
     },
-    "Lever preacher curl v. 2": {
-      "equipment": "leverage machine"
-    },
     "Lever reverse grip preacher curl": {
       "equipment": "leverage machine"
     },
@@ -961,7 +922,7 @@
     }
   },
   "Cardio": {
-    "Astride jumps (male)": {
+    "Astride jumps": {
       "equipment": "body weight"
     },
     "Back and forth step": {
@@ -979,7 +940,7 @@
     "Dumbbell burpee": {
       "equipment": "dumbbell"
     },
-    "Half knee bends (male)": {
+    "Half knee bends": {
       "equipment": "body weight"
     },
     "High knee against wall": {
@@ -988,7 +949,7 @@
     "Jack burpee": {
       "equipment": "body weight"
     },
-    "Jack jump (male)": {
+    "Jack jump ": {
       "equipment": "body weight"
     },
     "Jump rope": {
@@ -1006,10 +967,10 @@
     "Run (equipment)": {
       "equipment": "body weight"
     },
-    "Scissor jumps (male)": {
+    "Scissor jumps": {
       "equipment": "body weight"
     },
-    "Semi squat jump (male)": {
+    "Semi squat jump": {
       "equipment": "body weight"
     },
     "Short stride run": {
@@ -1021,10 +982,10 @@
     "Ski step": {
       "equipment": "body weight"
     },
-    "Star jump (male)": {
+    "Star jump": {
       "equipment": "body weight"
     },
-    "Stationary bike run v. 3": {
+    "Stationary bike run": {
       "equipment": "stationary bike"
     },
     "Stationary bike walk": {
@@ -1188,7 +1149,7 @@
     "Chest stretch with exercise ball": {
       "equipment": "stability ball"
     },
-    "Chest tap push-up (male)": {
+    "Chest tap push-up": {
       "equipment": "body weight"
     },
     "Clap push up": {
@@ -1278,9 +1239,6 @@
     "Dumbbell lying one arm press": {
       "equipment": "dumbbell"
     },
-    "Dumbbell lying one arm press v. 2": {
-      "equipment": "dumbbell"
-    },
     "Dumbbell lying pullover on exercise ball": {
       "equipment": "dumbbell"
     },
@@ -1329,7 +1287,7 @@
     "Dumbbell straight arm pullover": {
       "equipment": "dumbbell"
     },
-    "Dynamic chest stretch (male)": {
+    "Dynamic chest stretch": {
       "equipment": "body weight"
     },
     "Exercise ball pike push up": {
@@ -1377,7 +1335,7 @@
     "Kettlebell plyo push-up": {
       "equipment": "kettlebell"
     },
-    "Kneeling push-up (male)": {
+    "Kneeling push-up": {
       "equipment": "body weight"
     },
     "Korean dips": {
@@ -1390,9 +1348,6 @@
       "equipment": "leverage machine"
     },
     "Lever incline chest press": {
-      "equipment": "leverage machine"
-    },
-    "Lever incline chest press v. 2": {
       "equipment": "leverage machine"
     },
     "Lever seated fly": {
@@ -1419,7 +1374,7 @@
     "Medicine ball chest push with run release": {
       "equipment": "medicine ball"
     },
-    "Modified hindu push-up (male)": {
+    "Modified hindu push-up": {
       "equipment": "body weight"
     },
     "Plyo push up": {
@@ -1441,9 +1396,6 @@
       "equipment": "stability ball"
     },
     "Push-up (wall)": {
-      "equipment": "body weight"
-    },
-    "Push-up (wall) v. 2": {
       "equipment": "body weight"
     },
     "Push-up medicine ball": {
@@ -1583,12 +1535,6 @@
     "Barbell upright row": {
       "equipment": "barbell"
     },
-    "Barbell upright row v. 2": {
-      "equipment": "barbell"
-    },
-    "Barbell upright row v. 3": {
-      "equipment": "barbell"
-    },
     "Barbell wide-grip upright row": {
       "equipment": "barbell"
     },
@@ -1610,7 +1556,7 @@
     "Cable front shoulder raise": {
       "equipment": "cable"
     },
-    "Cable kneeling rear delt row (with rope) (male)": {
+    "Cable kneeling rear delt row (with rope)": {
       "equipment": "cable"
     },
     "Cable lateral raise": {
@@ -1655,22 +1601,13 @@
     "Dumbbell arnold press": {
       "equipment": "dumbbell"
     },
-    "Dumbbell arnold press v. 2": {
-      "equipment": "dumbbell"
-    },
     "Dumbbell bench seated press": {
       "equipment": "dumbbell"
     },
     "Dumbbell cuban press": {
       "equipment": "dumbbell"
     },
-    "Dumbbell cuban press v. 2": {
-      "equipment": "dumbbell"
-    },
     "Dumbbell front raise": {
-      "equipment": "dumbbell"
-    },
-    "Dumbbell front raise v. 2": {
       "equipment": "dumbbell"
     },
     "Dumbbell full can lateral raise": {
@@ -1724,9 +1661,6 @@
     "Dumbbell one arm shoulder press": {
       "equipment": "dumbbell"
     },
-    "Dumbbell one arm shoulder press v. 2": {
-      "equipment": "dumbbell"
-    },
     "Dumbbell one arm upright row": {
       "equipment": "dumbbell"
     },
@@ -1776,9 +1710,6 @@
       "equipment": "dumbbell"
     },
     "Dumbbell seated lateral raise": {
-      "equipment": "dumbbell"
-    },
-    "Dumbbell seated lateral raise v. 2": {
       "equipment": "dumbbell"
     },
     "Dumbbell seated shoulder press": {
@@ -1904,12 +1835,6 @@
     "Lever shoulder press": {
       "equipment": "leverage machine"
     },
-    "Lever shoulder press v. 2": {
-      "equipment": "leverage machine"
-    },
-    "Lever shoulder press v. 3": {
-      "equipment": "leverage machine"
-    },
     "Rear deltoid stretch": {
       "equipment": "body weight"
     },
@@ -1963,9 +1888,6 @@
     "Barbell palms up wrist curl over a bench": {
       "equipment": "barbell"
     },
-    "Barbell revers wrist curl v. 2": {
-      "equipment": "barbell"
-    },
     "Barbell reverse wrist curl": {
       "equipment": "barbell"
     },
@@ -1973,9 +1895,6 @@
       "equipment": "barbell"
     },
     "Barbell wrist curl": {
-      "equipment": "barbell"
-    },
-    "Barbell wrist curl v. 2": {
       "equipment": "barbell"
     },
     "Cable reverse wrist curl": {
@@ -2148,12 +2067,6 @@
     "Cable pulldown": {
       "equipment": "cable"
     },
-    "Cable pulldown (pro lat bar)": {
-      "equipment": "cable"
-    },
-    "Cable pushdown (straight arm) v. 2": {
-      "equipment": "cable"
-    },
     "Cable rear pulldown": {
       "equipment": "cable"
     },
@@ -2321,9 +2234,6 @@
     "Dumbbell decline shrug": {
       "equipment": "dumbbell"
     },
-    "Dumbbell decline shrug v. 2": {
-      "equipment": "dumbbell"
-    },
     "Dumbbell incline shrug": {
       "equipment": "dumbbell"
     },
@@ -2334,9 +2244,6 @@
       "equipment": "kettlebell"
     },
     "Lever gripless shrug": {
-      "equipment": "leverage machine"
-    },
-    "Lever gripless shrug v. 2": {
       "equipment": "leverage machine"
     },
     "Lever shrug": {
@@ -2452,7 +2359,7 @@
     "Cable kneeling triceps extension": {
       "equipment": "cable"
     },
-    "Cable lying triceps extension v. 2": {
+    "Cable lying triceps extension": {
       "equipment": "cable"
     },
     "Cable one arm tricep pushdown": {
@@ -2922,7 +2829,7 @@
     "Dumbbell reverse grip incline bench two arm row": {
       "equipment": "dumbbell"
     },
-    "Dumbbell reverse grip row (female)": {
+    "Dumbbell reverse grip row": {
       "equipment": "dumbbell"
     },
     "Dumbbell side plank with rear fly": {
@@ -2947,9 +2854,6 @@
       "equipment": "body weight"
     },
     "Inverted row on bench": {
-      "equipment": "body weight"
-    },
-    "Inverted row v. 2": {
       "equipment": "body weight"
     },
     "Inverted row with straps": {
@@ -3083,13 +2987,10 @@
     "Barbell side split squat": {
       "equipment": "barbell"
     },
-    "Barbell side split squat v. 2": {
-      "equipment": "barbell"
-    },
     "Barbell single leg split squat": {
       "equipment": "barbell"
     },
-    "Barbell split squat v. 2": {
+    "Barbell split squat": {
       "equipment": "barbell"
     },
     "Barbell squat (on knees)": {
@@ -3140,7 +3041,7 @@
     "Quads": {
       "equipment": "body weight"
     },
-    "Quick feet v. 2": {
+    "Quick feet": {
       "equipment": "body weight"
     },
     "Resistance band leg extension": {
@@ -3264,7 +3165,7 @@
     }
   },
   "Glutes": {
-    "Arms apart circular toe touch (male)": {
+    "Arms apart circular toe touch": {
       "equipment": "body weight"
     },
     "Assisted lying glutes stretch": {
@@ -3330,7 +3231,7 @@
     "Barbell glute bridge": {
       "equipment": "barbell"
     },
-    "Barbell glute bridge two legs on bench (male)": {
+    "Barbell glute bridge two legs on bench": {
       "equipment": "barbell"
     },
     "Barbell hack squat": {
@@ -3369,9 +3270,6 @@
     "Barbell rear lunge": {
       "equipment": "barbell"
     },
-    "Barbell rear lunge v. 2": {
-      "equipment": "barbell"
-    },
     "Barbell romanian deadlift": {
       "equipment": "barbell"
     },
@@ -3396,13 +3294,13 @@
     "Barbell zercher squat": {
       "equipment": "barbell"
     },
-    "Basic toe touch (male)": {
+    "Basic toe touch": {
       "equipment": "body weight"
     },
     "Bench hip extension": {
       "equipment": "body weight"
     },
-    "Bent knee lying twist (male)": {
+    "Bent knee lying twist": {
       "equipment": "body weight"
     },
     "Bodyweight drop jump squat": {
@@ -3483,7 +3381,7 @@
     "Flutter kicks": {
       "equipment": "body weight"
     },
-    "Forward lunge (male)": {
+    "Forward lunge": {
       "equipment": "body weight"
     },
     "Frankenstein squat": {
@@ -3492,13 +3390,13 @@
     "Glute bridge march": {
       "equipment": "body weight"
     },
-    "Glute bridge two legs on bench (male)": {
+    "Glute bridge two legs on bench": {
       "equipment": "body weight"
     },
-    "Hands clasped circular toe touch (male)": {
+    "Hands clasped circular toe touch": {
       "equipment": "body weight"
     },
-    "Hands reversed clasped circular toe touch (male)": {
+    "Hands reversed clasped circular toe touch": {
       "equipment": "body weight"
     },
     "Hug keens to chest": {
@@ -3508,9 +3406,6 @@
       "equipment": "body weight"
     },
     "Jump squat": {
-      "equipment": "body weight"
-    },
-    "Jump squat v. 2": {
       "equipment": "body weight"
     },
     "Kettlebell front squat": {
@@ -3537,7 +3432,7 @@
     "Lever deadlift": {
       "equipment": "leverage machine"
     },
-    "Lever hip extension v. 2": {
+    "Lever hip extension": {
       "equipment": "leverage machine"
     },
     "Lever horizontal one leg press": {
@@ -3582,7 +3477,7 @@
     "Rear decline bridge": {
       "equipment": "body weight"
     },
-    "Resistance band hip thrusts on knees (female)": {
+    "Resistance band hip thrusts on knees": {
       "equipment": "resistance band"
     },
     "Reverse hyper extension (on stability ball)": {
@@ -3609,7 +3504,7 @@
     "Single leg bridge with outstretched leg": {
       "equipment": "body weight"
     },
-    "Single leg squat (pistol) male": {
+    "Single leg squat (pistol)": {
       "equipment": "body weight"
     },
     "45 degrees one leg press": {
@@ -3669,7 +3564,7 @@
     "Spider crawl push up": {
       "equipment": "body weight"
     },
-    "Swimmer kicks v. 2 (male)": {
+    "Swimmer kicks": {
       "equipment": "body weight"
     },
     "Tire flip": {
@@ -3684,7 +3579,7 @@
     "Walking lunge": {
       "equipment": "body weight"
     },
-    "Weighted cossack squats (male)": {
+    "Weighted cossack squats": {
       "equipment": "weighted"
     },
     "Weighted lunge with swing": {
@@ -3710,7 +3605,7 @@
     "Band single leg reverse calf raise": {
       "equipment": "band"
     },
-    "Band two legs calf raise - (band under both legs) v. 2": {
+    "Band two legs calf raise": {
       "equipment": "band"
     },
     "Barbell floor calf raise": {
@@ -3759,12 +3654,6 @@
       "equipment": "dumbbell"
     },
     "Dumbbell seated one leg calf raise": {
-      "equipment": "dumbbell"
-    },
-    "Dumbbell seated one leg calf raise - hammer grip": {
-      "equipment": "dumbbell"
-    },
-    "Dumbbell seated one leg calf raise - palm up": {
       "equipment": "dumbbell"
     },
     "Dumbbell single leg calf raise": {
@@ -3821,7 +3710,7 @@
     "Posterior tibialis stretch": {
       "equipment": "rope"
     },
-    "Seated calf stretch (male)": {
+    "Seated calf stretch": {
       "equipment": "body weight"
     },
     "Single leg calf raise (on a dumbbell)": {
@@ -3900,7 +3789,7 @@
     "Lever seated hip adduction": {
       "equipment": "leverage machine"
     },
-    "Side lying hip adduction (male)": {
+    "Side lying hip adduction": {
       "equipment": "body weight"
     },
     "Side plank hip adduction": {

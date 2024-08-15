@@ -414,40 +414,44 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
               bottom="$3"
               alignSelf="center"
             >
-              {getPastSevenDays().map((day, index) => (
-                <YStack
-                  key={index}
-                  gap="$2"
-                  alignItems="center"
-                  justifyContent="flex-end"
-                >
-                  <LinearGradient
+              {getPastSevenDays().map((day, index) => {
+                const highestDuration = userProfile?.highestDuration.duration;
+                const currDayDuration = userProfile?.recentSessions[day][0]?.duration;
+                return (
+                  <YStack
+                    key={index}
+                    gap="$2"
                     width={38}
-                    height={
-                      userProfile?.recentSessions[day][0]?.duration
-                        ? userProfile?.recentSessions[day][0]?.duration / (userProfile.highestDuration.duration / 155)
-                        : 0
-                    }
-                    borderRadius="$5"
-                    colors={
-                      userProfile?.highestDuration.duration ==
-                      userProfile?.recentSessions[day][0]?.duration
-                        ? ["$background", "$background"]
-                        : ["#00cccc", gradientColor]
-                    }
-                    start={[1, 0]}
-                    end={[0, 1]}
-                  ></LinearGradient>
-                  <Text
-                    fontSize={"$2"}
-                    fontFamily={"$mono"}
-                    themeInverse
-                    fontWeight="500"
+                    alignItems="center"
+                    justifyContent="flex-end"
                   >
-                    {day}
-                  </Text>
-                </YStack>
-              ))}
+                    {currDayDuration && (
+                      <LinearGradient
+                        width={'100%'}
+                        height={
+                          (currDayDuration / highestDuration!) * 155
+                        }
+                        borderRadius="$5"
+                        colors={
+                          highestDuration == currDayDuration
+                            ? ["$background", "$background"]
+                            : ["#00cccc", gradientColor]
+                        }
+                        start={[1, 0]}
+                        end={[0, 1]}
+                      ></LinearGradient>
+                    )}
+                    <Text
+                      fontSize={"$2"}
+                      fontFamily={"$mono"}
+                      themeInverse
+                      fontWeight="500"
+                    >
+                      {day}
+                    </Text>
+                  </YStack>
+                );
+              })}
             </XStack>
           </YStack>
         </Skeleton>

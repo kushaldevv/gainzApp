@@ -37,6 +37,7 @@ export type Session = {
 
 export type Exercise = {
     name: string;
+    muscle: string;
     PR : number;
     sets: ExerciseSet[];
 }

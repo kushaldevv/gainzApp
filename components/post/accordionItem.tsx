@@ -148,7 +148,6 @@ export default function ExerciseAccordion({
     >
       <YGroup.Item>
         <ListItem
-          pl="$3"
           justifyContent="space-between"
           backgroundColor={inCard ? "$colorTransparent" : "$background"}
         >
@@ -164,6 +163,7 @@ export default function ExerciseAccordion({
             {inCard && (
               <View
                 w={6}
+                h={"$1"}
                 borderRadius={"$10"}
                 backgroundColor={"$red10"}
               />
@@ -173,7 +173,8 @@ export default function ExerciseAccordion({
               fontFamily={"$mono"}
               fontWeight={600}
               textAlign={inCard ? "left" : "center"}
-              w={inCard ? "85%" : "85%"}
+              w={"85%"}
+              marginHorizontal={inCard ? '$0' : "auto"}
             >
               {exercise.name}
             </Text>
@@ -250,7 +251,7 @@ export default function ExerciseAccordion({
                 </YStack>
               </XStack>
               {inCard ? (
-                (exercise.PR === set.weight) && <Text>🏆</Text>
+                exercise.PR === set.weight && <Text>🏆</Text>
               ) : (
                 <TouchableOpacity
                   onPress={() => {

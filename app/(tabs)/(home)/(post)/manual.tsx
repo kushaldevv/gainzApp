@@ -89,6 +89,7 @@ const ManualPost = () => {
       },
       exerciseData: exercises.map((exercise) => ({
         name: exercise.name,
+        muscle: exercise.muscle,
         sessionId: sessionKey,
         lists: {
           reps: exercise.sets.map((set) => set.reps),
@@ -223,7 +224,7 @@ const ManualPost = () => {
                   />
                 ) : (
                   <Button.Text
-                    fontWeight={"$8"}
+                    fontWeight={"$7"}
                     fontSize={"$5"}
                     fontFamily={"$mono"}
                   >

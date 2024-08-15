@@ -12,6 +12,8 @@ import {
     YStack,
   } from "tamagui";
 import { useTimer } from '@/app/(tabs)/(home)/(post)/(exercisesModal)/timeContext';
+import BackgroundTimer from 'react-native-background-timer';
+
 
 
 const StopWatch = () => {
@@ -20,13 +22,27 @@ const StopWatch = () => {
   const { time, setTime, isRunning } = useTimer();
 
   useEffect(() => {
-    let intervalId: ReturnType<typeof setInterval> | undefined;
     if (isRunning) {
-        // setting time from 0 to 1 every 1 second using javascript setInterval method
-        intervalId = setInterval(() => setTime(time + 1), 1000);
+      BackgroundTimer.runBackgroundTimer(() => {
+        setTime(prevTime => prevTime + 1);
+      }, 1000);
+    } else {
+      BackgroundTimer.stopBackgroundTimer();
     }
-    return () => clearInterval(intervalId);
-  })
+
+    return () => {
+      BackgroundTimer.stopBackgroundTimer();
+    };
+  }, [isRunning, setTime]);
+
+  // useEffect(() => {
+  //   let intervalId: ReturnType<typeof setInterval> | undefined;
+  //   if (isRunning) {
+  //       // setting time from 0 to 1 every 1 second using javascript setInterval method
+  //       intervalId = setInterval(() => setTime(time + 1), 1000);
+  //   }
+  //   return () => clearInterval(intervalId);
+  // })
 
   // Hours calculation
   const hours = Math.floor(time / 3600);

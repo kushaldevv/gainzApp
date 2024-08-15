@@ -157,16 +157,14 @@ const LivePost = () => {
 				<YGroup width={"100%"} separator={<Separator />}>
 					<TouchableOpacity
 						onPress={() => {
-							if (isRunning) { 
+							if (isRunning) {
 								// only allow a user to select an exercise if the timer is running
 								router.push({
 									pathname: "/(exercisesModal)",
 									params: { source: "live" },
-								})
+								});
 							}
-						}
-							
-						}
+						}}
 					>
 						<YGroup.Item>
 							<ListItem

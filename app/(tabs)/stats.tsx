@@ -6,32 +6,39 @@ import { BottomSheetModal, BottomSheetView, TouchableOpacity } from "@gorhom/bot
 import { useHeaderHeight } from "@react-navigation/elements";
 import { ChevronRight, Search, Trash2, X } from "@tamagui/lucide-icons";
 import React, { useCallback, useRef, useState } from "react";
-import DatePicker from 'react-native-date-picker';
-import { Input, ListItem, ScrollView, Separator, Text, useTheme, XStack, YGroup, YStack } from "tamagui";
-import gainzExercises from '@/services/GainzExercises.json';
+import DatePicker from "react-native-date-picker";
+import {
+  Input,
+  ListItem,
+  ScrollView,
+  Separator,
+  Text,
+  useTheme,
+  XStack,
+  YGroup,
+  YStack,
+} from "tamagui";
+import gainzExercises from "@/services/GainzExercises.json";
 import { Stack } from "expo-router";
 
 const targetMuscles = Object.keys(gainzExercises);
 
-const exerciseSet1: Types.ExerciseSetViewProp = {
+const exerciseSet1: Types.ExerciseSet = {
   reps: 12,
-  weight: 189
-}
-const exerciseSet2: Types.ExerciseSetViewProp = {
+  weight: 189,
+};
+const exerciseSet2: Types.ExerciseSet = {
   reps: 8,
-  weight: 200
-}
+  weight: 200,
+};
 
-const exercise: Types.ExerciseViewProp = {
+const exercise: Types.Exercise = {
   name: "Back Squat",
-  set: [exerciseSet1]
-}
-
+  set: [exerciseSet1],
+};
 
 const Stats = () => {
-  return (
-    <Text>Stats</Text>
-  )
+  return <Text>Stats</Text>;
   // const [startDate, setStartDate] = useState(new Date())
   // const [endDate, setEndDate] = useState(new Date())
   // const [startOpen, setStartOpen] = useState(false)
@@ -124,7 +131,7 @@ const Stats = () => {
   //   });
   //   setExercises(updatedExercises);
   // }
- 
+
   // return (
   //   <ScrollView backgroundColor={"$background"}>
   //   <YStack
@@ -133,7 +140,7 @@ const Stats = () => {
   //     gap={"$4"}
   //     padding={"$3"}
   //   >
-      
+
   //     <YGroup  separator={<Separator />}>
   //         <YGroup.Item>
   //           <Input borderWidth="$0" fontFamily={"$mono"} placeholder={daysFull[(new Date().getDay())] + '\'s workout'}></Input>
@@ -195,7 +202,7 @@ const Stats = () => {
   //               </ListItem>
   //             </YGroup.Item>
   //           ))}
-          
+
   //         <TouchableOpacity onPress={() => addExerciseSet(exercise.name)}>
   //           <YGroup.Item>
   //               <ListItem fontFamily={"$mono"} color={"#00cccc"} fontWeight={"$15"}>Add Set</ListItem>
@@ -210,7 +217,7 @@ const Stats = () => {
   //           </YGroup.Item>
   //         </TouchableOpacity>
   //     </YGroup>
-      
+
   //     <DatePicker
   //       modal
   //       open={startOpen}
@@ -305,7 +312,7 @@ const Stats = () => {
   //                 </YGroup.Item>
   //               ))}
   //               </YGroup>
-  //               </ScrollView> 
+  //               </ScrollView>
   //             </YStack>
   //         </BottomSheetView>
   //       </BottomSheetModal>

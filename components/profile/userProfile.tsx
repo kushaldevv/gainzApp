@@ -425,7 +425,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                     width={38}
                     height={
                       userProfile?.recentSessions[day][0]?.duration
-                        ? userProfile?.recentSessions[day][0]?.duration / 60
+                        ? userProfile?.recentSessions[day][0]?.duration / (userProfile.highestDuration.duration / 155)
                         : 0
                     }
                     borderRadius="$5"

@@ -337,7 +337,7 @@ export const getUserSessions = async (sessionUserID: string, userID: string) => 
           user: await getUser(sessionUserID) as Types.User,
           location: sessionData.location as string,
           date: sessionData.date as string,
-          exercises:exercises as Types.Exercise[], 
+          exercises:exercises, 
           duration: sessionData.duration as number,
           comments: sessionData.comments,
           likes: likes,
@@ -366,17 +366,20 @@ export const getExercisesInfo = async(sessionID: string) => {
   const sessionUserID = sessionID.split('session')[0];
 
   try {
-    console.log(sessionUserID)
     // Send a GET request to get a info about a user's exercises
     const response = axios.get(`${API_URL}/user/exercises?userID=${sessionUserID}&sessionID=${sessionID}`);
     const data = (await response).data;
-    const exercises: Types.Exercise[] = data.map((exercise: any ) => ({
+    const exercises: Types.Exercise[] = data.map((exercise: any ) => {
+      const weight = exercise.exerciseInfo.weight as number[]
+      return {
       name: exercise.name as string,
-      date: exercise.exerciseInfo.date as string,
-      pr: exercise.PR as number,
-      reps: exercise.exerciseInfo.reps as number[],
-      weight: exercise.exerciseInfo.weight as number[]
-    }));
+      // date: exercise.exerciseInfo.date as string,
+      sets: weight.map((weight, index) => ({
+        reps: exercise.exerciseInfo.reps[index],
+        weight,
+      })),
+      PR: exercise.PR,
+    }});
 
     return exercises;
   } catch (error) {

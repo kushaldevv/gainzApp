@@ -128,6 +128,7 @@ const Page = () => {
   const [refreshing, setRefreshing] = useState(false);
   const { user } = useUser();
   const [userDetails, setUserDetails] = useState<Types.User | null>(null);
+  const [spinner, setSpinner] = useState(false);
 
   const fetchSessions = async () => {
     try {
@@ -138,6 +139,7 @@ const Page = () => {
       console.error("Error fetching sessions:", error);
       throw error;
     }
+    setSpinner(false);
   };
 
   const fetchUserDetails = async () => {
@@ -150,6 +152,7 @@ const Page = () => {
   useEffect(() => {
     fetchSessions();
     fetchUserDetails();
+    setSpinner(true);
   }, []);
 
   const onRefresh = async () => {
@@ -171,7 +174,7 @@ const Page = () => {
         alignItems="center"
         backgroundColor={"$background"}
       >
-        {sessions.length == 0 && <Spinner mt="$3" />}
+        {spinner && <Spinner mt="$3" />}
         <ScrollView
           width={"100%"}
           refreshControl={

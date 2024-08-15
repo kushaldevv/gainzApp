@@ -37,7 +37,6 @@ const ManualPost = () => {
   const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
   const [workoutName, setWorkoutName] = useState("");
   const [location, setLocation] = useState("");
-  const workoutPlaceholder = daysFull[new Date().getDay()] + "'s workout";
   const locationPlaceholder = "Earth, Milky Way Galaxy";
   const { user } = useUser();
   const [error, setError] = useState(false);
@@ -80,7 +79,7 @@ const ManualPost = () => {
     const session = {
       sessionKey: sessionKey,
       sessionData: {
-        name: workoutName ? workoutName : workoutPlaceholder,
+        name: workoutName ? workoutName : daysFull[startDate.getDay()] + "'s workout",
         likes: [],
         exercises: exercises.map((exercise) => exercise.name),
         comments: [],
@@ -97,8 +96,7 @@ const ManualPost = () => {
         },
       })),
     };
-    console.log(session);
-    console.log(session.exerciseData[0].lists);
+
     try {
       if (user) await appendSession(user.id, session);
     } catch (error) {
@@ -108,7 +106,7 @@ const ManualPost = () => {
     router.replace({
       pathname: "session",
       params: { sessionIdParam: sessionKey },
-    })
+    });
   };
 
   return (
@@ -124,7 +122,7 @@ const ManualPost = () => {
             <Input
               borderWidth="$0"
               fontFamily={"$mono"}
-              placeholder={workoutPlaceholder}
+              placeholder={daysFull[startDate.getDay()] + "'s workout"}
               value={workoutName} // Bind the input value to the state
               onChangeText={setWorkoutName} // Update the state when the input value changes
             ></Input>
@@ -176,7 +174,7 @@ const ManualPost = () => {
             </XStack>
           </YGroup.Item>
         </YGroup>
-        {exercises.map((exercise: Types.ExerciseViewProp, i: number) => (
+        {exercises.map((exercise: Types.Exercise, i: number) => (
           <ExerciseAccordion
             exercise={exercise}
             key={i}

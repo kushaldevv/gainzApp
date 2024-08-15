@@ -19,7 +19,7 @@ const SubView = () => {
       if (exercises.some((e) => e.name === exerciseName)) {
         return;
       }
-      const newExercise: Types.ExerciseViewProp = {
+      const newExercise: Types.Exercise = {
         name: exerciseName,
         sets: [],
       };

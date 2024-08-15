@@ -35,28 +35,29 @@ export type Session = {
     userLiked: boolean;
 };
 
-export type ExerciseViewProp = {
+export type Exercise = {
     name: string;
-    sets: ExerciseSetViewProp[];
+    PR : number;
+    sets: ExerciseSet[];
 }
 
-export type ExerciseSetViewProp = {
+export type ExerciseSet = {
     reps: number;
     weight: number;
 }
+
+// export type Exercise = {
+//     name: string;
+//     // date: string;
+//     pr: number;
+//     reps: number[];
+//     weight: number[];
+// };
 
 export type CardProps = {
   session: Session;
   loading: boolean;
   userDetails: User | null;
-};
-
-export type Exercise = {
-    name: string;
-    date: string;
-    pr: number;
-    reps: number[];
-    weight: number[];
 };
 
 export type InnerCardProps = {
@@ -114,6 +115,6 @@ export type UserProfileProps = {
   };
   
 export type ExercisesContextType = {
-    exercises: ExerciseViewProp[];
-    setExercises: React.Dispatch<React.SetStateAction<ExerciseViewProp[]>>;
+    exercises: Exercise[];
+    setExercises: React.Dispatch<React.SetStateAction<Exercise[]>>;
 };

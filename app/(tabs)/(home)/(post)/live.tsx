@@ -17,7 +17,7 @@ import {
 	YStack,
 	Circle,
 	Square,
-  AlertDialog
+	AlertDialog,
 } from "tamagui";
 import { ExercisesContext } from "./_layout";
 import ExerciseAccordion from "@/components/post/accordionItem";
@@ -52,39 +52,36 @@ const LivePost = () => {
 	const { user } = useUser();
 	const [error, setError] = useState(false);
 	const shake = useShakeAnimation(error);
-	// const [time, setTime] = useState(0);
-	// const [isRunning, setIsRunning] = useState(false);
-  // const [showAlert, setShowAlert] = useState(false);
-  const { time, setTime, isRunning, setIsRunning } = useTimer();
-  const [showAlert, setShowAlert] = useState(false);
+	const { time, setTime, isRunning, setIsRunning } = useTimer();
+	const [showAlert, setShowAlert] = useState(false);
 
 	const startStopTimer = () => {
-    if (isRunning) {
-      // timer is running, stop the timer, show the alert
-      setIsRunning(false);
-      setShowAlert(true);
-      console.log("Alert should show now"); // Add this line
-      // console.log("timer: ", isRunning);
-      // console.log("alert: ", showAlert);
-    } else {
-      // timer is not running, start the timer, hide the alert
-      setIsRunning(true);
-      setShowAlert(false);
-    }
-    // setIsRunning(!isRunning)
-    console.log("outside if timer: ", isRunning);
-    console.log("outside if alert: ", showAlert);
+		if (isRunning) {
+			// timer is running, stop the timer, show the alert
+			setIsRunning(false);
+			setShowAlert(true);
+			console.log("Alert should show now"); // Add this line
+			// console.log("timer: ", isRunning);
+			// console.log("alert: ", showAlert);
+		} else {
+			// timer is not running, start the timer, hide the alert
+			setIsRunning(true);
+			setShowAlert(false);
+		}
+		// setIsRunning(!isRunning)
+		console.log("outside if timer: ", isRunning);
+		console.log("outside if alert: ", showAlert);
 	};
-  
-  const handleResume = () => {
-    // close alert box and resume timer
-    setShowAlert(false);
-    setIsRunning(true);
-  }
 
-  const reset = () => {
-    setTime(0);
-  }
+	const handleResume = () => {
+		// close alert box and resume timer
+		setShowAlert(false);
+		setIsRunning(true);
+	};
+
+	const reset = () => {
+		setTime(0);
+	};
 
 	const validatePost = () => {
 		if (exercises.length === 0) {
@@ -109,9 +106,9 @@ const LivePost = () => {
 
 	const onPressPost = async () => {
 		setLoading(true);
-    // close alert box and stop timer
-    setShowAlert(false);
-    setIsRunning(false);
+		// close alert box and stop timer
+		setShowAlert(false);
+		setIsRunning(false);
 		if (!isLoaded || !validatePost()) {
 			setLoading(false);
 			setError(true);
@@ -146,13 +143,12 @@ const LivePost = () => {
 		if (user) await appendSession(user.id, session);
 
 		setLoading(false);
-    router.replace('/(tabs)/(home)/index');
+		// router.replace('/(tabs)/(home)/index');
 	};
 
 	return (
 		<ScrollView backgroundColor={"$background"}>
 			<YStack flex={1} alignItems="center" gap={"$4"} padding={"$3"}>
-
 				<StopWatch />
 
 				{exercises.map((exercise: Types.ExerciseViewProp, i: number) => (
@@ -160,11 +156,16 @@ const LivePost = () => {
 				))}
 				<YGroup width={"100%"} separator={<Separator />}>
 					<TouchableOpacity
-						onPress={() =>
-							router.push({
-								pathname: "/(exercisesModal)",
-								params: { source: "live" },
-							})
+						onPress={() => {
+							if (isRunning) { 
+								// only allow a user to select an exercise if the timer is running
+								router.push({
+									pathname: "/(exercisesModal)",
+									params: { source: "live" },
+								})
+							}
+						}
+							
 						}
 					>
 						<YGroup.Item>
@@ -176,34 +177,34 @@ const LivePost = () => {
 								Add Exercise
 							</ListItem>
 						</YGroup.Item>
-						<YGroup separator={<Separator />} width={"100%"} mt="$5">
-							<YGroup.Item>
-								<Input
-									borderWidth="$0"
-									fontFamily={"$mono"}
-									placeholder={workoutPlaceholder}
-									value={workoutName} // Bind the input value to the state
-									onChangeText={setWorkoutName} // Update the state when the input value changes
-								></Input>
-							</YGroup.Item>
-							<YGroup.Item>
-								<Input
-									borderWidth="$0"
-									fontFamily={"$mono"}
-									placeholder="Location"
-									value={location} // Bind the input value to the state
-									onChangeText={setLocation} // Update the state when the input value changes
-								></Input>
-							</YGroup.Item>
-						</YGroup>
 					</TouchableOpacity>
+					<YGroup separator={<Separator />} width={"100%"} mt="$5">
+						<YGroup.Item>
+							<Input
+								borderWidth="$0"
+								fontFamily={"$mono"}
+								placeholder={workoutPlaceholder}
+								value={workoutName} // Bind the input value to the state
+								onChangeText={setWorkoutName} // Update the state when the input value changes
+							></Input>
+						</YGroup.Item>
+						<YGroup.Item>
+							<Input
+								borderWidth="$0"
+								fontFamily={"$mono"}
+								placeholder="Location"
+								value={location} // Bind the input value to the state
+								onChangeText={setLocation} // Update the state when the input value changes
+							></Input>
+						</YGroup.Item>
+					</YGroup>
 				</YGroup>
-        <LinearGradient
+				<Animated.View style={[shake]}>
+					<LinearGradient
 						width={"$8"}
 						height={"$8"}
 						alignItems="center"
-            alignSelf="center"
-            
+						alignSelf="center"
 						justifyContent="center"
 						borderRadius="$12"
 						colors={["#00cccc", gradientColor]}
@@ -222,22 +223,26 @@ const LivePost = () => {
 						) : (
 							<>
 								{isRunning ? (
-                  <>
-                    <Square
-                      size={"$2"}
-                      backgroundColor="$white1"
-                      elevation="$4"
-                    />
-                  </>
+									<>
+										<Square
+											size={"$2"}
+											backgroundColor="$white1"
+											elevation="$4"
+										/>
+									</>
 								) : (
 									<Play size="$3" fill="white" color="$white" />
 								)}
 							</>
 						)}
 					</LinearGradient>
-          <PauseFinishAlert isOpen={showAlert} handleResume={handleResume} handleFinish={onPressPost} />
-          <Button onPress={reset}>Reset</Button>
-          
+				</Animated.View>
+				<PauseFinishAlert
+					isOpen={showAlert}
+					handleResume={handleResume}
+					handleFinish={onPressPost}
+				/>
+				<Button onPress={reset}>Reset</Button>
 			</YStack>
 		</ScrollView>
 	);

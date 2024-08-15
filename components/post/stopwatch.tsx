@@ -29,15 +29,13 @@ const StopWatch = () => {
   })
 
   // Hours calculation
-  const hours = Math.floor(time / 360000);
+  const hours = Math.floor(time / 3600);
 
   // Minutes calculation
-//   const minutes = Math.floor((time % 360000) / 6000);
-  const minutes = Math.floor(time / 60);
+  const minutes = Math.floor((time % 3600) / 60);
 
   // Seconds calculation
-//   const seconds = Math.floor((time % 6000) / 100);
-  const seconds = time - minutes * 60;
+  const seconds = time % 60;
 
 //   // Method to start and stop timer
 //   const startStop = () => {

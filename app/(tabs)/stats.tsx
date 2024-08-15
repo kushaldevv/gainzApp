@@ -24,7 +24,7 @@ const exerciseSet2: Types.ExerciseSetViewProp = {
 
 const exercise: Types.ExerciseViewProp = {
   name: "Back Squat",
-  set: [exerciseSet1]
+  sets: [exerciseSet1]
 }
 
 

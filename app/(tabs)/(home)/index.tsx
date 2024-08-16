@@ -1,5 +1,5 @@
 import Card from "@/components/home/card";
-import { getFollowingSessions, getUser } from "@/services/apiCalls";
+import { getFollowingSessions, getUser, getUserSessions } from "@/services/apiCalls";
 import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
 import React, { useEffect, useState } from "react";
@@ -8,7 +8,7 @@ import { ScrollView, Spinner, View, YStack } from "tamagui";
 import PostFAB from "@/components/home/fabPortal";
 import { PaperProvider } from "react-native-paper";
 
-const Page = () => {
+const Cards = ({ userId }: { userId?: string }) => {
   const [sessions, setSessions] = useState<Types.Session[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const { user } = useUser();
@@ -16,9 +16,12 @@ const Page = () => {
   const [spinner, setSpinner] = useState(false);
 
   const fetchSessions = async () => {
+    console.log("Usersessions:", userId);
     try {
       const placeHolderSessions: Types.Session[] = [];
-      const data = (await getFollowingSessions(user?.id as string)) || placeHolderSessions;
+      const data = userId
+        ? await getUserSessions(userId, user?.id!)
+        : (await getFollowingSessions(user?.id as string)) || placeHolderSessions;
       setSessions([...data]);
     } catch (error) {
       console.error("Error fetching sessions:", error);
@@ -59,7 +62,7 @@ const Page = () => {
         alignItems="center"
         backgroundColor={"$background"}
       >
-        {spinner && <Spinner mt="$3" />}
+        {spinner && <Spinner marginVertical="$3" />}
         <ScrollView
           width={"100%"}
           refreshControl={
@@ -82,9 +85,9 @@ const Page = () => {
           </View>
         </ScrollView>
       </YStack>
-      <PostFAB />
+       <PostFAB visible={userId === undefined ? true : false}/>
     </PaperProvider>
   );
 };
 
-export default Page;
+export default Cards;

@@ -5,22 +5,17 @@ import { FAB, Portal } from 'react-native-paper';
 import { useTheme } from 'tamagui';
 import { LinearGradient } from 'tamagui/linear-gradient';
 
-const PostFAB = () => {
+const PostFAB = ({visible}: {visible: boolean}) => {
   const [state, setState] = useState({ open: false });
   const onStateChange = ({ open }: { open: boolean }) => setState({ open });
   const { open } = state;
-
-  const theme = useTheme();
-  const iconColorScheme =
-    useColorScheme() == "dark" ? "black" : "white";
-
   const tintColor = '#00cccc'
 
   return (
       <Portal>
         <FAB.Group
           open={open}
-          visible
+          visible={visible}
           icon={open ? 'close' : 'plus'}
           style={{paddingBottom: 0}}
           fabStyle={{

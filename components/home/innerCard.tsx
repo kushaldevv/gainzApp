@@ -1,23 +1,30 @@
-import React, { useState } from "react";
-import { useColorScheme } from "react-native";
+import React, { Children, useState } from "react";
+import { Dimensions, useColorScheme } from "react-native";
 import Svg, { Path } from "react-native-svg";
-import { ScrollView, SizableText, useTheme, View, XStack, YStack } from "tamagui";
+import { ScrollView, SizableText, useTheme, View, XStack, YStack, Image, Circle } from "tamagui";
 import { LinearGradient } from "tamagui/linear-gradient";
 import * as Types from "../../types";
 import ExerciseAccordion from "../post/accordionItem";
+import Carousel from "react-native-reanimated-carousel";
+import { useSharedValue } from "react-native-reanimated";
+import { X } from "@tamagui/lucide-icons";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+const width = Dimensions.get("screen").width;
 
 const InnerCard = ({ exercises }: Types.InnerCardProps) => {
   const colorMode = useColorScheme();
   const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
-
+  const width = Dimensions.get("screen").width;
+  const [index, setIndex] = useState(0);
   return (
     <XStack
-      height={"$15"}
+      height={"$16"}
       justifyContent="space-between"
+      overflow="hidden"
     >
       <LinearGradient
-        width={"20%"}
-        height={"$15"}
+        width={"22.5%"}
+        height={"$16"}
         p={"$3"}
         borderRadius="$6"
         colors={["#00cccc", gradientColor]}
@@ -64,21 +71,59 @@ const InnerCard = ({ exercises }: Types.InnerCardProps) => {
       </LinearGradient>
 
       <YStack
-        width={"77.5%"}
-        height={"$15"}
         backgroundColor={"$gray3"}
         borderRadius={"$6"}
+        overflow="hidden"
       >
-        <ScrollView>
-          {exercises.map((exercise, index) => (
-            <YStack key={index}>
-              <ExerciseAccordion
-                exercise={exercise}
-                inCard={true}
-              />
-            </YStack>
-          ))}
-        </ScrollView>
+        <GestureHandlerRootView>
+          <Carousel
+            width={width * 0.75 - 20}
+            data={[1, 2]} // Two items: ScrollView and Image
+            onScrollEnd={(index) => setIndex(index)}
+            panGestureHandlerProps={{
+              activeOffsetX: [-10, 10],
+            }}
+            renderItem={({ index }) =>
+              index === 0 ? (
+                <ScrollView paddingVertical="$2">
+                  {exercises.map((exercise, idx) => (
+                    <ExerciseAccordion
+                      exercise={exercise}
+                      inCard={true}
+                      key={idx}
+                    />
+                  ))}
+                </ScrollView>
+              ) : (
+                <Image
+                  width="100%"
+                  height="100%"
+                  alignSelf="center"
+                  source={{
+                    uri: "https://anettemossbacher.com/wp-content/media/bengal-tiger-portrait-face.jpg",
+                  }}
+                />
+              )
+            }
+          />
+        </GestureHandlerRootView>
+        <XStack
+          pos={"absolute"}
+          alignSelf="center"
+          bottom={"$2"}
+          gap="$2"
+        >
+          <Circle
+            size={"$0.75"}
+            backgroundColor={index == 0 ? "$gray12" : "$gray10"}
+            opacity={index == 0 ? 0.8 : 0.6}
+          />
+          <Circle
+            size={"$0.75"}
+            backgroundColor={index == 1 ? "$gray12" : "$gray10"}
+            opacity={index == 0 ? 0.8 : 0.6}
+          />
+        </XStack>
       </YStack>
     </XStack>
   );

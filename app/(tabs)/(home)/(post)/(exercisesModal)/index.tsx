@@ -13,10 +13,6 @@ const targetMuscles = Object.keys(gainzExercises);
 
 const ExercisesModal = () => {
 
-  useEffect(() => {
-    console.log(targetMuscles)
-  }, []);
-
   return (
     <View
       p="$3"
@@ -39,7 +35,7 @@ const ExercisesModal = () => {
                   router.push({
                     pathname: "subView",
                     params: {
-                      exercise: target,
+                      muscle: target,
                     },
                   });
                   // handleDismissModalPress();

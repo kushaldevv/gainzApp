@@ -97,7 +97,7 @@ const ManualPost = () => {
         },
       })),
     };
-
+    console.log(session);
     try {
       if (user) await appendSession(user.id, session);
     } catch (error) {
@@ -160,8 +160,9 @@ const ManualPost = () => {
             <XStack
               alignItems="center"
               justifyContent="space-between"
+              
             >
-              <ListItem>
+              <ListItem borderBottomLeftRadius={'$5'} borderBottomRightRadius={'$5'}>
                 <Text fontFamily={"$mono"}>End Time</Text>
                 <TouchableOpacity onPress={() => setEndOpen(true)}>
                   <Text
@@ -183,18 +184,16 @@ const ManualPost = () => {
         ))}
         <YGroup
           width={"100%"}
-          separator={<Separator />}
         >
           <TouchableOpacity onPress={() => router.push("/(exercisesModal)")}>
-            <YGroup.Item>
               <ListItem
                 fontFamily={"$mono"}
                 color={"#00cccc"}
                 fontWeight={"$15"}
+                borderRadius={"$3"}
               >
                 Add Exercise
               </ListItem>
-            </YGroup.Item>
           </TouchableOpacity>
           {/* <Button alignSelf="center"  borderRadius={"$5"} height="$3" size="$8" fontSize={"$5"} fontFamily="$mono" backgroundColor={"#00cccc"} mt={20}>
             Post

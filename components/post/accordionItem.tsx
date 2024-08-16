@@ -22,6 +22,8 @@ import {
 } from "tamagui";
 import * as Types from "@/types";
 import { ExercisesContext } from "@/app/(tabs)/(home)/(post)/_layout";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { getMuscleColor } from "@/services/utilities";
 
 export function AccordionItem({
   isExpanded,
@@ -165,7 +167,7 @@ export default function ExerciseAccordion({
                 w={6}
                 h={"$1"}
                 borderRadius={"$10"}
-                backgroundColor={"$red10"}
+                backgroundColor={getMuscleColor(exercise.muscle)}
               />
             )}
             <Text
@@ -194,12 +196,12 @@ export default function ExerciseAccordion({
         viewKey="i"
       >
         {exercise.sets.map((set: Types.ExerciseSet, y: number) => (
-          <YGroup.Item key={y}>
+          <YGroup.Item key={y} >
             <ListItem
               paddingVertical="$0"
               justifyContent="space-between"
-              backgroundColor={"$gray2"}
-            >
+              backgroundColor={inCard ? "$gray2" : "$background"}
+              >
               <XStack paddingVertical="$1">
                 <YStack gap="$1">
                   <Text

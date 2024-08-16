@@ -298,23 +298,48 @@ export const getUserProfile = async (userID: string): Promise<Types.UserProfile>
 
 export const getFollowingSessions = async (userID: string) => {
   try {
-    const following = (await getUserFollowingList(userID)) as string[];
-    following.push(userID);
-    const followingSessions = await Promise.all(
-      following.map(async (friend) => getUserSessions(friend, userID))
-    );
-    const flattenedSessions = followingSessions.flat() as Types.Session[];
+    const response =  await axios.get(`${API_URL}/user/following/sessions?userID=${userID}`);
+    const data = response.data;
 
-    // Sort sessions by date
-    const sortedSessions = flattenedSessions.sort((a, b) => {
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    });
-
-    return sortedSessions;
+    const sessions = await Promise.all(
+      data.map(async (sessionData: any) => {
+        const sessionId = sessionData.sessionID as string;
+        const session : Types.Session = {
+          id : sessionId,
+          name : sessionData.name,
+          user : {
+            id : sessionData.user.id,
+            name : sessionData.user.name,
+            pfp : sessionData.user.pfp
+          },
+          location : sessionData.location,
+          date : sessionData.date,
+          exercises : sessionData.exercises.map((exercise: any) => {
+            const weight = exercise.exerciseInfo.weight as number[];
+            return {
+              name: exercise.name as string,
+              muscle: exercise.muscle as string,
+              sets: weight.map((weight, index) => ({
+                reps: exercise.exerciseInfo.reps[index],
+                weight,
+              })),
+              PR: exercise.PR,
+            };
+          }) as Types.Exercise[],
+          duration : sessionData.duration,
+          comments : sessionData.comments,
+          likes : sessionData.likes,
+          numLikes : sessionData.numLikes,
+          userLiked : sessionData.likes.includes(userID)
+        }
+        return session;
+      })
+    )
+    return sessions;
   } catch (error) {
     console.error(error);
   }
-};
+}
 
 export const getUserSessions = async (sessionUserID: string, userID: string) => {
   try {
@@ -374,7 +399,7 @@ export const getExercisesInfo = async (sessionID: string) => {
       const weight = exercise.exerciseInfo.weight as number[];
       return {
         name: exercise.name as string,
-        // date: exercise.exerciseInfo.date as string,
+        muscle: exercise.muscle as string,
         sets: weight.map((weight, index) => ({
           reps: exercise.exerciseInfo.reps[index],
           weight,

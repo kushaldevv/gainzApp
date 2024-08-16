@@ -16,7 +16,6 @@ const Cards = ({ userId }: { userId?: string }) => {
   const [spinner, setSpinner] = useState(false);
 
   const fetchSessions = async () => {
-    console.log("Usersessions:", userId);
     try {
       const placeHolderSessions: Types.Session[] = [];
       const data = userId

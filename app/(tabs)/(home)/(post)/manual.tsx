@@ -226,6 +226,7 @@ const ManualPost = () => {
                     fontWeight={"$7"}
                     fontSize={"$5"}
                     fontFamily={"$mono"}
+                    col={'white'}
                   >
                     Post
                   </Button.Text>

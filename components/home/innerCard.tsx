@@ -13,7 +13,7 @@ const width = Dimensions.get("screen").width;
 
 const InnerCard = ({ exercises }: Types.InnerCardProps) => {
   const colorMode = useColorScheme();
-  const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
+  const gradientColor = colorMode === "dark" ? "#006666" : "#4d9999";
   const width = Dimensions.get("screen").width;
   const [index, setIndex] = useState(0);
   return (

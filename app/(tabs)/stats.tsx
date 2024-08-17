@@ -1,3 +1,4 @@
+import { getMuscleColor } from "@/services/utilities";
 import { useUser } from "@clerk/clerk-expo";
 import { ChevronDown, X } from "@tamagui/lucide-icons";
 import React, { useState } from "react";
@@ -18,12 +19,15 @@ import {
   XStack,
   YStack,
 } from "tamagui";
+import * as DropdownMenu from "zeego/dropdown-menu";
+
 const { width, height } = Dimensions.get("screen");
 
 const Stats = () => {
   const { user } = useUser();
   const data = [{ value: 0 }, { value: 135 }, { value: 165 }, { value: 185 }, { value: 225 }];
-  const [exerciseName, setExerciseName] = useState("Squats");
+  const [exerciseName, setExerciseName] = useState("Barbell bench squat");
+  const [muscleGroup, setMuscleGroup] = useState("Quads");
   const [dateRange, setDateRange] = useState("Monthly");
   return (
     <PortalProvider>
@@ -40,20 +44,22 @@ const Stats = () => {
           >
             <YStack flex={1}>
               <TouchableOpacity>
-                <XStack
-                  gap="$2"
-                  alignItems="center"
-                >
-                  <Text
-                    fontSize={"$5"}
-                    fontFamily={"$mono"}
-                    fontWeight={800}
-                    col={"$red10"}
+                <DropDownMenu items={['Barbell bench squat', 'Dumbbell bench press']}>
+                  <XStack
+                    gap="$2"
+                    alignItems="center"
                   >
-                    {exerciseName}
-                  </Text>
-                  <ChevronDown size={"$1"} />
-                </XStack>
+                    <Text
+                      fontSize={"$5"}
+                      fontFamily={"$mono"}
+                      fontWeight={800}
+                      col={getMuscleColor(muscleGroup)}
+                    >
+                      {exerciseName}
+                    </Text>
+                    <ChevronDown size={"$1"} />
+                  </XStack>
+                </DropDownMenu>
               </TouchableOpacity>
               <Text
                 fontFamily={"$mono"}
@@ -62,17 +68,18 @@ const Stats = () => {
                 PR: 100 lbs
               </Text>
             </YStack>
-
-            <Button
-              width={"$11"}
-              fontFamily={"$mono"}
-              fontWeight={500}
-              fontSize={"$4"}
-              iconAfter={<ChevronDown size={"$1"} />}
-              alignSelf="flex-start"
-            >
-              {dateRange}
-            </Button>
+            <DropDownMenu items={["Monthly", "3 Months", "6 Months"]}>
+              <Button
+                width={"$11"}
+                fontFamily={"$mono"}
+                fontWeight={500}
+                fontSize={"$4"}
+                iconAfter={<ChevronDown size={"$1"} />}
+                alignSelf="flex-start"
+              >
+                {dateRange}
+              </Button>
+            </DropDownMenu>
           </XStack>
           <XStack justifyContent="space-between">
             <MiniLineChartView label="Reps" />
@@ -205,29 +212,29 @@ const MiniLineChartView = ({ label }: { label: string }) => {
   );
 };
 
-const items = [
-  { name: "Apple" },
-  { name: "Pear" },
-  { name: "Blackberry" },
-  { name: "Peach" },
-  { name: "Apricot" },
-  { name: "Melon" },
-  { name: "Honeydew" },
-  { name: "Starfruit" },
-  { name: "Blueberry" },
-  { name: "Raspberry" },
-  { name: "Strawberry" },
-  { name: "Mango" },
-  { name: "Pineapple" },
-  { name: "Lime" },
-  { name: "Lemon" },
-  { name: "Coconut" },
-  { name: "Guava" },
-  { name: "Papaya" },
-  { name: "Orange" },
-  { name: "Grape" },
-  { name: "Jackfruit" },
-  { name: "Durian" },
-];
+const DropDownMenu = ({ children, items }: { children: any; items: string[] }) => {
+  return (
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>{children}</DropdownMenu.Trigger>
+      <DropdownMenu.Content
+        loop={false}
+        side="bottom"
+        align="start"
+        alignOffset={0}
+        avoidCollisions={false}
+        collisionPadding={8}
+        sideOffset={0}
+      >
+        {items.map((item, index) => {
+          return (
+            <DropdownMenu.Item key={index.toString()}>
+              <DropdownMenu.ItemTitle>{item}</DropdownMenu.ItemTitle>
+            </DropdownMenu.Item>
+          );
+        })}
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
+  );
+};
 
 export default Stats;

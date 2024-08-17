@@ -14,7 +14,7 @@ import DropDownMenu from "./dropDownMenu";
 
 const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
   const colorMode = useColorScheme();
-  const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
+  const gradientColor = colorMode === "dark" ? "#006666" : "#4d9999";
   const skeletonColorScheme = useColorScheme() == "dark" ? "dark" : "light";
   const [userProfile, setUserProfile] = useState<Types.UserProfile | null>(null);
   const [following, setFollowing] = useState<boolean | null>(null);
@@ -307,7 +307,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                     fontFamily={"$mono"}
                     fontSize="$9"
                     fontWeight="700"
-                    col="$color"
+                    col="white"
                   >
                     {userProfile?.randomPr.pr || "0"}
                   </Text>
@@ -315,7 +315,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                     fontFamily={"$mono"}
                     fontSize="$6"
                     fontWeight="500"
-                    col="$color"
+                    col="white"
                     mt="$2"
                   >
                     lbs
@@ -324,8 +324,8 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                 <Text
                   fontFamily={"$mono"}
                   fontSize="$4"
-                  fontWeight="400"
-                  col="$color"
+                  fontWeight="500"
+                  col="white"
                   textAlign="center"
                 >
                   {userProfile?.randomPr.name || "No PRs yet"}

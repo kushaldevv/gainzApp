@@ -391,10 +391,10 @@ export const getExercisesInfo = async (sessionID: string) => {
 
   try {
     // Send a GET request to get a info about a user's exercises
-    const response = axios.get(
+    const response = await axios.get(
       `${API_URL}/user/exercises?userID=${sessionUserID}&sessionID=${sessionID}`
     );
-    const data = (await response).data;
+    const data = response.data;
     const exercises: Types.Exercise[] = data.map((exercise: any) => {
       const weight = exercise.exerciseInfo.weight as number[];
       return {

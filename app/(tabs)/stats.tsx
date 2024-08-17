@@ -1,84 +1,94 @@
 import { useUser } from "@clerk/clerk-expo";
+import { ChevronDown, X } from "@tamagui/lucide-icons";
 import React, { useState } from "react";
-import { Dimensions, useColorScheme } from "react-native";
-import {
-  Text,
-  useTheme,
-  YStack,
-  View,
-  Tabs,
-  H5,
-  Separator,
-  ToggleGroup,
-  XStack,
-  Select,
-  Adapt,
-  Sheet,
-  SelectProps,
-  PortalProvider,
-} from "tamagui";
+import { Dimensions, TouchableOpacity } from "react-native";
 import { LineChart } from "react-native-gifted-charts";
-import { Check, ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
-import { LinearGradient } from "tamagui/linear-gradient";
+import {
+  Button,
+  H4,
+  H5,
+  Label,
+  PortalProvider,
+  RadioGroup,
+  ScrollView,
+  Text,
+  ToggleGroup,
+  useTheme,
+  View,
+  XStack,
+  YStack,
+} from "tamagui";
 const { width, height } = Dimensions.get("screen");
 
 const Stats = () => {
   const { user } = useUser();
   const data = [{ value: 0 }, { value: 135 }, { value: 165 }, { value: 185 }, { value: 225 }];
   const [exerciseName, setExerciseName] = useState("Squats");
+  const [dateRange, setDateRange] = useState("Monthly");
   return (
     <PortalProvider>
-      <YStack
-        flex={1}
-        // alignItems="center"
-        backgroundColor={"$background"}
-        padding="$3"
-        gap={"$5"}
-      >
-        <ToggleGroup
-          type="single"
-          display="flex"
+      <ScrollView backgroundColor={"$background"}>
+        <YStack
+          backgroundColor={"$background"}
+          padding="$3"
+          gap={"$4"}
         >
-          <ToggleGroup.Item
-            value="week"
-            flex={1}
+          <XStack
+            justifyContent="space-between"
+            alignItems="flex-start"
+            // width={"100%"}
           >
-            <Text
+            <YStack flex={1}>
+              <TouchableOpacity>
+                <XStack
+                  gap="$2"
+                  alignItems="center"
+                >
+                  <Text
+                    fontSize={"$5"}
+                    fontFamily={"$mono"}
+                    fontWeight={800}
+                    col={"$red10"}
+                  >
+                    {exerciseName}
+                  </Text>
+                  <ChevronDown size={"$1"} />
+                </XStack>
+              </TouchableOpacity>
+              <Text
+                fontFamily={"$mono"}
+                col={"$gray11"}
+              >
+                PR: 100 lbs
+              </Text>
+            </YStack>
+
+            <Button
+              width={"$11"}
               fontFamily={"$mono"}
               fontWeight={500}
+              fontSize={"$4"}
+              iconAfter={<ChevronDown size={"$1"} />}
+              alignSelf="flex-start"
             >
-              Last week
-            </Text>
-          </ToggleGroup.Item>
-          <ToggleGroup.Item
-            value="month"
-            flex={1}
+              {dateRange}
+            </Button>
+          </XStack>
+          <XStack justifyContent="space-between">
+            <MiniLineChartView label="Reps" />
+            <MiniLineChartView label="Weight" />
+          </XStack>
+          <Text
+            alignSelf="center"
+            fontFamily={"$mono"}
+            fontWeight={600}
+            fontSize={"$5"}
           >
-            <Text
-              fontFamily={"$mono"}
-              fontWeight={500}
-            >
-              Last Month
-            </Text>
-          </ToggleGroup.Item>
-          <ToggleGroup.Item
-            value="year"
-            flex={1}
-          >
-            <Text
-              fontFamily={"$mono"}
-              fontWeight={500}
-            >
-              Last Year
-            </Text>
-          </ToggleGroup.Item>
-        </ToggleGroup>
-        <XStack justifyContent="space-between">
-          <MiniLineChartView />
-          <MiniLineChartView />
-        </XStack>
-        <LineChartView />
-      </YStack>
+            Weight per Rep
+          </Text>
+          <LineChartView />
+        </YStack>
+      </ScrollView>
     </PortalProvider>
   );
 };
@@ -110,6 +120,7 @@ const LineChartView = () => {
         onDataChangeAnimationDuration={300}
         interpolateMissingValues
         width={width - 45} // Adjust this value as needed
+        height={height / 3}
         adjustToWidth
         data={data1}
         hideDataPoints
@@ -133,9 +144,8 @@ const LineChartView = () => {
   );
 };
 
-const MiniLineChartView = () => {
+const MiniLineChartView = ({ label }: { label: string }) => {
   const theme = useTheme();
-  const lightGray = theme.gray11.val;
   const accent = "#00cccc";
 
   const data1 = [
@@ -147,7 +157,7 @@ const MiniLineChartView = () => {
     { value: 38 },
   ];
   return (
-    <View
+    <YStack
       width={width / 2.25}
       height={width / 2.25}
       overflow="hidden"
@@ -155,6 +165,13 @@ const MiniLineChartView = () => {
       alignItems="center"
       borderRadius={"$4"}
     >
+      <Text
+        fontFamily={"$mono"}
+        fontWeight={600}
+        fontSize={"$5"}
+      >
+        {label}
+      </Text>
       <LineChart
         endSpacing={0}
         areaChart
@@ -184,7 +201,7 @@ const MiniLineChartView = () => {
         // yAxisLabelSuffix="lbs"
         // xAxisColor={lightGray}
       />
-    </View>
+    </YStack>
   );
 };
 

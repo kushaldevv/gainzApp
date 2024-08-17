@@ -46,30 +46,7 @@ export type ExerciseStats = {
   name: string;
   muscle: string;
   PR: number;
-  exercises: ExerciseSet[][];
-};
-
-export const exampleExerciseStats: ExerciseStats = {
-  name: "Bench Press",
-  muscle: "Chest",
-  PR: 100,
-  exercises: [
-    [
-      { reps: 3, weight: 80, date: "2022-01-01" },
-      { reps: 3, weight: 85 },
-      { reps: 3, weight: 90 },
-    ],
-    [
-      { reps: 3, weight: 80, date: "2022-01-01" },
-      { reps: 3, weight: 85 },
-      { reps: 3, weight: 90 },
-    ],
-    [
-      { reps: 3, weight: 80, date: "2022-01-01" },
-      { reps: 3, weight: 85 },
-      { reps: 3, weight: 90 },
-    ],
-  ],
+  sessionsSets: ExerciseSet[][];
 };
 
 export type ExerciseSet = {

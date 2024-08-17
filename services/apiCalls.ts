@@ -298,23 +298,23 @@ export const getUserProfile = async (userID: string): Promise<Types.UserProfile>
 
 export const getFollowingSessions = async (userID: string) => {
   try {
-    const response =  await axios.get(`${API_URL}/user/following/sessions?userID=${userID}`);
+    const response = await axios.get(`${API_URL}/user/following/sessions?userID=${userID}`);
     const data = response.data;
 
     const sessions = await Promise.all(
       data.map(async (sessionData: any) => {
         const sessionId = sessionData.sessionID as string;
-        const session : Types.Session = {
-          id : sessionId,
-          name : sessionData.name,
-          user : {
-            id : sessionData.user.id,
-            name : sessionData.user.name,
-            pfp : sessionData.user.pfp
+        const session: Types.Session = {
+          id: sessionId,
+          name: sessionData.name,
+          user: {
+            id: sessionData.user.id,
+            name: sessionData.user.name,
+            pfp: sessionData.user.pfp,
           },
-          location : sessionData.location,
-          date : sessionData.date,
-          exercises : sessionData.exercises.map((exercise: any) => {
+          location: sessionData.location,
+          date: sessionData.date,
+          exercises: sessionData.exercises.map((exercise: any) => {
             const weight = exercise.exerciseInfo.weight as number[];
             return {
               name: exercise.name as string,
@@ -326,20 +326,20 @@ export const getFollowingSessions = async (userID: string) => {
               PR: exercise.PR,
             };
           }) as Types.Exercise[],
-          duration : sessionData.duration,
-          comments : sessionData.comments,
-          likes : sessionData.likes,
-          numLikes : sessionData.numLikes,
-          userLiked : sessionData.likes.includes(userID)
-        }
+          duration: sessionData.duration,
+          comments: sessionData.comments,
+          likes: sessionData.likes,
+          numLikes: sessionData.numLikes,
+          userLiked: sessionData.likes.includes(userID),
+        };
         return session;
       })
-    )
+    );
     return sessions;
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 export const getUserSessions = async (sessionUserID: string, userID: string) => {
   try {
@@ -695,3 +695,65 @@ export const updateName = async (userId: string, newName: string) => {
     throw error;
   }
 };
+
+/**
+ * Returns a list of all exercises a user has completed.
+ *
+ * @param userId - The unique identifier of a user.
+ * @returns A Promise that resolves when a user's exercises are retrieved
+ * @throws Will throw an error if the API request fails.
+ */
+export const getUserExercises = async (userId: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/user/exercises/all?userID=${userId}`);
+    const data = response.data;
+    return data as string[];
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+    throw error;
+  }
+};
+
+export const getExerciseStats = async (
+  userId: string,
+  exerciseName: string
+): Promise<Types.ExerciseStats> => {
+  const exerciseNameSpace = exerciseName.replace(/ /g, "%20");
+  try {
+    const response = await axios.get(
+      `${API_URL}/user/exercises/all/obj?userID=${userId}&exerciseName=${exerciseNameSpace}`
+    );
+    const data = response.data;
+    const sessionsData = data.sessions;
+
+    const sessionsSets : Types.ExerciseSet[][] = Object.entries(sessionsData).map(
+      ([sessionId, session]: [string, any]) => ([{
+        reps: session.reps,
+        weight: session.weight,
+        date: sessionId.split("session")[1],
+      }])
+    );
+
+    const exerciseStat : Types.ExerciseStats = {
+      name: exerciseName,
+      muscle: data.muscle,
+      PR: data.PR,
+      sessionsSets: sessionsSets,
+    };
+    console.log(exerciseStat['sessionsSets']['reps']);
+    return exerciseStat;
+  } catch (error) {
+    throw error;
+  }
+};
+
+interface ExerciseSession {
+  reps: number[];
+  weight: number[];
+}
+
+interface ExerciseData {
+  muscle: string;
+  PR: number;
+  sessions: Record<string, ExerciseSession>;
+}

@@ -1,8 +1,9 @@
+import { getExerciseStats, getUserExercises } from "@/services/apiCalls";
 import { getMuscleColor } from "@/services/utilities";
 import { useUser } from "@clerk/clerk-expo";
 import { ChevronDown, X } from "@tamagui/lucide-icons";
-import React, { useState } from "react";
-import { Dimensions, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Dimensions, TouchableOpacity, useColorScheme } from "react-native";
 import { LineChart } from "react-native-gifted-charts";
 import {
   Button,
@@ -20,18 +21,112 @@ import {
   YStack,
 } from "tamagui";
 import * as DropdownMenu from "zeego/dropdown-menu";
-
+import * as Types from "../../types";
+import { Skeleton } from "moti/skeleton";
 const { width, height } = Dimensions.get("screen");
+
+const test: Types.ExerciseStats = {
+  name: "Band bench press",
+  muscle: "Chest",
+  PR: 205,
+  sessionsSets: [
+    [
+      { reps: 3, weight: 80, date: "2022-01-01" },
+      { reps: 3, weight: 85 },
+      { reps: 3, weight: 90 },
+    ],
+    [
+      { reps: 3, weight: 80, date: "2022-01-01" },
+      { reps: 3, weight: 85 },
+      { reps: 3, weight: 90 },
+    ],
+    [
+      { reps: 3, weight: 80, date: "2022-01-01" },
+      { reps: 3, weight: 85 },
+      { reps: 3, weight: 90 },
+    ],
+  ],
+};
+
+const tes2: Types.ExerciseStats = {
+  name: "Barbell curl",
+  muscle: "Biceps",
+  PR: 90,
+  sessionsSets: [
+    [
+      { reps: 3, weight: 80, date: "2022-01-01" },
+      { reps: 3, weight: 85 },
+      { reps: 3, weight: 90 },
+    ],
+    [
+      { reps: 3, weight: 80, date: "2022-01-01" },
+      { reps: 3, weight: 85 },
+      { reps: 3, weight: 90 },
+    ],
+    [
+      { reps: 3, weight: 80, date: "2022-01-01" },
+      { reps: 3, weight: 85 },
+      { reps: 3, weight: 90 },
+    ],
+  ],
+};
 
 const Stats = () => {
   const { user } = useUser();
+  const skeletonColorScheme = useColorScheme() == "dark" ? "dark" : "light";
+
   const data = [{ value: 0 }, { value: 135 }, { value: 165 }, { value: 185 }, { value: 225 }];
-  const [exerciseName, setExerciseName] = useState("Barbell bench squat");
-  const [muscleGroup, setMuscleGroup] = useState("Quads");
+  const [exerciseList, setExerciseList] = useState<string[]>([]);
+  const [exercise, setExercise] = useState<Types.ExerciseStats | null>(null);
+  const [exerciseName, setExerciseName] = useState<string>("");
+
+  const [loadingNames, setLoadingNames] = useState(false);
+  const [loadingStats, setLoadingStats] = useState(false);
+
   const [dateRange, setDateRange] = useState("Monthly");
+
+  useEffect(() => {
+    fetchUserExcercises();
+    setLoadingStats(true);
+  }, []);
+
+  const fetchUserExcercises = async () => {
+    setLoadingNames(true);
+    try {
+      if (user) {
+        const exercises = await getUserExercises(user?.id);
+        setExerciseList(exercises);
+        setExerciseName(exercises[0]);
+        // fetchExerciseStat(exercises[0]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setLoadingNames(false);
+  };
+
+  const fetchExerciseStat = async (name: string) => {
+    console.log(name)
+    setLoadingStats(true);
+    try {
+      if (!user) return;
+      const exerciseStats = await getExerciseStats(user?.id, name)
+      setExercise(tes2);
+    } catch (error) {
+      console.log(error);
+    }
+    setLoadingStats(false);
+  };
+
+  // useEffect(() => {
+  //   fetchExerciseStat(exerciseName);
+  // }, [exerciseName]);
+
   return (
     <PortalProvider>
       <ScrollView backgroundColor={"$background"}>
+        <Button onPress={()=> (fetchExerciseStat(exerciseName))}>test</Button>
         <YStack
           backgroundColor={"$background"}
           padding="$3"
@@ -42,58 +137,78 @@ const Stats = () => {
             alignItems="flex-start"
             // width={"100%"}
           >
-            <YStack flex={1}>
-              <TouchableOpacity>
-                <DropDownMenu items={['Barbell bench squat', 'Dumbbell bench press']}>
-                  <XStack
-                    gap="$2"
-                    alignItems="center"
-                  >
-                    <Text
-                      fontSize={"$5"}
-                      fontFamily={"$mono"}
-                      fontWeight={800}
-                      col={getMuscleColor(muscleGroup)}
+            <Skeleton
+              show={loadingNames}
+              colorMode={skeletonColorScheme}
+            >
+              <YStack flex={1}>
+                <TouchableOpacity>
+                  <DropDownMenu items={exerciseList} setExerciseName={setExerciseName}>
+                    <XStack
+                      gap="$2"
+                      alignItems="center"
                     >
-                      {exerciseName}
-                    </Text>
-                    <ChevronDown size={"$1"} />
-                  </XStack>
-                </DropDownMenu>
-              </TouchableOpacity>
-              <Text
-                fontFamily={"$mono"}
-                col={"$gray11"}
-              >
-                PR: 100 lbs
-              </Text>
-            </YStack>
-            <DropDownMenu items={["Monthly", "3 Months", "6 Months"]}>
-              <Button
-                width={"$11"}
-                fontFamily={"$mono"}
-                fontWeight={500}
-                fontSize={"$4"}
-                iconAfter={<ChevronDown size={"$1"} />}
-                alignSelf="flex-start"
-              >
-                {dateRange}
-              </Button>
-            </DropDownMenu>
+                      <Text
+                        fontSize={"$5"}
+                        fontFamily={"$mono"}
+                        fontWeight={800}
+                        // col={getMuscleColor(exercise.muscle)}
+                      >
+                        {exerciseName}
+                      </Text>
+                      <ChevronDown size={"$1"} />
+                    </XStack>
+                  </DropDownMenu>
+                </TouchableOpacity>
+                <Text
+                  fontFamily={"$mono"}
+                  col={"$gray11"}
+                >
+                  {"PR: " + exercise?.PR + " lbs"}
+                </Text>
+              </YStack>
+            </Skeleton>
+            <Skeleton
+              show={loadingStats}
+              colorMode={skeletonColorScheme}
+            >
+              <DropDownMenu items={["Monthly", "3 Months", "6 Months"]}>
+                <Button
+                  width={"$11"}
+                  fontFamily={"$mono"}
+                  fontWeight={500}
+                  fontSize={"$4"}
+                  iconAfter={<ChevronDown size={"$1"} />}
+                  alignSelf="flex-start"
+                >
+                  {dateRange}
+                </Button>
+              </DropDownMenu>
+            </Skeleton>
           </XStack>
-          <XStack justifyContent="space-between">
-            <MiniLineChartView label="Reps" />
-            <MiniLineChartView label="Weight" />
-          </XStack>
-          <Text
-            alignSelf="center"
-            fontFamily={"$mono"}
-            fontWeight={600}
-            fontSize={"$5"}
-          >
-            Weight per Rep
-          </Text>
-          <LineChartView />
+          <Skeleton.Group show={loadingStats}>
+            <XStack justifyContent="space-between">
+              <Skeleton colorMode={skeletonColorScheme}>
+                <MiniLineChartView label="Reps" />
+              </Skeleton>
+              <Skeleton colorMode={skeletonColorScheme}>
+                <MiniLineChartView label="Weight" />
+              </Skeleton>
+            </XStack>
+            <Skeleton colorMode={skeletonColorScheme}>
+              <>
+            <Text
+              alignSelf="center"
+              fontFamily={"$mono"}
+              fontWeight={600}
+              fontSize={"$5"}
+            >
+              Weight per Rep
+            </Text>
+            <LineChartView />
+            </>
+            </Skeleton>
+          </Skeleton.Group>
         </YStack>
       </ScrollView>
     </PortalProvider>
@@ -115,9 +230,11 @@ const LineChartView = () => {
   ];
   return (
     <View
-      width={width}
-      overflow="hidden"
+      // width={width}
+      // overflow="hidden"
       alignSelf="center"
+      alignItems="center"
+      mr={30}
     >
       <LineChart
         areaChart
@@ -126,7 +243,7 @@ const LineChartView = () => {
         animationDuration={750}
         onDataChangeAnimationDuration={300}
         interpolateMissingValues
-        width={width - 45} // Adjust this value as needed
+        width={width - 56} // Adjust this value as needed
         height={height / 3}
         adjustToWidth
         data={data1}
@@ -140,7 +257,7 @@ const LineChartView = () => {
         initialSpacing={0}
         noOfSections={4}
         yAxisThickness={0}
-        yAxisLabelWidth={30}
+        yAxisLabelWidth={25}
         rulesType="solid"
         rulesColor={"rgba(255,255,255,0.5)"}
         yAxisTextStyle={{ color: lightGray }}
@@ -212,9 +329,14 @@ const MiniLineChartView = ({ label }: { label: string }) => {
   );
 };
 
-const DropDownMenu = ({ children, items }: { children: any; items: string[] }) => {
+const DropDownMenu = ({ children, items, setExerciseName }: { children: any; items: string[] , setExerciseName?: any }) => {
+  const handleSelect = (item: string) => {
+    if (setExerciseName) {
+      setExerciseName(item);
+    }
+  };
   return (
-    <DropdownMenu.Root>
+    <DropdownMenu.Root style={{ maxHeight: 200 }}>
       <DropdownMenu.Trigger>{children}</DropdownMenu.Trigger>
       <DropdownMenu.Content
         loop={false}
@@ -227,7 +349,7 @@ const DropDownMenu = ({ children, items }: { children: any; items: string[] }) =
       >
         {items.map((item, index) => {
           return (
-            <DropdownMenu.Item key={index.toString()}>
+            <DropdownMenu.Item key={index.toString()} onSelect={()=>handleSelect(item)}>
               <DropdownMenu.ItemTitle>{item}</DropdownMenu.ItemTitle>
             </DropdownMenu.Item>
           );

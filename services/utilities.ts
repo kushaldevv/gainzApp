@@ -81,3 +81,36 @@ export function formatSessionDate(isoString: string) {
     const diffInWeeks = Math.floor(diffInDays / 7);
     return `${diffInWeeks}w`;
   }
+
+  export function getMuscleColor(muscle: string) {
+    switch (muscle) {
+      case "Biceps":
+      case "Forearms":
+      case "Triceps":
+      case "Delts":
+        return "$blue10"; // Arms
+  
+      case "Lats":
+      case "Traps":
+      case "Upper back":
+        return "$green10"; // Back
+  
+      case "Quads":
+      case "Hamstrings":
+      case "Glutes":
+      case "Calves":
+      case "Abductors":
+      case "Adductors":
+        return "$red10"; // Legs
+  
+      case "Abs":
+      case "Cardio":
+        return "$yellow10"; // Core/Cardio
+  
+      case "Chest":
+        return "$orange10"; // Chest
+  
+      default:
+        return "$gray10"; // Fallback for any undefined muscle
+    }
+  }

@@ -1,6 +1,6 @@
 import { ChevronDown, Trash2, X } from "@tamagui/lucide-icons";
 import React, { useContext, useState } from "react";
-import { StyleSheet, View, Button, SafeAreaView, TouchableOpacity } from "react-native";
+import { StyleSheet, Button, SafeAreaView, TouchableOpacity } from "react-native";
 import Animated, {
   SharedValue,
   useAnimatedStyle,
@@ -8,11 +8,24 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { ListItem, YGroup, Text, XStack, YStack, Input, Square, Separator } from "tamagui";
+import {
+  View,
+  ListItem,
+  YGroup,
+  Text,
+  XStack,
+  YStack,
+  Input,
+  Square,
+  Separator,
+  Label,
+} from "tamagui";
 import * as Types from "@/types";
 import { ExercisesContext } from "@/app/(tabs)/(home)/(post)/_layout";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+import { getMuscleColor } from "@/services/utilities";
 
-function AccordionItem({
+export function AccordionItem({
   isExpanded,
   children,
   viewKey,
@@ -51,7 +64,13 @@ function AccordionItem({
   );
 }
 
-export default function ExerciseAccordion({ exercise }: { exercise: Types.ExerciseViewProp }) {
+export default function ExerciseAccordion({
+  exercise,
+  inCard,
+}: {
+  exercise: Types.Exercise;
+  inCard?: boolean;
+}) {
   const open = useSharedValue(false);
   const [openIcon, setOpenIcon] = useState(false);
 
@@ -68,7 +87,7 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
   };
 
   const addExerciseSet = (exerciseName: string) => {
-    const newExerciseSet: Types.ExerciseSetViewProp = {
+    const newExerciseSet: Types.ExerciseSet = {
       reps: 0,
       weight: 0,
     };
@@ -76,7 +95,7 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
       if (exercise.name === exerciseName) {
         return {
           ...exercise,
-          set: [...exercise.set, newExerciseSet],
+          sets: [...exercise.sets, newExerciseSet],
         };
       }
       return exercise;
@@ -89,7 +108,7 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
       if (exercise.name === exerciseName) {
         return {
           ...exercise,
-          set: exercise.set.filter((_, i) => i !== index),
+          sets: exercise.sets.filter((_, i) => i !== index),
         };
       }
       return exercise;
@@ -100,10 +119,10 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
   const modifyExerciseSetReps = (exerciseName: string, reps: number, index: number) => {
     const updatedExercises = exercises.map((exercise) => {
       if (exercise.name === exerciseName) {
-        exercise.set[index].reps = reps;
+        exercise.sets[index].reps = reps;
         return {
           ...exercise,
-          set: [...exercise.set],
+          sets: [...exercise.sets],
         };
       }
       return exercise;
@@ -114,17 +133,16 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
   const modifyExerciseSetWeight = (exerciseName: string, weight: number, index: number) => {
     const updatedExercises = exercises.map((exercise) => {
       if (exercise.name === exerciseName) {
-        exercise.set[index].weight = weight;
+        exercise.sets[index].weight = weight;
         return {
           ...exercise,
-          set: [...exercise.set],
+          sets: [...exercise.sets],
         };
       }
       return exercise;
     });
     setExercises(updatedExercises);
   };
-
   return (
     <YGroup
       width={"100%"}
@@ -132,21 +150,37 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
     >
       <YGroup.Item>
         <ListItem
-          pl="$3"
           justifyContent="space-between"
+          backgroundColor={inCard ? "$colorTransparent" : "$background"}
         >
-          <TouchableOpacity onPress={()=>deleteExercise(exercise.name)}>
-            <X size="$1" />
-          </TouchableOpacity>
-          <Text
-            fontSize={"$4"}
-            fontFamily={"$mono"}
-            fontWeight={600}
-            textAlign="center"
-            w={"60%"}
-          >
-            {exercise.name}
-          </Text>
+          {!inCard && (
+            <TouchableOpacity onPress={() => deleteExercise(exercise.name)}>
+              <X
+                size="$1"
+                col="$red10"
+              />
+            </TouchableOpacity>
+          )}
+          <XStack gap="$2">
+            {inCard && (
+              <View
+                w={6}
+                h={"$1"}
+                borderRadius={"$10"}
+                backgroundColor={getMuscleColor(exercise.muscle)}
+              />
+            )}
+            <Text
+              fontSize={"$4"}
+              fontFamily={"$mono"}
+              fontWeight={600}
+              textAlign={inCard ? "left" : "center"}
+              w={"85%"}
+              marginHorizontal={inCard ? '$0' : "auto"}
+            >
+              {exercise.name}
+            </Text>
+          </XStack>
           <TouchableOpacity onPress={onPress}>
             <Square
               animation="quick"
@@ -161,25 +195,24 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
         isExpanded={open}
         viewKey="i"
       >
-        {exercise.set.map((set: Types.ExerciseSetViewProp, y: number) => (
-          <YGroup.Item key={y}>
-            <ListItem p="$0">
-              <XStack
-                alignItems="center"
-                justifyContent="space-between"
+        {exercise.sets.map((set: Types.ExerciseSet, y: number) => (
+          <YGroup.Item key={y} >
+            <ListItem
+              paddingVertical="$0"
+              justifyContent="space-between"
+              backgroundColor={inCard ? "$gray2" : "$background"}
               >
-                <YStack>
+              <XStack paddingVertical="$1">
+                <YStack gap="$1">
                   <Text
                     fontFamily={"$mono"}
-                    pl="$3"
-                    pt="$1"
-                    pb="$0"
                     fontSize={"$2"}
                     opacity={0.7}
                   >
                     Reps
                   </Text>
                   <Input
+                    p="$0"
                     width="$7"
                     onChangeText={(text) => {
                       modifyExerciseSetReps(exercise.name, parseInt(text) || 0, y);
@@ -190,20 +223,20 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
                     fontFamily={"$mono"}
                     placeholder="Reps"
                     value={set.reps > 0 ? set.reps.toString() : ""}
+                    backgroundColor={"transparent"}
+                    height={"$2"}
                   />
                 </YStack>
-                <YStack>
+                <YStack gap="$1">
                   <Text
                     fontFamily={"$mono"}
-                    pl="$4"
-                    pt="$1"
-                    pb="$0"
                     fontSize={"$2"}
                     opacity={0.7}
                   >
                     Weight
                   </Text>
                   <Input
+                    p="$0"
                     width="$8"
                     onChangeText={(text) => {
                       modifyExerciseSetWeight(exercise.name, parseInt(text) || 0, y);
@@ -214,65 +247,54 @@ export default function ExerciseAccordion({ exercise }: { exercise: Types.Exerci
                     fontFamily={"$mono"}
                     placeholder="Weight"
                     value={set.weight > 0 ? set.weight.toString() : ""}
+                    backgroundColor={"transparent"}
+                    height={"$2"}
                   />
                 </YStack>
               </XStack>
-              <TouchableOpacity
-                style={{ position: "absolute", right: 10 }}
-                onPress={() => {
-                  deleteExerciseSet(exercise.name, y);
-                }}
-              >
-                <Trash2
-                  size={"$1"}
-                  color={"$red10"}
-                />
-              </TouchableOpacity>
+              {inCard ? (
+                exercise.PR === set.weight && <Text>🏆</Text>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    deleteExerciseSet(exercise.name, y);
+                  }}
+                >
+                  <Trash2
+                    size={"$1"}
+                    color={"$red10"}
+                  />
+                </TouchableOpacity>
+              )}
             </ListItem>
           </YGroup.Item>
         ))}
       </AccordionItem>
 
-      <TouchableOpacity
-        onPress={() => {
-          addExerciseSet(exercise.name);
-          open.value = true;
-          setOpenIcon(true);
-        }}
-      >
-        <YGroup.Item>
-          <ListItem
-            fontFamily={"$mono"}
-            color={"#00cccc"}
-            fontWeight={"$15"}
-          >
-            Add Set
-          </ListItem>
-        </YGroup.Item>
-      </TouchableOpacity>
+      {!inCard && (
+        <TouchableOpacity
+          onPress={() => {
+            addExerciseSet(exercise.name);
+            open.value = true;
+            setOpenIcon(true);
+          }}
+        >
+          <YGroup.Item>
+            <ListItem
+              fontFamily={"$mono"}
+              color={"#00cccc"}
+              fontWeight={"$15"}
+            >
+              Add Set
+            </ListItem>
+          </YGroup.Item>
+        </TouchableOpacity>
+      )}
     </YGroup>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    paddingTop: 24,
-  },
-  buttonContainer: {
-    flex: 1,
-    paddingBottom: 1,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  content: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   parent: {
     width: 200,
   },
@@ -285,14 +307,5 @@ const styles = StyleSheet.create({
   animatedView: {
     width: "100%",
     overflow: "hidden",
-  },
-  box: {
-    height: 120,
-    width: 120,
-    color: "#f8f9ff",
-    backgroundColor: "#b58df1",
-    borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
   },
 });

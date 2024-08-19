@@ -241,7 +241,7 @@ export default function SignUpScreen() {
   );
 
   return (
-    <FormCard error={error.length > 0}>
+    <FormCard>
       {!pendingVerification && (
         <>
           <H1

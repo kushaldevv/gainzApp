@@ -158,7 +158,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
               alignSelf="center"
             >
               <Avatar.Image src={user?.pfp} />
-              <Avatar.Fallback backgroundColor="$blue10" />
+              <Avatar.Fallback backgroundColor="#00cccc" />
             </Avatar>
             <BottomSheetTextInput
               placeholder="Add a comment..."
@@ -284,7 +284,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
             pos="absolute"
             right="$0"
           >
-            <DropDownMenu isUser={initialSession.user.id == user?.id} />
+            {/* <DropDownMenu isUser={initialSession.user.id == user?.id} /> */}
           </View>
         </XStack>
         <Skeleton
@@ -507,6 +507,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
                           sessionID={session.id}
                           userID={user?.id!}
                           loading={false}
+                          handleDismissModalPress={handleDismissModalPress}
                         />
                       ))}
                 </View>

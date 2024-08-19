@@ -1,45 +1,32 @@
 import Card from "@/components/home/card";
-import { getFollowingSessions, getUser } from "@/services/apiCalls";
+import { getFollowingSessions, getUser, getUserSessions } from "@/services/apiCalls";
 import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
 import React, { useEffect, useState } from "react";
 import { RefreshControl } from "react-native";
-import { ScrollView, View, YStack } from "tamagui";
+import { ScrollView, Spinner, View, YStack } from "tamagui";
 import PostFAB from "@/components/home/fabPortal";
 import { PaperProvider } from "react-native-paper";
 
-// const emptySession: Types.Session = {
-//   id: " ",
-//   name: " ",
-//   user: {
-//     id: " ",
-//     name: " ",
-//     pfp: " ",
-//   },
-//   location: " ",
-//   date: " ",
-//   exercises: [],
-//   duration: 0,
-//   comments: 0,
-//   likes: [],
-//   numLikes: 0,
-// };
-
-const Page = () => {
+const Cards = ({ userId }: { userId?: string }) => {
   const [sessions, setSessions] = useState<Types.Session[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const { user } = useUser();
   const [userDetails, setUserDetails] = useState<Types.User | null>(null);
+  const [spinner, setSpinner] = useState(false);
 
   const fetchSessions = async () => {
     try {
       const placeHolderSessions: Types.Session[] = [];
-      const data = (await getFollowingSessions(user?.id as string)) || placeHolderSessions;
+      const data = userId
+        ? await getUserSessions(userId, user?.id!)
+        : (await getFollowingSessions(user?.id as string)) || placeHolderSessions;
       setSessions([...data]);
     } catch (error) {
       console.error("Error fetching sessions:", error);
       throw error;
     }
+    setSpinner(false);
   };
 
   const fetchUserDetails = async () => {
@@ -52,6 +39,7 @@ const Page = () => {
   useEffect(() => {
     fetchSessions();
     fetchUserDetails();
+    setSpinner(true);
   }, []);
 
   const onRefresh = async () => {
@@ -68,37 +56,37 @@ const Page = () => {
 
   return (
     <PaperProvider>
-    <YStack
-      flex={1}
-      alignItems="center"
-      backgroundColor={"$background"}
-    >
-       <PostFAB/>
-      <ScrollView
-        width={"100%"}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
-        }
+      <YStack
+        flex={1}
+        alignItems="center"
+        backgroundColor={"$background"}
       >
-        <View gap="$2">
-          {!refreshing &&
-            sessions.map((session, index) => (
-              <Card
-                key={index}
-                session={session}
-                loading={false}
-                userDetails={userDetails}
-              />
-            ))}
-        </View>
-      </ScrollView>
-    </YStack>
-    <PostFAB/>
+        {spinner && <Spinner marginVertical="$3" />}
+        <ScrollView
+          width={"100%"}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+            />
+          }
+        >
+          <View gap="$2">
+            {!refreshing &&
+              sessions.map((session, index) => (
+                <Card
+                  key={index}
+                  session={session}
+                  loading={false}
+                  userDetails={userDetails}
+                />
+              ))}
+          </View>
+        </ScrollView>
+      </YStack>
+       <PostFAB visible={userId === undefined ? true : false}/>
     </PaperProvider>
   );
 };
 
-export default Page;
+export default Cards;

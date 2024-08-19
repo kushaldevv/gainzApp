@@ -8,7 +8,7 @@ import { appendLikeToComment } from "@/services/apiCalls";
 import { router, useFocusEffect } from "expo-router";
 import { formatSimpleDate } from "@/services/utilities";
 
-const Comment = ({ index, comment, sessionID, userID, loading }: Types.CommentProps) => {
+const Comment = ({ index, comment, sessionID, userID, loading, handleDismissModalPress }: Types.CommentProps) => {
   const [like, setLike] = useState(false);
 
   useFocusEffect(() => {
@@ -21,6 +21,7 @@ const Comment = ({ index, comment, sessionID, userID, loading }: Types.CommentPr
   });
 
   const handleProfileScreen = () => {
+    handleDismissModalPress && handleDismissModalPress();
     router.push({
       pathname: "/[user]",
       params: { userIdParam: comment.user.id},

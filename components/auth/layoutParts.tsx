@@ -21,7 +21,7 @@ const Middle = styled(View, {
   },
 });
 
-export const FormCard = ({ children, error }: Types.FormCardProps) => {
+export const FormCard = ({ children }: Types.FormCardProps) => {
   return (
     <YStack
       flex={1}

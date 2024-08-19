@@ -141,7 +141,7 @@ export default function SignInScreen() {
     }, [])
   );
   return (
-    <FormCard error={error}>
+    <FormCard>
       <H1
         alignSelf="center"
         size="$8"

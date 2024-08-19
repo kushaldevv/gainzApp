@@ -1,0 +1,3799 @@
+{
+  "Abs": {
+    "3/4 sit-up": {
+      "equipment": "body weight"
+    },
+    "45\u00b0 side bend": {
+      "equipment": "body weight"
+    },
+    "Air bike": {
+      "equipment": "body weight"
+    },
+    "Alternate heel touchers": {
+      "equipment": "body weight"
+    },
+    "Arm slingers hanging bent knee legs": {
+      "equipment": "body weight"
+    },
+    "Arm slingers hanging straight legs": {
+      "equipment": "body weight"
+    },
+    "Arms overhead full sit-up": {
+      "equipment": "body weight"
+    },
+    "Assisted hanging knee raise": {
+      "equipment": "assisted"
+    },
+    "Assisted hanging knee raise with throw down": {
+      "equipment": "assisted"
+    },
+    "Assisted lying leg raise with lateral throw down": {
+      "equipment": "assisted"
+    },
+    "Assisted lying leg raise with throw down": {
+      "equipment": "assisted"
+    },
+    "Assisted motion russian twist": {
+      "equipment": "medicine ball"
+    },
+    "Assisted prone rectus femoris stretch": {
+      "equipment": "assisted"
+    },
+    "Assisted sit-up": {
+      "equipment": "assisted"
+    },
+    "Band alternating v-up": {
+      "equipment": "band"
+    },
+    "Band assisted wheel rollerout": {
+      "equipment": "band"
+    },
+    "Band bicycle crunch": {
+      "equipment": "band"
+    },
+    "Band horizontal pallof press": {
+      "equipment": "band"
+    },
+    "Band jack knife sit-up": {
+      "equipment": "band"
+    },
+    "Band kneeling twisting crunch": {
+      "equipment": "band"
+    },
+    "Band lying straight leg raise": {
+      "equipment": "band"
+    },
+    "Band push sit-up": {
+      "equipment": "band"
+    },
+    "Band seated twist": {
+      "equipment": "band"
+    },
+    "Band standing crunch": {
+      "equipment": "band"
+    },
+    "Band standing twisting crunch": {
+      "equipment": "band"
+    },
+    "Band v-up": {
+      "equipment": "band"
+    },
+    "Band vertical pallof press": {
+      "equipment": "band"
+    },
+    "Barbell press sit-up": {
+      "equipment": "barbell"
+    },
+    "Barbell rollerout": {
+      "equipment": "barbell"
+    },
+    "Barbell rollerout from bench": {
+      "equipment": "barbell"
+    },
+    "Barbell seated twist": {
+      "equipment": "barbell"
+    },
+    "Barbell side bent": {
+      "equipment": "barbell"
+    },
+    "Barbell sitted alternate leg raise": {
+      "equipment": "barbell"
+    },
+    "Barbell standing ab rollerout": {
+      "equipment": "barbell"
+    },
+    "Barbell standing twist": {
+      "equipment": "barbell"
+    },
+    "Bodyweight incline side plank": {
+      "equipment": "body weight"
+    },
+    "Bottoms-up": {
+      "equipment": "body weight"
+    },
+    "Bridge - mountain climber (cross body)": {
+      "equipment": "body weight"
+    },
+    "Butt-ups": {
+      "equipment": "body weight"
+    },
+    "Cable judo flip": {
+      "equipment": "cable"
+    },
+    "Cable kneeling crunch": {
+      "equipment": "cable"
+    },
+    "Cable reverse crunch": {
+      "equipment": "cable"
+    },
+    "Cable russian twists (on stability ball)": {
+      "equipment": "cable"
+    },
+    "Cable seated crunch": {
+      "equipment": "cable"
+    },
+    "Cable seated twist": {
+      "equipment": "cable"
+    },
+    "Cable side bend": {
+      "equipment": "cable"
+    },
+    "Cable side bend crunch (bosu ball)": {
+      "equipment": "cable"
+    },
+    "Cable side crunch": {
+      "equipment": "cable"
+    },
+    "Cable standing crunch": {
+      "equipment": "cable"
+    },
+    "Cable standing crunch (with rope attachment)": {
+      "equipment": "cable"
+    },
+    "Cable standing lift": {
+      "equipment": "cable"
+    },
+    "Cable tuck reverse crunch": {
+      "equipment": "cable"
+    },
+    "Cable twist": {
+      "equipment": "cable"
+    },
+    "Cable twist (up-down)": {
+      "equipment": "cable"
+    },
+    "Captains chair straight leg raise": {
+      "equipment": "body weight"
+    },
+    "Cocoons": {
+      "equipment": "body weight"
+    },
+    "Crab twist toe touch": {
+      "equipment": "body weight"
+    },
+    "Cross body crunch": {
+      "equipment": "body weight"
+    },
+    "Crunch (hands overhead)": {
+      "equipment": "body weight"
+    },
+    "Crunch (on stability ball)": {
+      "equipment": "stability ball"
+    },
+    "Crunch (on stability ball, arms straight)": {
+      "equipment": "stability ball"
+    },
+    "Crunch floor": {
+      "equipment": "body weight"
+    },
+    "Curl-up": {
+      "equipment": "body weight"
+    },
+    "Dead bug": {
+      "equipment": "body weight"
+    },
+    "Decline crunch": {
+      "equipment": "body weight"
+    },
+    "Decline sit-up": {
+      "equipment": "body weight"
+    },
+    "Dumbbell side bend": {
+      "equipment": "dumbbell"
+    },
+    "Elbow-to-knee": {
+      "equipment": "body weight"
+    },
+    "Flag": {
+      "equipment": "body weight"
+    },
+    "Flexion leg sit up (bent knee)": {
+      "equipment": "body weight"
+    },
+    "Flexion leg sit up (straight arm)": {
+      "equipment": "body weight"
+    },
+    "Frog crunch": {
+      "equipment": "body weight"
+    },
+    "Frog planche": {
+      "equipment": "body weight"
+    },
+    "Front lever": {
+      "equipment": "body weight"
+    },
+    "Front plank with twist": {
+      "equipment": "body weight"
+    },
+    "Full maltese": {
+      "equipment": "body weight"
+    },
+    "Full planche": {
+      "equipment": "body weight"
+    },
+    "Gorilla chin": {
+      "equipment": "body weight"
+    },
+    "Groin crunch": {
+      "equipment": "body weight"
+    },
+    "Half sit-up": {
+      "equipment": "body weight"
+    },
+    "Hanging leg hip raise": {
+      "equipment": "body weight"
+    },
+    "Hanging leg raise": {
+      "equipment": "body weight"
+    },
+    "Hanging oblique knee raise": {
+      "equipment": "body weight"
+    },
+    "Hanging pike": {
+      "equipment": "body weight"
+    },
+    "Hanging straight leg hip raise": {
+      "equipment": "body weight"
+    },
+    "Hanging straight leg raise": {
+      "equipment": "body weight"
+    },
+    "Hanging straight twisting leg hip raise": {
+      "equipment": "body weight"
+    },
+    "Hip raise (bent knee)": {
+      "equipment": "body weight"
+    },
+    "Inchworm": {
+      "equipment": "body weight"
+    },
+    "Incline leg hip raise (leg straight)": {
+      "equipment": "body weight"
+    },
+    "Incline twisting sit-up": {
+      "equipment": "body weight"
+    },
+    "Jackknife sit-up": {
+      "equipment": "body weight"
+    },
+    "Janda sit-up": {
+      "equipment": "body weight"
+    },
+    "Kettlebell advanced windmill": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell bent press": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell double windmill": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell figure 8": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell windmill": {
+      "equipment": "kettlebell"
+    },
+    "Knee touch crunch": {
+      "equipment": "body weight"
+    },
+    "Kneeling plank tap shoulder": {
+      "equipment": "body weight"
+    },
+    "L-sit on floor": {
+      "equipment": "body weight"
+    },
+    "Landmine 180": {
+      "equipment": "barbell"
+    },
+    "Lean planche": {
+      "equipment": "body weight"
+    },
+    "Leg pull in flat bench": {
+      "equipment": "body weight"
+    },
+    "Lever kneeling twist": {
+      "equipment": "leverage machine"
+    },
+    "Lever seated crunch": {
+      "equipment": "leverage machine"
+    },
+    "Lever seated crunch (chest pad)": {
+      "equipment": "leverage machine"
+    },
+    "Lever seated leg raise crunch": {
+      "equipment": "leverage machine"
+    },
+    "Lunge with twist": {
+      "equipment": "body weight"
+    },
+    "Lying elbow to knee": {
+      "equipment": "body weight"
+    },
+    "Lying leg raise flat bench": {
+      "equipment": "body weight"
+    },
+    "Lying leg-hip raise": {
+      "equipment": "body weight"
+    },
+    "Negative crunch": {
+      "equipment": "body weight"
+    },
+    "Oblique crunches": {
+      "equipment": "body weight"
+    },
+    "One arm slam (with medicine ball)": {
+      "equipment": "medicine ball"
+    },
+    "Otis up": {
+      "equipment": "weighted"
+    },
+    "Pelvic tilt": {
+      "equipment": "body weight"
+    },
+    "Posterior step to overhead reach": {
+      "equipment": "body weight"
+    },
+    "Potty squat": {
+      "equipment": "body weight"
+    },
+    "Power point plank": {
+      "equipment": "body weight"
+    },
+    "Prisoner half sit-up": {
+      "equipment": "body weight"
+    },
+    "Prone twist on stability ball": {
+      "equipment": "stability ball"
+    },
+    "Pull-in (on stability ball)": {
+      "equipment": "stability ball"
+    },
+    "Push-up to side plank": {
+      "equipment": "body weight"
+    },
+    "Quarter sit-up": {
+      "equipment": "body weight"
+    },
+    "Reverse crunch": {
+      "equipment": "body weight"
+    },
+    "Reverse plank with leg lift": {
+      "equipment": "body weight"
+    },
+    "Roller body saw": {
+      "equipment": "roller"
+    },
+    "Roller reverse crunch": {
+      "equipment": "roller"
+    },
+    "Russian twist": {
+      "equipment": "body weight"
+    },
+    "Seated leg raise": {
+      "equipment": "body weight"
+    },
+    "Seated side crunch (wall)": {
+      "equipment": "body weight"
+    },
+    "Shoulder tap": {
+      "equipment": "body weight"
+    },
+    "Side bridge": {
+      "equipment": "body weight"
+    },
+    "Side hip (on parallel bars)": {
+      "equipment": "body weight"
+    },
+    "Side-to-side toe touch": {
+      "equipment": "body weight"
+    },
+    "Sit-up": {
+      "equipment": "body weight"
+    },
+    "Sledge hammer": {
+      "equipment": "hammer"
+    },
+    "Smith hip raise": {
+      "equipment": "smith machine"
+    },
+    "Spell caster": {
+      "equipment": "dumbbell"
+    },
+    "Spine twist": {
+      "equipment": "body weight"
+    },
+    "Stability ball crunch (full range hands behind head)": {
+      "equipment": "stability ball"
+    },
+    "Standing wheel rollerout": {
+      "equipment": "wheel roller"
+    },
+    "Straddle maltese": {
+      "equipment": "body weight"
+    },
+    "Straddle planche": {
+      "equipment": "body weight"
+    },
+    "Suspended abdominal fallout": {
+      "equipment": "body weight"
+    },
+    "Suspended reverse crunch": {
+      "equipment": "body weight"
+    },
+    "Tuck crunch": {
+      "equipment": "body weight"
+    },
+    "Twisted leg raise": {
+      "equipment": "body weight"
+    },
+    "V-sit on floor": {
+      "equipment": "body weight"
+    },
+    "Vertical leg raise (on parallel bars)": {
+      "equipment": "body weight"
+    },
+    "Weighted crunch": {
+      "equipment": "weighted"
+    },
+    "Weighted decline sit-up": {
+      "equipment": "weighted"
+    },
+    "Weighted front plank": {
+      "equipment": "weighted"
+    },
+    "Weighted hanging leg-hip raise": {
+      "equipment": "weighted"
+    },
+    "Weighted overhead crunch (on stability ball)": {
+      "equipment": "weighted"
+    },
+    "Weighted russian twist": {
+      "equipment": "weighted"
+    },
+    "Weighted russian twist (legs up)": {
+      "equipment": "weighted"
+    },
+    "Weighted seated twist (on stability ball)": {
+      "equipment": "weighted"
+    },
+    "Weighted side bend (on stability ball)": {
+      "equipment": "weighted"
+    },
+    "Wheel rollerout": {
+      "equipment": "wheel roller"
+    },
+    "Wind sprints": {
+      "equipment": "body weight"
+    }
+  },
+  "Biceps": {
+    "Band alternating biceps curl": {
+      "equipment": "band"
+    },
+    "Band concentration curl": {
+      "equipment": "band"
+    },
+    "Band one arm overhead biceps curl": {
+      "equipment": "band"
+    },
+    "Barbell alternate biceps curl": {
+      "equipment": "barbell"
+    },
+    "Barbell biceps curl (with arm blaster)": {
+      "equipment": "barbell"
+    },
+    "Barbell curl": {
+      "equipment": "barbell"
+    },
+    "Barbell drag curl": {
+      "equipment": "barbell"
+    },
+    "Barbell lying preacher curl": {
+      "equipment": "barbell"
+    },
+    "Barbell preacher curl": {
+      "equipment": "barbell"
+    },
+    "Barbell prone incline curl": {
+      "equipment": "barbell"
+    },
+    "Barbell reverse curl": {
+      "equipment": "barbell"
+    },
+    "Barbell reverse preacher curl": {
+      "equipment": "barbell"
+    },
+    "Barbell seated close-grip concentration curl": {
+      "equipment": "barbell"
+    },
+    "Barbell standing close grip curl": {
+      "equipment": "barbell"
+    },
+    "Barbell standing concentration curl": {
+      "equipment": "barbell"
+    },
+    "Barbell standing reverse grip curl": {
+      "equipment": "barbell"
+    },
+    "Barbell standing wide grip biceps curl": {
+      "equipment": "barbell"
+    },
+    "Barbell standing wide-grip curl": {
+      "equipment": "barbell"
+    },
+    "Biceps leg concentration curl": {
+      "equipment": "body weight"
+    },
+    "Biceps narrow pull-ups": {
+      "equipment": "body weight"
+    },
+    "Biceps pull-up": {
+      "equipment": "body weight"
+    },
+    "Bodyweight side lying biceps curl": {
+      "equipment": "body weight"
+    },
+    "Cable close grip curl": {
+      "equipment": "cable"
+    },
+    "Cable concentration curl": {
+      "equipment": "cable"
+    },
+    "Cable curl": {
+      "equipment": "cable"
+    },
+    "Cable drag curl": {
+      "equipment": "cable"
+    },
+    "Cable hammer curl (with rope)": {
+      "equipment": "cable"
+    },
+    "Cable lying bicep curl": {
+      "equipment": "cable"
+    },
+    "Cable lying close-grip curl": {
+      "equipment": "cable"
+    },
+    "Cable one arm curl": {
+      "equipment": "cable"
+    },
+    "Cable one arm preacher curl": {
+      "equipment": "cable"
+    },
+    "Cable one arm reverse preacher curl": {
+      "equipment": "cable"
+    },
+    "Cable overhead curl": {
+      "equipment": "cable"
+    },
+    "Cable overhead curl on exercise ball": {
+      "equipment": "cable"
+    },
+    "Cable preacher curl": {
+      "equipment": "cable"
+    },
+    "Cable pulldown bicep curl": {
+      "equipment": "cable"
+    },
+    "Cable reverse curl": {
+      "equipment": "cable"
+    },
+    "Cable reverse one arm curl": {
+      "equipment": "cable"
+    },
+    "Cable reverse preacher curl": {
+      "equipment": "cable"
+    },
+    "Cable rope hammer preacher curl": {
+      "equipment": "cable"
+    },
+    "Cable rope one arm hammer preacher curl": {
+      "equipment": "cable"
+    },
+    "Cable seated curl": {
+      "equipment": "cable"
+    },
+    "Cable seated one arm concentration curl": {
+      "equipment": "cable"
+    },
+    "Cable seated overhead curl": {
+      "equipment": "cable"
+    },
+    "Cable squatting curl": {
+      "equipment": "cable"
+    },
+    "Cable standing inner curl": {
+      "equipment": "cable"
+    },
+    "Cable standing pulldown (with rope)": {
+      "equipment": "cable"
+    },
+    "Cable two arm curl on incline bench": {
+      "equipment": "cable"
+    },
+    "Dumbbell alternate biceps curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell alternate biceps curl (with arm blaster)": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell alternate hammer preacher curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell alternate preacher curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell alternate seated hammer curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell alternating bicep curl with leg raised on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell alternating seated bicep curl on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell bicep curl lunge with bowling motion": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell bicep curl on exercise ball with leg raised": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell bicep curl with stork stance": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell biceps curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell biceps curl (with arm blaster)": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell biceps curl reverse": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell biceps curl squat": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell biceps curl v sit on bosu ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell concentration curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell cross body hammer curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell hammer curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell high curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline biceps curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline hammer curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline inner biceps curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell kneeling bicep curl exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lunge with bicep curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying supine biceps curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying supine curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying wide curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm concentration curl (on stability ball)": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm hammer preacher curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm prone curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm prone hammer curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm reverse preacher curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm reverse spider curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm seated bicep curl on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm seated hammer curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm standing curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm standing hammer curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm zottman preacher curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell over bench neutral wrist curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell over bench one arm neutral wrist curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell peacher hammer curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell preacher curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell preacher curl over exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell prone incline curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell prone incline hammer curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell revers grip biceps curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell reverse preacher curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell reverse spider curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated alternate hammer curl on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated bicep curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated biceps curl (on stability ball)": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated biceps curl to shoulder press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated hammer curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated inner biceps curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated neutral wrist curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated one arm bicep curl on exercise ball with leg raised": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated preacher curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated revers grip concentration curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing alternate hammer curl and press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing biceps curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing concentration curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing inner biceps curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing one arm concentration curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing one arm curl (over incline bench)": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing one arm curl over incline bench": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing one arm reverse curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing preacher curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing reverse curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing zottman preacher curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell step up single leg balance with bicep curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell waiter biceps curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell zottman curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell zottman preacher curl": {
+      "equipment": "dumbbell"
+    },
+    "Ez bar seated close grip concentration curl": {
+      "equipment": "ez barbell"
+    },
+    "Ez barbell close grip preacher curl": {
+      "equipment": "ez barbell"
+    },
+    "Ez barbell close-grip curl": {
+      "equipment": "ez barbell"
+    },
+    "Ez barbell curl": {
+      "equipment": "ez barbell"
+    },
+    "Ez barbell reverse grip curl": {
+      "equipment": "ez barbell"
+    },
+    "Ez barbell reverse grip preacher curl": {
+      "equipment": "ez barbell"
+    },
+    "Ez barbell seated curls": {
+      "equipment": "ez barbell"
+    },
+    "Ez barbell spider curl": {
+      "equipment": "ez barbell"
+    },
+    "Ez-bar biceps curl (with arm blaster)": {
+      "equipment": "ez barbell"
+    },
+    "Ez-barbell standing wide grip biceps curl": {
+      "equipment": "ez barbell"
+    },
+    "Kettlebell bottoms up clean from the hang position": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell double alternating hang clean": {
+      "equipment": "kettlebell"
+    },
+    "Lever bicep curl": {
+      "equipment": "leverage machine"
+    },
+    "Lever hammer grip preacher curl": {
+      "equipment": "leverage machine"
+    },
+    "Lever preacher curl": {
+      "equipment": "leverage machine"
+    },
+    "Lever reverse grip preacher curl": {
+      "equipment": "leverage machine"
+    },
+    "Olympic barbell hammer curl": {
+      "equipment": "olympic barbell"
+    },
+    "Resistance band seated biceps curl": {
+      "equipment": "resistance band"
+    },
+    "Smith machine bicep curl": {
+      "equipment": "smith machine"
+    },
+    "Weighted seated bicep curl (on stability ball)": {
+      "equipment": "medicine ball"
+    },
+    "Weighted standing curl": {
+      "equipment": "weighted"
+    }
+  },
+  "Cardio": {
+    "Astride jumps": {
+      "equipment": "body weight"
+    },
+    "Back and forth step": {
+      "equipment": "body weight"
+    },
+    "Bear crawl": {
+      "equipment": "body weight"
+    },
+    "Burpee": {
+      "equipment": "body weight"
+    },
+    "Cycle cross trainer": {
+      "equipment": "leverage machine"
+    },
+    "Dumbbell burpee": {
+      "equipment": "dumbbell"
+    },
+    "Half knee bends": {
+      "equipment": "body weight"
+    },
+    "High knee against wall": {
+      "equipment": "body weight"
+    },
+    "Jack burpee": {
+      "equipment": "body weight"
+    },
+    "Jack jump ": {
+      "equipment": "body weight"
+    },
+    "Jump rope": {
+      "equipment": "rope"
+    },
+    "Mountain climber": {
+      "equipment": "body weight"
+    },
+    "Push to run": {
+      "equipment": "body weight"
+    },
+    "Run": {
+      "equipment": "body weight"
+    },
+    "Run (equipment)": {
+      "equipment": "body weight"
+    },
+    "Scissor jumps": {
+      "equipment": "body weight"
+    },
+    "Semi squat jump": {
+      "equipment": "body weight"
+    },
+    "Short stride run": {
+      "equipment": "body weight"
+    },
+    "Skater hops": {
+      "equipment": "body weight"
+    },
+    "Ski step": {
+      "equipment": "body weight"
+    },
+    "Star jump": {
+      "equipment": "body weight"
+    },
+    "Stationary bike run": {
+      "equipment": "stationary bike"
+    },
+    "Stationary bike walk": {
+      "equipment": "leverage machine"
+    },
+    "Swing 360": {
+      "equipment": "body weight"
+    },
+    "Walk elliptical cross trainer": {
+      "equipment": "elliptical machine"
+    },
+    "Walking high knees lunge": {
+      "equipment": "body weight"
+    },
+    "Walking on incline treadmill": {
+      "equipment": "leverage machine"
+    },
+    "Walking on stepmill": {
+      "equipment": "stepmill machine"
+    },
+    "Wheel run": {
+      "equipment": "body weight"
+    }
+  },
+  "Chest": {
+    "Archer push up": {
+      "equipment": "body weight"
+    },
+    "Assisted chest dip (kneeling)": {
+      "equipment": "leverage machine"
+    },
+    "Assisted seated pectoralis major stretch with stability ball": {
+      "equipment": "assisted"
+    },
+    "Assisted wide-grip chest dip (kneeling)": {
+      "equipment": "leverage machine"
+    },
+    "Band bench press": {
+      "equipment": "band"
+    },
+    "Band one arm twisting chest press": {
+      "equipment": "band"
+    },
+    "Barbell bench press": {
+      "equipment": "barbell"
+    },
+    "Barbell decline bench press": {
+      "equipment": "barbell"
+    },
+    "Barbell decline pullover": {
+      "equipment": "barbell"
+    },
+    "Barbell decline wide-grip press": {
+      "equipment": "barbell"
+    },
+    "Barbell front raise and pullover": {
+      "equipment": "barbell"
+    },
+    "Barbell guillotine bench press": {
+      "equipment": "barbell"
+    },
+    "Barbell incline bench press": {
+      "equipment": "barbell"
+    },
+    "Barbell reverse grip decline bench press": {
+      "equipment": "barbell"
+    },
+    "Barbell reverse grip incline bench press": {
+      "equipment": "barbell"
+    },
+    "Barbell wide bench press": {
+      "equipment": "barbell"
+    },
+    "Barbell wide reverse grip bench press": {
+      "equipment": "barbell"
+    },
+    "Behind head chest stretch": {
+      "equipment": "assisted"
+    },
+    "Cable bench press": {
+      "equipment": "cable"
+    },
+    "Cable cross-over variation": {
+      "equipment": "cable"
+    },
+    "Cable decline fly": {
+      "equipment": "cable"
+    },
+    "Cable decline one arm press": {
+      "equipment": "cable"
+    },
+    "Cable decline press": {
+      "equipment": "cable"
+    },
+    "Cable incline bench press": {
+      "equipment": "cable"
+    },
+    "Cable incline fly": {
+      "equipment": "cable"
+    },
+    "Cable incline fly (on stability ball)": {
+      "equipment": "cable"
+    },
+    "Cable low fly": {
+      "equipment": "cable"
+    },
+    "Cable lying fly": {
+      "equipment": "cable"
+    },
+    "Cable middle fly": {
+      "equipment": "cable"
+    },
+    "Cable one arm decline chest fly": {
+      "equipment": "cable"
+    },
+    "Cable one arm fly on exercise ball": {
+      "equipment": "cable"
+    },
+    "Cable one arm incline fly on exercise ball": {
+      "equipment": "cable"
+    },
+    "Cable one arm incline press": {
+      "equipment": "cable"
+    },
+    "Cable one arm incline press on exercise ball": {
+      "equipment": "cable"
+    },
+    "Cable one arm lateral bent-over": {
+      "equipment": "cable"
+    },
+    "Cable one arm press on exercise ball": {
+      "equipment": "cable"
+    },
+    "Cable press on exercise ball": {
+      "equipment": "cable"
+    },
+    "Cable seated chest press": {
+      "equipment": "cable"
+    },
+    "Cable standing fly": {
+      "equipment": "cable"
+    },
+    "Cable standing up straight crossovers": {
+      "equipment": "cable"
+    },
+    "Cable upper chest crossovers": {
+      "equipment": "cable"
+    },
+    "Chest and front of shoulder stretch": {
+      "equipment": "body weight"
+    },
+    "Chest dip": {
+      "equipment": "body weight"
+    },
+    "Chest dip (on dip-pull-up cage)": {
+      "equipment": "body weight"
+    },
+    "Chest dip on straight bar": {
+      "equipment": "body weight"
+    },
+    "Chest stretch with exercise ball": {
+      "equipment": "stability ball"
+    },
+    "Chest tap push-up": {
+      "equipment": "body weight"
+    },
+    "Clap push up": {
+      "equipment": "body weight"
+    },
+    "Clock push-up": {
+      "equipment": "body weight"
+    },
+    "Decline push-up": {
+      "equipment": "body weight"
+    },
+    "Deep push up": {
+      "equipment": "dumbbell"
+    },
+    "Drop push up": {
+      "equipment": "body weight"
+    },
+    "Dumbbell around pullover": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell bench press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell decline bench press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell decline fly": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell decline hammer press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell decline one arm fly": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell decline twist fly": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell fly": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell fly on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline alternate press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline bench press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline breeding": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline fly": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline fly on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline hammer press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline one arm fly": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline one arm fly on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline one arm press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline one arm press on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline palm-in press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline press on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline twisted flyes": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying hammer press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying one arm press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying pullover on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm bench fly": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm chest fly on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm decline chest press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm fly on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm incline chest press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm press on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm pullover on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm reverse grip press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one leg fly on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell press on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell pullover": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell pullover hip extension on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell pullover on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell reverse bench press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell straight arm pullover": {
+      "equipment": "dumbbell"
+    },
+    "Dynamic chest stretch": {
+      "equipment": "body weight"
+    },
+    "Exercise ball pike push up": {
+      "equipment": "stability ball"
+    },
+    "Floor fly (with barbell)": {
+      "equipment": "barbell"
+    },
+    "Full planche push-up": {
+      "equipment": "body weight"
+    },
+    "Hands bike": {
+      "equipment": "upper body ergometer"
+    },
+    "Hyght dumbbell fly": {
+      "equipment": "dumbbell"
+    },
+    "Incline push up depth jump": {
+      "equipment": "body weight"
+    },
+    "Incline push-up": {
+      "equipment": "body weight"
+    },
+    "Incline push-up (on box)": {
+      "equipment": "body weight"
+    },
+    "Incline reverse grip push-up": {
+      "equipment": "body weight"
+    },
+    "Isometric chest squeeze": {
+      "equipment": "body weight"
+    },
+    "Isometric wipers": {
+      "equipment": "body weight"
+    },
+    "Kettlebell alternating press on floor": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell extended range one arm press on floor": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell one arm floor press": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell plyo push-up": {
+      "equipment": "kettlebell"
+    },
+    "Kneeling push-up": {
+      "equipment": "body weight"
+    },
+    "Korean dips": {
+      "equipment": "body weight"
+    },
+    "Lever chest press": {
+      "equipment": "leverage machine"
+    },
+    "Lever decline chest press": {
+      "equipment": "leverage machine"
+    },
+    "Lever incline chest press": {
+      "equipment": "leverage machine"
+    },
+    "Lever seated fly": {
+      "equipment": "leverage machine"
+    },
+    "Lever standing chest press": {
+      "equipment": "leverage machine"
+    },
+    "Machine inner chest press": {
+      "equipment": "leverage machine"
+    },
+    "Medicine ball chest pass": {
+      "equipment": "medicine ball"
+    },
+    "Medicine ball chest push from 3 point stance": {
+      "equipment": "medicine ball"
+    },
+    "Medicine ball chest push multiple response": {
+      "equipment": "medicine ball"
+    },
+    "Medicine ball chest push single response": {
+      "equipment": "medicine ball"
+    },
+    "Medicine ball chest push with run release": {
+      "equipment": "medicine ball"
+    },
+    "Modified hindu push-up": {
+      "equipment": "body weight"
+    },
+    "Plyo push up": {
+      "equipment": "body weight"
+    },
+    "Push and pull bodyweight": {
+      "equipment": "body weight"
+    },
+    "Push up on bosu ball": {
+      "equipment": "bosu ball"
+    },
+    "Push-up": {
+      "equipment": "body weight"
+    },
+    "Push-up (bosu ball)": {
+      "equipment": "bosu ball"
+    },
+    "Push-up (on stability ball)": {
+      "equipment": "stability ball"
+    },
+    "Push-up (wall)": {
+      "equipment": "body weight"
+    },
+    "Push-up medicine ball": {
+      "equipment": "medicine ball"
+    },
+    "Push-up plus": {
+      "equipment": "body weight"
+    },
+    "Raise single arm push-up": {
+      "equipment": "body weight"
+    },
+    "Resistance band seated chest press": {
+      "equipment": "resistance band"
+    },
+    "Roller seated shoulder flexor depresor retractor": {
+      "equipment": "roller"
+    },
+    "Roller seated single leg shoulder flexor depresor retractor": {
+      "equipment": "roller"
+    },
+    "Shoulder tap push-up": {
+      "equipment": "body weight"
+    },
+    "Single arm push-up": {
+      "equipment": "body weight"
+    },
+    "Smith bench press": {
+      "equipment": "smith machine"
+    },
+    "Smith decline bench press": {
+      "equipment": "smith machine"
+    },
+    "Smith decline reverse-grip press": {
+      "equipment": "smith machine"
+    },
+    "Smith incline bench press": {
+      "equipment": "smith machine"
+    },
+    "Smith incline reverse-grip press": {
+      "equipment": "smith machine"
+    },
+    "Smith machine reverse decline close grip bench press": {
+      "equipment": "smith machine"
+    },
+    "Smith reverse-grip press": {
+      "equipment": "smith machine"
+    },
+    "Smith wide grip bench press": {
+      "equipment": "smith machine"
+    },
+    "Smith wide grip decline bench press": {
+      "equipment": "smith machine"
+    },
+    "Superman push-up": {
+      "equipment": "body weight"
+    },
+    "Suspended push-up": {
+      "equipment": "body weight"
+    },
+    "Weighted drop push up": {
+      "equipment": "weighted"
+    },
+    "Weighted straight bar dip": {
+      "equipment": "weighted"
+    },
+    "Weighted svend press": {
+      "equipment": "weighted"
+    },
+    "Wide hand push up": {
+      "equipment": "body weight"
+    },
+    "Wide-grip chest dip on high parallel bars": {
+      "equipment": "body weight"
+    }
+  },
+  "Delts": {
+    "Band front lateral raise": {
+      "equipment": "band"
+    },
+    "Band front raise": {
+      "equipment": "band"
+    },
+    "Band reverse fly": {
+      "equipment": "band"
+    },
+    "Band shoulder press": {
+      "equipment": "band"
+    },
+    "Band standing rear delt row": {
+      "equipment": "band"
+    },
+    "Band twisting overhead press": {
+      "equipment": "band"
+    },
+    "Band y-raise": {
+      "equipment": "band"
+    },
+    "Barbell front raise": {
+      "equipment": "barbell"
+    },
+    "Barbell one arm snatch": {
+      "equipment": "barbell"
+    },
+    "Barbell rear delt raise": {
+      "equipment": "barbell"
+    },
+    "Barbell rear delt row": {
+      "equipment": "barbell"
+    },
+    "Barbell seated behind head military press": {
+      "equipment": "barbell"
+    },
+    "Barbell seated bradford rocky press": {
+      "equipment": "barbell"
+    },
+    "Barbell seated overhead press": {
+      "equipment": "barbell"
+    },
+    "Barbell skier": {
+      "equipment": "barbell"
+    },
+    "Barbell standing bradford press": {
+      "equipment": "barbell"
+    },
+    "Barbell standing close grip military press": {
+      "equipment": "barbell"
+    },
+    "Barbell standing front raise over head": {
+      "equipment": "barbell"
+    },
+    "Barbell standing wide military press": {
+      "equipment": "barbell"
+    },
+    "Barbell thruster": {
+      "equipment": "barbell"
+    },
+    "Barbell upright row": {
+      "equipment": "barbell"
+    },
+    "Barbell wide-grip upright row": {
+      "equipment": "barbell"
+    },
+    "Battling ropes": {
+      "equipment": "rope"
+    },
+    "Cable alternate shoulder press": {
+      "equipment": "cable"
+    },
+    "Cable cross-over revers fly": {
+      "equipment": "cable"
+    },
+    "Cable forward raise": {
+      "equipment": "cable"
+    },
+    "Cable front raise": {
+      "equipment": "cable"
+    },
+    "Cable front shoulder raise": {
+      "equipment": "cable"
+    },
+    "Cable kneeling rear delt row (with rope)": {
+      "equipment": "cable"
+    },
+    "Cable lateral raise": {
+      "equipment": "cable"
+    },
+    "Cable one arm lateral raise": {
+      "equipment": "cable"
+    },
+    "Cable rear delt row (stirrups)": {
+      "equipment": "cable"
+    },
+    "Cable rear delt row (with rope)": {
+      "equipment": "cable"
+    },
+    "Cable seated rear lateral raise": {
+      "equipment": "cable"
+    },
+    "Cable seated shoulder internal rotation": {
+      "equipment": "cable"
+    },
+    "Cable shoulder press": {
+      "equipment": "cable"
+    },
+    "Cable standing cross-over high reverse fly": {
+      "equipment": "cable"
+    },
+    "Cable standing rear delt row (with rope)": {
+      "equipment": "cable"
+    },
+    "Cable standing shoulder external rotation": {
+      "equipment": "cable"
+    },
+    "Cable supine reverse fly": {
+      "equipment": "cable"
+    },
+    "Cable upright row": {
+      "equipment": "cable"
+    },
+    "Dumbbell alternate side press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell arnold press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell bench seated press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell cuban press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell front raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell full can lateral raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline one arm lateral raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline rear lateral raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline t-raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell iron cross": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lateral raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lateral to front raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying external shoulder rotation": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying on floor rear delt raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying one arm deltoid rear": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying one arm rear lateral raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying rear lateral raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm lateral raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm lateral raise with support": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm reverse fly (with support)": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm shoulder press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm upright row": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell push press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell rear delt raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell rear delt row_shoulder": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell rear fly": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell rear lateral raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell rear lateral raise (support head)": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell reverse fly": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell rotation reverse fly": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell scott press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated alternate front raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated alternate press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated alternate shoulder": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated bent arm lateral raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated front raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated lateral raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated shoulder press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated shoulder press (parallel grip)": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell side lying one hand raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell single arm overhead carry": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing alternate overhead press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing alternate raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing around world": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing front raise above head": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing one arm palm in press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing overhead press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing palms in press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell upright row": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell upright row (back pov)": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell upright shoulder external rotation": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell w-press": {
+      "equipment": "dumbbell"
+    },
+    "Ez barbell anti gravity press": {
+      "equipment": "ez barbell"
+    },
+    "Kettlebell alternating press": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell arnold press": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell double jerk": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell double push press": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell double snatch": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell one arm clean and jerk": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell one arm jerk": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell one arm military press to the side": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell one arm push press": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell one arm snatch": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell pirate supper legs": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell seated press": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell seated two arm military press": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell seesaw press": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell thruster": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell two arm clean": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell two arm military press": {
+      "equipment": "kettlebell"
+    },
+    "Landmine lateral raise": {
+      "equipment": "barbell"
+    },
+    "Left hook. boxing": {
+      "equipment": "body weight"
+    },
+    "Lever lateral raise": {
+      "equipment": "leverage machine"
+    },
+    "Lever military press": {
+      "equipment": "leverage machine"
+    },
+    "Lever one arm shoulder press": {
+      "equipment": "leverage machine"
+    },
+    "Lever seated reverse fly": {
+      "equipment": "leverage machine"
+    },
+    "Lever seated reverse fly (parallel grip)": {
+      "equipment": "leverage machine"
+    },
+    "Lever shoulder press": {
+      "equipment": "leverage machine"
+    },
+    "Rear deltoid stretch": {
+      "equipment": "body weight"
+    },
+    "Resistance band seated shoulder press": {
+      "equipment": "resistance band"
+    },
+    "Smith behind neck press": {
+      "equipment": "smith machine"
+    },
+    "Smith rear delt row": {
+      "equipment": "smith machine"
+    },
+    "Smith seated shoulder press": {
+      "equipment": "smith machine"
+    },
+    "Smith shoulder press": {
+      "equipment": "smith machine"
+    },
+    "Smith standing behind head military press": {
+      "equipment": "smith machine"
+    },
+    "Smith standing military press": {
+      "equipment": "smith machine"
+    },
+    "Smith upright row": {
+      "equipment": "smith machine"
+    },
+    "Standing behind neck press": {
+      "equipment": "barbell"
+    },
+    "Weighted front raise": {
+      "equipment": "weighted"
+    },
+    "Weighted kneeling step with swing": {
+      "equipment": "weighted"
+    },
+    "Weighted round arm": {
+      "equipment": "weighted"
+    }
+  },
+  "Forearms": {
+    "Band reverse wrist curl": {
+      "equipment": "band"
+    },
+    "Band wrist curl": {
+      "equipment": "band"
+    },
+    "Barbell palms down wrist curl over a bench": {
+      "equipment": "barbell"
+    },
+    "Barbell palms up wrist curl over a bench": {
+      "equipment": "barbell"
+    },
+    "Barbell reverse wrist curl": {
+      "equipment": "barbell"
+    },
+    "Barbell standing back wrist curl": {
+      "equipment": "barbell"
+    },
+    "Barbell wrist curl": {
+      "equipment": "barbell"
+    },
+    "Cable reverse wrist curl": {
+      "equipment": "cable"
+    },
+    "Cable standing back wrist curl": {
+      "equipment": "cable"
+    },
+    "Cable wrist curl": {
+      "equipment": "cable"
+    },
+    "Dumbbell finger curls": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying pronation": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying pronation on floor": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying supination": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying supination on floor": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm reverse wrist curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm seated neutral wrist curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm wrist curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell over bench one arm reverse wrist curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell over bench one arm wrist curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell over bench revers wrist curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell over bench wrist curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell reverse wrist curl": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated one arm rotate": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated palms up wrist curl": {
+      "equipment": "dumbbell"
+    },
+    "Finger curls": {
+      "equipment": "barbell"
+    },
+    "Kettlebell alternating hang clean": {
+      "equipment": "kettlebell"
+    },
+    "Lever gripper hands": {
+      "equipment": "leverage machine"
+    },
+    "Modified push up to lower arms": {
+      "equipment": "body weight"
+    },
+    "Side wrist pull stretch": {
+      "equipment": "body weight"
+    },
+    "Smith seated wrist curl": {
+      "equipment": "smith machine"
+    },
+    "Smith standing back wrist curl": {
+      "equipment": "smith machine"
+    },
+    "Weighted standing hand squeeze": {
+      "equipment": "weighted"
+    },
+    "Wrist circles": {
+      "equipment": "body weight"
+    },
+    "Wrist rollerer": {
+      "equipment": "weighted"
+    }
+  },
+  "Lats": {
+    "Alternate lateral pulldown": {
+      "equipment": "cable"
+    },
+    "Archer pull up": {
+      "equipment": "body weight"
+    },
+    "Assisted parallel close grip pull-up": {
+      "equipment": "leverage machine"
+    },
+    "Assisted pull-up": {
+      "equipment": "leverage machine"
+    },
+    "Assisted standing chin-up": {
+      "equipment": "leverage machine"
+    },
+    "Assisted standing pull-up": {
+      "equipment": "leverage machine"
+    },
+    "Back pec stretch": {
+      "equipment": "body weight"
+    },
+    "Band assisted pull-up": {
+      "equipment": "band"
+    },
+    "Band close-grip pulldown": {
+      "equipment": "band"
+    },
+    "Band fixed back close grip pulldown": {
+      "equipment": "band"
+    },
+    "Band fixed back underhand pulldown": {
+      "equipment": "band"
+    },
+    "Band kneeling one arm pulldown": {
+      "equipment": "band"
+    },
+    "Band underhand pulldown": {
+      "equipment": "band"
+    },
+    "Barbell bent arm pullover": {
+      "equipment": "barbell"
+    },
+    "Barbell decline bent arm pullover": {
+      "equipment": "barbell"
+    },
+    "Barbell decline wide-grip pullover": {
+      "equipment": "barbell"
+    },
+    "Barbell pullover": {
+      "equipment": "barbell"
+    },
+    "Barbell pullover to press": {
+      "equipment": "barbell"
+    },
+    "Bench pull-ups": {
+      "equipment": "body weight"
+    },
+    "Cable bar lateral pulldown": {
+      "equipment": "cable"
+    },
+    "Cable cross-over lateral pulldown": {
+      "equipment": "cable"
+    },
+    "Cable incline pushdown": {
+      "equipment": "cable"
+    },
+    "Cable lat pulldown full range of motion": {
+      "equipment": "cable"
+    },
+    "Cable lateral pulldown (with rope attachment)": {
+      "equipment": "cable"
+    },
+    "Cable lateral pulldown with v-bar": {
+      "equipment": "cable"
+    },
+    "Cable lying extension pullover (with rope attachment)": {
+      "equipment": "cable"
+    },
+    "Cable one arm pulldown": {
+      "equipment": "cable"
+    },
+    "Cable pulldown": {
+      "equipment": "cable"
+    },
+    "Cable rear pulldown": {
+      "equipment": "cable"
+    },
+    "Cable seated high row (v-bar)": {
+      "equipment": "cable"
+    },
+    "Cable squat row (with rope attachment)": {
+      "equipment": "cable"
+    },
+    "Cable straight arm pulldown": {
+      "equipment": "cable"
+    },
+    "Cable straight arm pulldown (with rope)": {
+      "equipment": "cable"
+    },
+    "Cable thibaudeau kayak row": {
+      "equipment": "cable"
+    },
+    "Cable twisting pull": {
+      "equipment": "cable"
+    },
+    "Cable underhand pulldown": {
+      "equipment": "cable"
+    },
+    "Cable wide grip rear pulldown behind neck": {
+      "equipment": "cable"
+    },
+    "Chin-up": {
+      "equipment": "body weight"
+    },
+    "Close grip chin-up": {
+      "equipment": "body weight"
+    },
+    "Exercise ball alternating arm ups": {
+      "equipment": "stability ball"
+    },
+    "Exercise ball lat stretch": {
+      "equipment": "stability ball"
+    },
+    "Exercise ball lower back stretch (pyramid)": {
+      "equipment": "stability ball"
+    },
+    "Exercise ball lying side lat stretch": {
+      "equipment": "stability ball"
+    },
+    "Ez bar lying bent arms pullover": {
+      "equipment": "ez barbell"
+    },
+    "Gironda sternum chin": {
+      "equipment": "body weight"
+    },
+    "Kipping muscle up": {
+      "equipment": "body weight"
+    },
+    "Kneeling lat stretch": {
+      "equipment": "body weight"
+    },
+    "L-pull-up": {
+      "equipment": "body weight"
+    },
+    "Lever assisted chin-up": {
+      "equipment": "leverage machine"
+    },
+    "Lever front pulldown": {
+      "equipment": "leverage machine"
+    },
+    "Lever one arm lateral wide pulldown": {
+      "equipment": "leverage machine"
+    },
+    "Lever pullover": {
+      "equipment": "leverage machine"
+    },
+    "Lever reverse grip lateral pulldown": {
+      "equipment": "leverage machine"
+    },
+    "Medicine ball catch and overhead throw": {
+      "equipment": "medicine ball"
+    },
+    "Mixed grip chin-up": {
+      "equipment": "body weight"
+    },
+    "Muscle up": {
+      "equipment": "body weight"
+    },
+    "Muscle-up (on vertical bar)": {
+      "equipment": "body weight"
+    },
+    "One arm against wall": {
+      "equipment": "body weight"
+    },
+    "One arm chin-up": {
+      "equipment": "body weight"
+    },
+    "Pull up (neutral grip)": {
+      "equipment": "body weight"
+    },
+    "Pull-up": {
+      "equipment": "body weight"
+    },
+    "Rear pull-up": {
+      "equipment": "body weight"
+    },
+    "Reverse grip machine lat pulldown": {
+      "equipment": "leverage machine"
+    },
+    "Reverse grip pull-up": {
+      "equipment": "body weight"
+    },
+    "Rocky pull-up pulldown": {
+      "equipment": "body weight"
+    },
+    "Roller side lat stretch": {
+      "equipment": "roller"
+    },
+    "Seated lower back stretch": {
+      "equipment": "body weight"
+    },
+    "Shoulder grip pull-up": {
+      "equipment": "body weight"
+    },
+    "Side lying floor stretch": {
+      "equipment": "body weight"
+    },
+    "Side-to-side chin": {
+      "equipment": "body weight"
+    },
+    "Standing lateral stretch": {
+      "equipment": "body weight"
+    },
+    "Twin handle parallel grip lat pulldown": {
+      "equipment": "cable"
+    },
+    "Weighted close grip chin-up on dip cage": {
+      "equipment": "weighted"
+    },
+    "Weighted muscle up": {
+      "equipment": "weighted"
+    },
+    "Weighted muscle up (on bar)": {
+      "equipment": "weighted"
+    },
+    "Weighted one hand pull up": {
+      "equipment": "weighted"
+    },
+    "Weighted pull-up": {
+      "equipment": "weighted"
+    },
+    "Wide grip pull-up": {
+      "equipment": "body weight"
+    },
+    "Wide grip rear pull-up": {
+      "equipment": "body weight"
+    }
+  },
+  "Traps": {
+    "Band shrug": {
+      "equipment": "band"
+    },
+    "Barbell shrug": {
+      "equipment": "barbell"
+    },
+    "Cable shrug": {
+      "equipment": "cable"
+    },
+    "Dumbbell decline shrug": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline shrug": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell shrug": {
+      "equipment": "dumbbell"
+    },
+    "Kettlebell sumo high pull": {
+      "equipment": "kettlebell"
+    },
+    "Lever gripless shrug": {
+      "equipment": "leverage machine"
+    },
+    "Lever shrug": {
+      "equipment": "leverage machine"
+    },
+    "Scapula dips": {
+      "equipment": "body weight"
+    },
+    "Scapular pull-up": {
+      "equipment": "body weight"
+    },
+    "Smith back shrug": {
+      "equipment": "smith machine"
+    },
+    "Smith shrug": {
+      "equipment": "smith machine"
+    }
+  },
+  "Triceps": {
+    "Assisted standing triceps extension (with towel)": {
+      "equipment": "assisted"
+    },
+    "Assisted triceps dip (kneeling)": {
+      "equipment": "leverage machine"
+    },
+    "Band close-grip push-up": {
+      "equipment": "band"
+    },
+    "Band side triceps extension": {
+      "equipment": "band"
+    },
+    "Barbell close-grip bench press": {
+      "equipment": "barbell"
+    },
+    "Barbell decline close grip to skull press": {
+      "equipment": "barbell"
+    },
+    "Barbell incline close grip bench press": {
+      "equipment": "barbell"
+    },
+    "Barbell incline reverse-grip press": {
+      "equipment": "barbell"
+    },
+    "Barbell jm bench press": {
+      "equipment": "barbell"
+    },
+    "Barbell lying back of the head tricep extension": {
+      "equipment": "barbell"
+    },
+    "Barbell lying close-grip press": {
+      "equipment": "barbell"
+    },
+    "Barbell lying close-grip triceps extension": {
+      "equipment": "barbell"
+    },
+    "Barbell lying extension": {
+      "equipment": "barbell"
+    },
+    "Barbell lying triceps extension": {
+      "equipment": "barbell"
+    },
+    "Barbell lying triceps extension skull crusher": {
+      "equipment": "barbell"
+    },
+    "Barbell one arm floor press": {
+      "equipment": "barbell"
+    },
+    "Barbell pin presses": {
+      "equipment": "barbell"
+    },
+    "Barbell reverse close-grip bench press": {
+      "equipment": "barbell"
+    },
+    "Barbell reverse grip skullcrusher": {
+      "equipment": "barbell"
+    },
+    "Barbell seated close grip behind neck triceps extension": {
+      "equipment": "barbell"
+    },
+    "Barbell seated overhead triceps extension": {
+      "equipment": "barbell"
+    },
+    "Barbell standing overhead triceps extension": {
+      "equipment": "barbell"
+    },
+    "Bench dip (knees bent)": {
+      "equipment": "body weight"
+    },
+    "Bench dip on floor": {
+      "equipment": "body weight"
+    },
+    "Body-up": {
+      "equipment": "body weight"
+    },
+    "Bodyweight kneeling triceps extension": {
+      "equipment": "body weight"
+    },
+    "Cable alternate triceps extension": {
+      "equipment": "cable"
+    },
+    "Cable concentration extension (on knee)": {
+      "equipment": "cable"
+    },
+    "Cable high pulley overhead tricep extension": {
+      "equipment": "cable"
+    },
+    "Cable incline triceps extension": {
+      "equipment": "cable"
+    },
+    "Cable kickback": {
+      "equipment": "cable"
+    },
+    "Cable kneeling triceps extension": {
+      "equipment": "cable"
+    },
+    "Cable lying triceps extension": {
+      "equipment": "cable"
+    },
+    "Cable one arm tricep pushdown": {
+      "equipment": "cable"
+    },
+    "Cable overhead triceps extension (rope attachment)": {
+      "equipment": "cable"
+    },
+    "Cable pushdown": {
+      "equipment": "cable"
+    },
+    "Cable pushdown (with rope attachment)": {
+      "equipment": "cable"
+    },
+    "Cable rear drive": {
+      "equipment": "cable"
+    },
+    "Cable reverse grip triceps pushdown (sz-bar) (with arm blaster)": {
+      "equipment": "cable"
+    },
+    "Cable reverse-grip pushdown": {
+      "equipment": "cable"
+    },
+    "Cable rope high pulley overhead tricep extension": {
+      "equipment": "cable"
+    },
+    "Cable rope incline tricep extension": {
+      "equipment": "cable"
+    },
+    "Cable rope lying on floor tricep extension": {
+      "equipment": "cable"
+    },
+    "Cable standing one arm triceps extension": {
+      "equipment": "cable"
+    },
+    "Cable standing reverse grip one arm overhead tricep extension": {
+      "equipment": "cable"
+    },
+    "Cable triceps pushdown (v-bar)": {
+      "equipment": "cable"
+    },
+    "Cable triceps pushdown (v-bar) (with arm blaster)": {
+      "equipment": "cable"
+    },
+    "Cable two arm tricep kickback": {
+      "equipment": "cable"
+    },
+    "Close-grip push-up": {
+      "equipment": "body weight"
+    },
+    "Close-grip push-up (on knees)": {
+      "equipment": "body weight"
+    },
+    "Diamond push-up": {
+      "equipment": "body weight"
+    },
+    "Dumbbell close grip press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell close-grip press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell decline one arm hammer press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell decline triceps extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell forward lunge triceps extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline hammer press on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline one arm hammer press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline one arm hammer press on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline triceps extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline two arm extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell kickback": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell kickbacks on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying extension (across face)": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying alternate extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying elbow press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying one arm pronated triceps extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying one arm supinated triceps extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying single extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying triceps extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell neutral grip bench press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm french press on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm hammer press on exercise ball": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm kickback": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm triceps extension (on bench)": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell palms in incline bench press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell pronate-grip triceps extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated bench extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated bent over alternate kickback": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated bent over triceps extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated kickback": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated one arm kickback": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated reverse grip one arm overhead tricep extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated triceps extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing alternating tricep kickback": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing bent over one arm triceps extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing bent over two arm triceps extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing kickback": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing one arm extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing triceps extension": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell tate press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell tricep kickback with stork stance": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell twisting bench press": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbells seated triceps extension": {
+      "equipment": "dumbbell"
+    },
+    "Elbow dips": {
+      "equipment": "body weight"
+    },
+    "Exercise ball dip": {
+      "equipment": "stability ball"
+    },
+    "Exercise ball seated triceps stretch": {
+      "equipment": "stability ball"
+    },
+    "Exercise ball supine triceps extension": {
+      "equipment": "dumbbell"
+    },
+    "Ez bar french press on exercise ball": {
+      "equipment": "ez barbell"
+    },
+    "Ez bar lying close grip triceps extension behind head": {
+      "equipment": "ez barbell"
+    },
+    "Ez bar standing french press": {
+      "equipment": "ez barbell"
+    },
+    "Ez barbell decline close grip face press": {
+      "equipment": "ez barbell"
+    },
+    "Ez barbell decline triceps extension": {
+      "equipment": "ez barbell"
+    },
+    "Ez barbell incline triceps extension": {
+      "equipment": "ez barbell"
+    },
+    "Ez barbell jm bench press": {
+      "equipment": "ez barbell"
+    },
+    "Ez barbell seated triceps extension": {
+      "equipment": "ez barbell"
+    },
+    "Ez-bar close-grip bench press": {
+      "equipment": "ez barbell"
+    },
+    "Handstand": {
+      "equipment": "body weight"
+    },
+    "Handstand push-up": {
+      "equipment": "body weight"
+    },
+    "Impossible dips": {
+      "equipment": "body weight"
+    },
+    "Incline close-grip push-up": {
+      "equipment": "body weight"
+    },
+    "Lever overhand triceps dip": {
+      "equipment": "leverage machine"
+    },
+    "Lever seated dip": {
+      "equipment": "leverage machine"
+    },
+    "Lever triceps extension": {
+      "equipment": "leverage machine"
+    },
+    "Medicine ball close grip push up": {
+      "equipment": "medicine ball"
+    },
+    "Medicine ball supine chest throw": {
+      "equipment": "medicine ball"
+    },
+    "Narrow push-up on exercise ball": {
+      "equipment": "stability ball"
+    },
+    "Olympic barbell triceps extension": {
+      "equipment": "olympic barbell"
+    },
+    "One arm dip": {
+      "equipment": "body weight"
+    },
+    "Overhead triceps stretch": {
+      "equipment": "body weight"
+    },
+    "Push-up close-grip off dumbbell": {
+      "equipment": "dumbbell"
+    },
+    "Push-up on lower arms": {
+      "equipment": "body weight"
+    },
+    "Reverse dip": {
+      "equipment": "body weight"
+    },
+    "Ring dips": {
+      "equipment": "body weight"
+    },
+    "Side push-up": {
+      "equipment": "body weight"
+    },
+    "Ski ergometer": {
+      "equipment": "skierg machine"
+    },
+    "Smith close-grip bench press": {
+      "equipment": "smith machine"
+    },
+    "Smith machine decline close grip bench press": {
+      "equipment": "smith machine"
+    },
+    "Smith machine incline tricep extension": {
+      "equipment": "smith machine"
+    },
+    "Stalder press": {
+      "equipment": "body weight"
+    },
+    "Three bench dip": {
+      "equipment": "body weight"
+    },
+    "Triceps dip": {
+      "equipment": "body weight"
+    },
+    "Triceps dip (bench leg)": {
+      "equipment": "body weight"
+    },
+    "Triceps dip (between benches)": {
+      "equipment": "body weight"
+    },
+    "Triceps dips floor": {
+      "equipment": "body weight"
+    },
+    "Triceps press": {
+      "equipment": "body weight"
+    },
+    "Triceps stretch": {
+      "equipment": "body weight"
+    },
+    "Weighted bench dip": {
+      "equipment": "weighted"
+    },
+    "Weighted three bench dips": {
+      "equipment": "weighted"
+    },
+    "Weighted tricep dips": {
+      "equipment": "weighted"
+    },
+    "Weighted triceps dip on high parallel bars": {
+      "equipment": "weighted"
+    }
+  },
+  "Upper back": {
+    "Back lever": {
+      "equipment": "body weight"
+    },
+    "Band one arm standing low row": {
+      "equipment": "band"
+    },
+    "Band one arm twisting seated row": {
+      "equipment": "band"
+    },
+    "Barbell bent over row": {
+      "equipment": "barbell"
+    },
+    "Barbell incline row": {
+      "equipment": "barbell"
+    },
+    "Barbell one arm bent over row": {
+      "equipment": "barbell"
+    },
+    "Barbell pendlay row": {
+      "equipment": "barbell"
+    },
+    "Barbell reverse grip bent over row": {
+      "equipment": "barbell"
+    },
+    "Barbell reverse grip incline bench row": {
+      "equipment": "barbell"
+    },
+    "Bodyweight squatting row": {
+      "equipment": "body weight"
+    },
+    "Bodyweight squatting row (with towel)": {
+      "equipment": "body weight"
+    },
+    "Bodyweight standing close-grip one arm row": {
+      "equipment": "body weight"
+    },
+    "Bodyweight standing close-grip row": {
+      "equipment": "body weight"
+    },
+    "Bodyweight standing one arm row": {
+      "equipment": "body weight"
+    },
+    "Bodyweight standing one arm row (with towel)": {
+      "equipment": "body weight"
+    },
+    "Bodyweight standing row": {
+      "equipment": "body weight"
+    },
+    "Bodyweight standing row (with towel)": {
+      "equipment": "body weight"
+    },
+    "Cable decline seated wide-grip row": {
+      "equipment": "cable"
+    },
+    "Cable floor seated wide-grip row": {
+      "equipment": "cable"
+    },
+    "Cable high row (kneeling)": {
+      "equipment": "cable"
+    },
+    "Cable incline bench row": {
+      "equipment": "cable"
+    },
+    "Cable low seated row": {
+      "equipment": "cable"
+    },
+    "Cable one arm bent over row": {
+      "equipment": "cable"
+    },
+    "Cable one arm straight back high row (kneeling)": {
+      "equipment": "cable"
+    },
+    "Cable palm rotational row": {
+      "equipment": "cable"
+    },
+    "Cable reverse-grip straight back seated high row": {
+      "equipment": "cable"
+    },
+    "Cable rope crossover seated row": {
+      "equipment": "cable"
+    },
+    "Cable rope elevated seated row": {
+      "equipment": "cable"
+    },
+    "Cable rope extension incline bench row": {
+      "equipment": "cable"
+    },
+    "Cable rope seated row": {
+      "equipment": "cable"
+    },
+    "Cable seated one arm alternate row": {
+      "equipment": "cable"
+    },
+    "Cable seated row": {
+      "equipment": "cable"
+    },
+    "Cable seated wide-grip row": {
+      "equipment": "cable"
+    },
+    "Cable standing row (v-bar)": {
+      "equipment": "cable"
+    },
+    "Cable standing twist row (v-bar)": {
+      "equipment": "cable"
+    },
+    "Cable straight back seated row": {
+      "equipment": "cable"
+    },
+    "Cable upper row": {
+      "equipment": "cable"
+    },
+    "Cambered bar lying row": {
+      "equipment": "barbell"
+    },
+    "Chin-ups (narrow parallel grip)": {
+      "equipment": "body weight"
+    },
+    "Dumbbell bent over row": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline row": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell incline y-raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lying rear delt row": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm bent-over row": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell palm rotational bent over row": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell reverse grip incline bench one arm row": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell reverse grip incline bench two arm row": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell reverse grip row": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell side plank with rear fly": {
+      "equipment": "dumbbell"
+    },
+    "Elbow lift - reverse push-up": {
+      "equipment": "body weight"
+    },
+    "Elevator": {
+      "equipment": "body weight"
+    },
+    "Ez bar reverse grip bent over row": {
+      "equipment": "ez barbell"
+    },
+    "Front lever reps": {
+      "equipment": "body weight"
+    },
+    "Inverted row": {
+      "equipment": "body weight"
+    },
+    "Inverted row bent knees": {
+      "equipment": "body weight"
+    },
+    "Inverted row on bench": {
+      "equipment": "body weight"
+    },
+    "Inverted row with straps": {
+      "equipment": "body weight"
+    },
+    "Kettlebell alternating renegade row": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell alternating row": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell one arm row": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell two arm row": {
+      "equipment": "kettlebell"
+    },
+    "Lever alternating narrow grip seated row": {
+      "equipment": "leverage machine"
+    },
+    "Lever bent over row": {
+      "equipment": "barbell"
+    },
+    "Lever bent-over row with v-bar": {
+      "equipment": "leverage machine"
+    },
+    "Lever high row": {
+      "equipment": "leverage machine"
+    },
+    "Lever narrow grip seated row": {
+      "equipment": "leverage machine"
+    },
+    "Lever one arm bent over row": {
+      "equipment": "barbell"
+    },
+    "Lever one arm lateral high row": {
+      "equipment": "leverage machine"
+    },
+    "Lever reverse grip vertical row": {
+      "equipment": "leverage machine"
+    },
+    "Lever reverse t-bar row": {
+      "equipment": "leverage machine"
+    },
+    "Lever seated row": {
+      "equipment": "leverage machine"
+    },
+    "Lever t bar row": {
+      "equipment": "leverage machine"
+    },
+    "Lever t-bar reverse grip row": {
+      "equipment": "leverage machine"
+    },
+    "Lever unilateral row": {
+      "equipment": "leverage machine"
+    },
+    "London bridge": {
+      "equipment": "rope"
+    },
+    "Medicine ball overhead slam": {
+      "equipment": "medicine ball"
+    },
+    "One arm towel row": {
+      "equipment": "body weight"
+    },
+    "Resistance band seated straight back row": {
+      "equipment": "resistance band"
+    },
+    "Rope climb": {
+      "equipment": "rope"
+    },
+    "Skin the cat": {
+      "equipment": "body weight"
+    },
+    "Smith bent over row": {
+      "equipment": "smith machine"
+    },
+    "Smith narrow row": {
+      "equipment": "smith machine"
+    },
+    "Smith one arm row": {
+      "equipment": "smith machine"
+    },
+    "Smith reverse grip bent over row": {
+      "equipment": "smith machine"
+    },
+    "Standing archer": {
+      "equipment": "body weight"
+    },
+    "Suspended row": {
+      "equipment": "body weight"
+    },
+    "Upper back stretch": {
+      "equipment": "body weight"
+    }
+  },
+  "Quads": {
+    "All fours squad stretch": {
+      "equipment": "body weight"
+    },
+    "Assisted prone lying quads stretch": {
+      "equipment": "assisted"
+    },
+    "Backward jump": {
+      "equipment": "body weight"
+    },
+    "Balance board": {
+      "equipment": "body weight"
+    },
+    "Band one arm single leg split squat": {
+      "equipment": "band"
+    },
+    "Band single leg split squat": {
+      "equipment": "band"
+    },
+    "Barbell bench front squat": {
+      "equipment": "barbell"
+    },
+    "Barbell bench squat": {
+      "equipment": "barbell"
+    },
+    "Barbell clean and press": {
+      "equipment": "barbell"
+    },
+    "Barbell one leg squat": {
+      "equipment": "barbell"
+    },
+    "Barbell overhead squat": {
+      "equipment": "barbell"
+    },
+    "Barbell side split squat": {
+      "equipment": "barbell"
+    },
+    "Barbell single leg split squat": {
+      "equipment": "barbell"
+    },
+    "Barbell split squat": {
+      "equipment": "barbell"
+    },
+    "Barbell squat (on knees)": {
+      "equipment": "barbell"
+    },
+    "Barbell squat jump step rear lunge": {
+      "equipment": "barbell"
+    },
+    "Barbell wide squat": {
+      "equipment": "barbell"
+    },
+    "Chair leg extended stretch": {
+      "equipment": "body weight"
+    },
+    "Dumbbell goblet squat": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell single leg split squat": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell step-up lunge": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell step-up split squat": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell supported squat": {
+      "equipment": "dumbbell"
+    },
+    "Farmers walk": {
+      "equipment": "dumbbell"
+    },
+    "Forward jump": {
+      "equipment": "body weight"
+    },
+    "Intermediate hip flexor and quad stretch": {
+      "equipment": "rope"
+    },
+    "Lever alternate leg press": {
+      "equipment": "leverage machine"
+    },
+    "Lever leg extension": {
+      "equipment": "leverage machine"
+    },
+    "Lying (side) quads stretch": {
+      "equipment": "body weight"
+    },
+    "Quads": {
+      "equipment": "body weight"
+    },
+    "Quick feet": {
+      "equipment": "body weight"
+    },
+    "Resistance band leg extension": {
+      "equipment": "resistance band"
+    },
+    "Sissy squat": {
+      "equipment": "body weight"
+    },
+    "Smith chair squat": {
+      "equipment": "smith machine"
+    },
+    "Smith single leg split squat": {
+      "equipment": "smith machine"
+    },
+    "Snatch pull": {
+      "equipment": "barbell"
+    },
+    "Split squats": {
+      "equipment": "body weight"
+    },
+    "Squat jerk": {
+      "equipment": "barbell"
+    },
+    "Squat on bosu ball": {
+      "equipment": "bosu ball"
+    },
+    "Squat to overhead reach": {
+      "equipment": "body weight"
+    },
+    "Squat to overhead reach with twist": {
+      "equipment": "body weight"
+    },
+    "Suspended split squat": {
+      "equipment": "body weight"
+    },
+    "Weighted sissy squat": {
+      "equipment": "weighted"
+    }
+  },
+  "Hamstrings": {
+    "Assisted prone hamstring": {
+      "equipment": "assisted"
+    },
+    "Barbell good morning": {
+      "equipment": "barbell"
+    },
+    "Barbell straight leg deadlift": {
+      "equipment": "barbell"
+    },
+    "Cable assisted inverse leg curl": {
+      "equipment": "cable"
+    },
+    "Dumbbell lying femoral": {
+      "equipment": "dumbbell"
+    },
+    "Exercise ball seated hamstring stretch": {
+      "equipment": "stability ball"
+    },
+    "Glute-ham raise": {
+      "equipment": "body weight"
+    },
+    "Hamstring stretch": {
+      "equipment": "body weight"
+    },
+    "Inverse leg curl (bench support)": {
+      "equipment": "body weight"
+    },
+    "Inverse leg curl (on pull-up cable machine)": {
+      "equipment": "body weight"
+    },
+    "Kettlebell hang clean": {
+      "equipment": "kettlebell"
+    },
+    "Kick out sit": {
+      "equipment": "body weight"
+    },
+    "Leg up hamstring stretch": {
+      "equipment": "body weight"
+    },
+    "Lever kneeling leg curl": {
+      "equipment": "leverage machine"
+    },
+    "Lever lying leg curl": {
+      "equipment": "leverage machine"
+    },
+    "Lever lying two-one leg curl": {
+      "equipment": "leverage machine"
+    },
+    "Lever seated leg curl": {
+      "equipment": "leverage machine"
+    },
+    "Power clean": {
+      "equipment": "barbell"
+    },
+    "Reclining big toe pose with rope": {
+      "equipment": "rope"
+    },
+    "Runners stretch": {
+      "equipment": "body weight"
+    },
+    "Seated wide angle pose sequence": {
+      "equipment": "body weight"
+    },
+    "Self assisted inverse leg curl": {
+      "equipment": "body weight"
+    },
+    "Self assisted inverse leg curl (on floor)": {
+      "equipment": "body weight"
+    },
+    "Single leg platform slide": {
+      "equipment": "body weight"
+    },
+    "Standing hamstring and calf stretch with strap": {
+      "equipment": "rope"
+    },
+    "Standing single leg curl": {
+      "equipment": "body weight"
+    },
+    "World greatest stretch": {
+      "equipment": "body weight"
+    }
+  },
+  "Glutes": {
+    "Arms apart circular toe touch": {
+      "equipment": "body weight"
+    },
+    "Assisted lying glutes stretch": {
+      "equipment": "assisted"
+    },
+    "Assisted lying gluteus and piriformis stretch": {
+      "equipment": "assisted"
+    },
+    "Band bent-over hip extension": {
+      "equipment": "band"
+    },
+    "Band hip lift": {
+      "equipment": "band"
+    },
+    "Band lying hip internal rotation": {
+      "equipment": "band"
+    },
+    "Band pull through": {
+      "equipment": "band"
+    },
+    "Band seated hip internal rotation": {
+      "equipment": "band"
+    },
+    "Band squat": {
+      "equipment": "band"
+    },
+    "Band squat row": {
+      "equipment": "band"
+    },
+    "Band step-up": {
+      "equipment": "band"
+    },
+    "Band stiff leg deadlift": {
+      "equipment": "band"
+    },
+    "Band straight back stiff leg deadlift": {
+      "equipment": "band"
+    },
+    "Barbell clean-grip front squat": {
+      "equipment": "barbell"
+    },
+    "Barbell deadlift": {
+      "equipment": "barbell"
+    },
+    "Barbell front chest squat": {
+      "equipment": "barbell"
+    },
+    "Barbell front squat": {
+      "equipment": "barbell"
+    },
+    "Barbell full squat": {
+      "equipment": "barbell"
+    },
+    "Barbell full squat (back pov)": {
+      "equipment": "barbell"
+    },
+    "Barbell full squat (side pov)": {
+      "equipment": "barbell"
+    },
+    "Barbell full zercher squat": {
+      "equipment": "barbell"
+    },
+    "Barbell glute bridge": {
+      "equipment": "barbell"
+    },
+    "Barbell glute bridge two legs on bench": {
+      "equipment": "barbell"
+    },
+    "Barbell hack squat": {
+      "equipment": "barbell"
+    },
+    "Barbell high bar squat": {
+      "equipment": "barbell"
+    },
+    "Barbell jefferson squat": {
+      "equipment": "barbell"
+    },
+    "Barbell jump squat": {
+      "equipment": "barbell"
+    },
+    "Barbell lateral lunge": {
+      "equipment": "barbell"
+    },
+    "Barbell low bar squat": {
+      "equipment": "barbell"
+    },
+    "Barbell lunge": {
+      "equipment": "barbell"
+    },
+    "Barbell lying lifting (on hip)": {
+      "equipment": "barbell"
+    },
+    "Barbell narrow stance squat": {
+      "equipment": "barbell"
+    },
+    "Barbell one arm side deadlift": {
+      "equipment": "barbell"
+    },
+    "Barbell rack pull": {
+      "equipment": "barbell"
+    },
+    "Barbell rear lunge": {
+      "equipment": "barbell"
+    },
+    "Barbell romanian deadlift": {
+      "equipment": "barbell"
+    },
+    "Barbell seated good morning": {
+      "equipment": "barbell"
+    },
+    "Barbell single leg deadlift": {
+      "equipment": "barbell"
+    },
+    "Barbell speed squat": {
+      "equipment": "barbell"
+    },
+    "Barbell step-up": {
+      "equipment": "barbell"
+    },
+    "Barbell stiff leg good morning": {
+      "equipment": "barbell"
+    },
+    "Barbell sumo deadlift": {
+      "equipment": "barbell"
+    },
+    "Barbell zercher squat": {
+      "equipment": "barbell"
+    },
+    "Basic toe touch": {
+      "equipment": "body weight"
+    },
+    "Bench hip extension": {
+      "equipment": "body weight"
+    },
+    "Bent knee lying twist": {
+      "equipment": "body weight"
+    },
+    "Bodyweight drop jump squat": {
+      "equipment": "body weight"
+    },
+    "Cable deadlift": {
+      "equipment": "cable"
+    },
+    "Cable pull through (with rope)": {
+      "equipment": "cable"
+    },
+    "Cable standing hip extension": {
+      "equipment": "cable"
+    },
+    "Curtsey squat": {
+      "equipment": "body weight"
+    },
+    "Dumbbell bench squat": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell clean": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell contralateral forward lunge": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell deadlift": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell lunge": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell one arm snatch": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell plyo squat": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell rear lunge": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell romanian deadlift": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell single leg deadlift": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell single leg deadlift with stepbox support": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell single leg squat": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell squat": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell step-up": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell stiff leg deadlift": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell straight leg deadlift": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell sumo pull through": {
+      "equipment": "dumbbell"
+    },
+    "Exercise ball hip flexor stretch": {
+      "equipment": "stability ball"
+    },
+    "Exercise ball one leg prone lower body rotation": {
+      "equipment": "stability ball"
+    },
+    "Exercise ball one legged diagonal kick hamstring curl": {
+      "equipment": "stability ball"
+    },
+    "Flutter kicks": {
+      "equipment": "body weight"
+    },
+    "Forward lunge": {
+      "equipment": "body weight"
+    },
+    "Frankenstein squat": {
+      "equipment": "barbell"
+    },
+    "Glute bridge march": {
+      "equipment": "body weight"
+    },
+    "Glute bridge two legs on bench": {
+      "equipment": "body weight"
+    },
+    "Hands clasped circular toe touch": {
+      "equipment": "body weight"
+    },
+    "Hands reversed clasped circular toe touch": {
+      "equipment": "body weight"
+    },
+    "Hug keens to chest": {
+      "equipment": "body weight"
+    },
+    "Iron cross stretch": {
+      "equipment": "body weight"
+    },
+    "Jump squat": {
+      "equipment": "body weight"
+    },
+    "Kettlebell front squat": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell goblet squat": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell lunge pass through": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell pistol squat": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell swing": {
+      "equipment": "kettlebell"
+    },
+    "Kettlebell turkish get up (squat style)": {
+      "equipment": "kettlebell"
+    },
+    "Kneeling jump squat": {
+      "equipment": "barbell"
+    },
+    "Lever deadlift": {
+      "equipment": "leverage machine"
+    },
+    "Lever hip extension": {
+      "equipment": "leverage machine"
+    },
+    "Lever horizontal one leg press": {
+      "equipment": "leverage machine"
+    },
+    "Lever reverse hyperextension": {
+      "equipment": "leverage machine"
+    },
+    "Lever seated good morning": {
+      "equipment": "leverage machine"
+    },
+    "Low glute bridge on floor": {
+      "equipment": "body weight"
+    },
+    "Lunge with jump": {
+      "equipment": "body weight"
+    },
+    "March sit (wall)": {
+      "equipment": "body weight"
+    },
+    "Monster walk": {
+      "equipment": "body weight"
+    },
+    "One leg squat": {
+      "equipment": "body weight"
+    },
+    "Outside leg kick push-up": {
+      "equipment": "body weight"
+    },
+    "Pelvic tilt into bridge": {
+      "equipment": "body weight"
+    },
+    "Pike-to-cobra push-up": {
+      "equipment": "body weight"
+    },
+    "Potty squat with support": {
+      "equipment": "body weight"
+    },
+    "Push-up inside leg kick": {
+      "equipment": "body weight"
+    },
+    "Rear decline bridge": {
+      "equipment": "body weight"
+    },
+    "Resistance band hip thrusts on knees": {
+      "equipment": "resistance band"
+    },
+    "Reverse hyper extension (on stability ball)": {
+      "equipment": "stability ball"
+    },
+    "Reverse hyper on flat bench": {
+      "equipment": "body weight"
+    },
+    "Rocking frog stretch": {
+      "equipment": "body weight"
+    },
+    "Roller hip lat stretch": {
+      "equipment": "roller"
+    },
+    "Roller hip stretch": {
+      "equipment": "roller"
+    },
+    "Seated glute stretch": {
+      "equipment": "body weight"
+    },
+    "Seated piriformis stretch": {
+      "equipment": "body weight"
+    },
+    "Single leg bridge with outstretched leg": {
+      "equipment": "body weight"
+    },
+    "Single leg squat (pistol)": {
+      "equipment": "body weight"
+    },
+    "45 degrees one leg press": {
+      "equipment": "sled machine"
+    },
+    "45\u00b0 leg press": {
+      "equipment": "sled machine"
+    },
+    "45\u00b0 leg press (back pov)": {
+      "equipment": "sled machine"
+    },
+    "45\u00b0 leg press (side pov)": {
+      "equipment": "sled machine"
+    },
+    "45\u00b0 leg wide press": {
+      "equipment": "sled machine"
+    },
+    "Closer hack squat": {
+      "equipment": "sled machine"
+    },
+    "Hack squat": {
+      "equipment": "sled machine"
+    },
+    "Lying squat": {
+      "equipment": "sled machine"
+    },
+    "Smith bent knee good morning": {
+      "equipment": "smith machine"
+    },
+    "Smith deadlift": {
+      "equipment": "smith machine"
+    },
+    "Smith front squat (clean grip)": {
+      "equipment": "smith machine"
+    },
+    "Smith full squat": {
+      "equipment": "smith machine"
+    },
+    "Smith hack squat": {
+      "equipment": "smith machine"
+    },
+    "Smith leg press": {
+      "equipment": "smith machine"
+    },
+    "Smith low bar squat": {
+      "equipment": "smith machine"
+    },
+    "Smith sprint lunge": {
+      "equipment": "smith machine"
+    },
+    "Smith squat": {
+      "equipment": "smith machine"
+    },
+    "Smith sumo squat": {
+      "equipment": "smith machine"
+    },
+    "Spider crawl push up": {
+      "equipment": "body weight"
+    },
+    "Swimmer kicks": {
+      "equipment": "body weight"
+    },
+    "Tire flip": {
+      "equipment": "tire"
+    },
+    "Trap bar deadlift": {
+      "equipment": "trap bar"
+    },
+    "Twist hip lift": {
+      "equipment": "body weight"
+    },
+    "Walking lunge": {
+      "equipment": "body weight"
+    },
+    "Weighted cossack squats": {
+      "equipment": "weighted"
+    },
+    "Weighted lunge with swing": {
+      "equipment": "weighted"
+    },
+    "Weighted squat": {
+      "equipment": "weighted"
+    },
+    "Weighted stretch lunge": {
+      "equipment": "weighted"
+    }
+  },
+  "Calves": {
+    "Ankle circles": {
+      "equipment": "body weight"
+    },
+    "Assisted lying calves stretch": {
+      "equipment": "assisted"
+    },
+    "Band single leg calf raise": {
+      "equipment": "band"
+    },
+    "Band single leg reverse calf raise": {
+      "equipment": "band"
+    },
+    "Band two legs calf raise": {
+      "equipment": "band"
+    },
+    "Barbell floor calf raise": {
+      "equipment": "barbell"
+    },
+    "Barbell seated calf raise": {
+      "equipment": "barbell"
+    },
+    "Barbell standing calf raise": {
+      "equipment": "barbell"
+    },
+    "Barbell standing leg calf raise": {
+      "equipment": "barbell"
+    },
+    "Barbell standing rocking leg calf raise": {
+      "equipment": "barbell"
+    },
+    "Bodyweight standing calf raise": {
+      "equipment": "body weight"
+    },
+    "Box jump down with one leg stabilization": {
+      "equipment": "body weight"
+    },
+    "Cable standing calf raise": {
+      "equipment": "cable"
+    },
+    "Cable standing one leg calf raise": {
+      "equipment": "cable"
+    },
+    "Calf push stretch with hands against wall": {
+      "equipment": "body weight"
+    },
+    "Calf stretch with hands against wall": {
+      "equipment": "body weight"
+    },
+    "Calf stretch with rope": {
+      "equipment": "rope"
+    },
+    "Circles knee stretch": {
+      "equipment": "body weight"
+    },
+    "Donkey calf raise": {
+      "equipment": "body weight"
+    },
+    "Dumbbell seated calf raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell seated one leg calf raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell single leg calf raise": {
+      "equipment": "dumbbell"
+    },
+    "Dumbbell standing calf raise": {
+      "equipment": "dumbbell"
+    },
+    "Exercise ball on the wall calf raise": {
+      "equipment": "dumbbell"
+    },
+    "Exercise ball on the wall calf raise (tennis ball between ankles)": {
+      "equipment": "dumbbell"
+    },
+    "Exercise ball on the wall calf raise (tennis ball between knees)": {
+      "equipment": "dumbbell"
+    },
+    "Hack calf raise": {
+      "equipment": "sled machine"
+    },
+    "Hack one leg calf raise": {
+      "equipment": "sled machine"
+    },
+    "Lever calf press": {
+      "equipment": "leverage machine"
+    },
+    "Lever donkey calf raise": {
+      "equipment": "leverage machine"
+    },
+    "Lever rotary calf": {
+      "equipment": "leverage machine"
+    },
+    "Lever seated calf press": {
+      "equipment": "leverage machine"
+    },
+    "Lever seated calf raise": {
+      "equipment": "leverage machine"
+    },
+    "Lever seated squat calf raise on leg press machine": {
+      "equipment": "leverage machine"
+    },
+    "Lever standing calf raise": {
+      "equipment": "leverage machine"
+    },
+    "One leg donkey calf raise": {
+      "equipment": "body weight"
+    },
+    "One leg floor calf raise": {
+      "equipment": "body weight"
+    },
+    "Peroneals stretch": {
+      "equipment": "rope"
+    },
+    "Posterior tibialis stretch": {
+      "equipment": "rope"
+    },
+    "Seated calf stretch": {
+      "equipment": "body weight"
+    },
+    "Single leg calf raise (on a dumbbell)": {
+      "equipment": "dumbbell"
+    },
+    "45\u00b0 calf press": {
+      "equipment": "sled machine"
+    },
+    "Calf press on leg press": {
+      "equipment": "sled machine"
+    },
+    "Forward angled calf raise": {
+      "equipment": "sled machine"
+    },
+    "Lying calf press": {
+      "equipment": "sled machine"
+    },
+    "One leg calf press on leg press": {
+      "equipment": "sled machine"
+    },
+    "Smith one leg floor calf raise": {
+      "equipment": "smith machine"
+    },
+    "Smith reverse calf raises": {
+      "equipment": "smith machine"
+    },
+    "Smith seated one leg calf raise": {
+      "equipment": "smith machine"
+    },
+    "Smith standing leg calf raise": {
+      "equipment": "smith machine"
+    },
+    "Smith toe raise": {
+      "equipment": "smith machine"
+    },
+    "Standing calf raise (on a staircase)": {
+      "equipment": "body weight"
+    },
+    "Standing calves": {
+      "equipment": "body weight"
+    },
+    "Standing calves calf stretch": {
+      "equipment": "body weight"
+    },
+    "Weighted donkey calf raise": {
+      "equipment": "weighted"
+    }
+  },
+  "Abductors": {
+    "Lever seated hip abduction": {
+      "equipment": "leverage machine"
+    },
+    "Resistance band seated hip abduction": {
+      "equipment": "resistance band"
+    },
+    "Side bridge hip abduction": {
+      "equipment": "body weight"
+    },
+    "Side hip abduction": {
+      "equipment": "body weight"
+    },
+    "Straight leg outer hip abductor": {
+      "equipment": "body weight"
+    }
+  },
+  "Adductors": {
+    "Assisted side lying adductor stretch": {
+      "equipment": "assisted"
+    },
+    "Butterfly yoga pose": {
+      "equipment": "body weight"
+    },
+    "Cable hip adduction": {
+      "equipment": "cable"
+    },
+    "Lever seated hip adduction": {
+      "equipment": "leverage machine"
+    },
+    "Side lying hip adduction": {
+      "equipment": "body weight"
+    },
+    "Side plank hip adduction": {
+      "equipment": "body weight"
+    }
+  }
+}

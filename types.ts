@@ -42,18 +42,24 @@ export type Exercise = {
   sets: ExerciseSet[];
 };
 
+export type ExerciseSet = {
+  reps: number;
+  weight: number;
+};
+
 export type ExerciseStats = {
   name: string;
   muscle: string;
   PR: number;
-  sessionsSets: ExerciseSet[][];
+  sessionSetStats: SessionSetStats[];
 };
 
-export type ExerciseSet = {
-  reps: number;
-  weight: number;
-  date?: string;
-};
+export type SessionSetStats = {
+  reps: number[];
+  weight: number[];
+  date: string;
+}
+
 
 // export type Exercise = {
 //     name: string;
@@ -126,4 +132,12 @@ export type UserProfileProps = {
 export type ExercisesContextType = {
   exercises: Exercise[];
   setExercises: React.Dispatch<React.SetStateAction<Exercise[]>>;
+  startDate: Date;
+  setStartDate: React.Dispatch<React.SetStateAction<Date>>;
+  endDate: Date;
+  setEndDate: React.Dispatch<React.SetStateAction<Date>>;
+  location: string,
+  setLocation: React.Dispatch<React.SetStateAction<string>>,
+  workoutName: string,
+  setWorkoutName: React.Dispatch<React.SetStateAction<string>>,
 };

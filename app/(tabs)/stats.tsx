@@ -25,51 +25,51 @@ import * as Types from "../../types";
 import { Skeleton } from "moti/skeleton";
 const { width, height } = Dimensions.get("screen");
 
-const test: Types.ExerciseStats = {
-  name: "Band bench press",
-  muscle: "Chest",
-  PR: 205,
-  sessionsSets: [
-    [
-      { reps: 3, weight: 80, date: "2022-01-01" },
-      { reps: 3, weight: 85 },
-      { reps: 3, weight: 90 },
-    ],
-    [
-      { reps: 3, weight: 80, date: "2022-01-01" },
-      { reps: 3, weight: 85 },
-      { reps: 3, weight: 90 },
-    ],
-    [
-      { reps: 3, weight: 80, date: "2022-01-01" },
-      { reps: 3, weight: 85 },
-      { reps: 3, weight: 90 },
-    ],
-  ],
-};
+// const test: Types.ExerciseStats = {
+//   name: "Band bench press",
+//   muscle: "Chest",
+//   PR: 205,
+//   sessionsSets: [
+//     [
+//       { reps: 3, weight: 80, date: "2022-01-01" },
+//       { reps: 3, weight: 85 },
+//       { reps: 3, weight: 90 },
+//     ],
+//     [
+//       { reps: 3, weight: 80, date: "2022-01-01" },
+//       { reps: 3, weight: 85 },
+//       { reps: 3, weight: 90 },
+//     ],
+//     [
+//       { reps: 3, weight: 80, date: "2022-01-01" },
+//       { reps: 3, weight: 85 },
+//       { reps: 3, weight: 90 },
+//     ],
+//   ],
+// };
 
-const tes2: Types.ExerciseStats = {
-  name: "Barbell curl",
-  muscle: "Biceps",
-  PR: 90,
-  sessionsSets: [
-    [
-      { reps: 3, weight: 80, date: "2022-01-01" },
-      { reps: 3, weight: 85 },
-      { reps: 3, weight: 90 },
-    ],
-    [
-      { reps: 3, weight: 80, date: "2022-01-01" },
-      { reps: 3, weight: 85 },
-      { reps: 3, weight: 90 },
-    ],
-    [
-      { reps: 3, weight: 80, date: "2022-01-01" },
-      { reps: 3, weight: 85 },
-      { reps: 3, weight: 90 },
-    ],
-  ],
-};
+// const tes2: Types.ExerciseStats = {
+//   name: "Barbell curl",
+//   muscle: "Biceps",
+//   PR: 90,
+//   sessionsSets: [
+//     [
+//       { reps: 3, weight: 80, date: "2022-01-01" },
+//       { reps: 3, weight: 85 },
+//       { reps: 3, weight: 90 },
+//     ],
+//     [
+//       { reps: 3, weight: 80, date: "2022-01-01" },
+//       { reps: 3, weight: 85 },
+//       { reps: 3, weight: 90 },
+//     ],
+//     [
+//       { reps: 3, weight: 80, date: "2022-01-01" },
+//       { reps: 3, weight: 85 },
+//       { reps: 3, weight: 90 },
+//     ],
+//   ],
+// };
 
 const Stats = () => {
   const { user } = useUser();
@@ -80,10 +80,10 @@ const Stats = () => {
   const [exercise, setExercise] = useState<Types.ExerciseStats | null>(null);
   const [exerciseName, setExerciseName] = useState<string>("");
 
-  const [loadingNames, setLoadingNames] = useState(false);
-  const [loadingStats, setLoadingStats] = useState(false);
+  const [loadingNames, setLoadingNames] = useState(true);
+  const [loadingStats, setLoadingStats] = useState(true);
 
-  const [dateRange, setDateRange] = useState("Monthly");
+  const [dateRange, setDateRange] = useState("Bi-Weekly");
 
   useEffect(() => {
     fetchUserExcercises();
@@ -97,7 +97,7 @@ const Stats = () => {
         const exercises = await getUserExercises(user?.id);
         setExerciseList(exercises);
         setExerciseName(exercises[0]);
-        // fetchExerciseStat(exercises[0]);
+        // fetchExerciseStat();
       }
     } catch (error) {
       console.log(error);
@@ -106,13 +106,14 @@ const Stats = () => {
     setLoadingNames(false);
   };
 
-  const fetchExerciseStat = async (name: string) => {
-    console.log(name)
+  const fetchExerciseStat = async () => {
     setLoadingStats(true);
     try {
       if (!user) return;
-      const exerciseStats = await getExerciseStats(user?.id, name)
-      setExercise(tes2);
+      console.log(exerciseName);
+      const exerciseStats = await getExerciseStats(user?.id, exerciseName);
+      setExercise(exerciseStats);
+      console.log(exerciseStats);
     } catch (error) {
       console.log(error);
     }
@@ -126,7 +127,7 @@ const Stats = () => {
   return (
     <PortalProvider>
       <ScrollView backgroundColor={"$background"}>
-        <Button onPress={()=> (fetchExerciseStat(exerciseName))}>test</Button>
+        <Button onPress={() => fetchExerciseStat()}>test</Button>
         <YStack
           backgroundColor={"$background"}
           padding="$3"
@@ -143,7 +144,10 @@ const Stats = () => {
             >
               <YStack flex={1}>
                 <TouchableOpacity>
-                  <DropDownMenu items={exerciseList} setExerciseName={setExerciseName}>
+                  <DropDownMenu
+                    items={exerciseList}
+                    setExerciseName={setExerciseName}
+                  >
                     <XStack
                       gap="$2"
                       alignItems="center"
@@ -160,21 +164,23 @@ const Stats = () => {
                     </XStack>
                   </DropDownMenu>
                 </TouchableOpacity>
-                <Text
-                  fontFamily={"$mono"}
-                  col={"$gray11"}
-                >
-                  {"PR: " + exercise?.PR + " lbs"}
-                </Text>
+                {!loadingStats && (
+                  <Text
+                    fontFamily={"$mono"}
+                    col={"$gray11"}
+                  >
+                    {"PR: " + exercise?.PR + " lbs"}
+                  </Text>
+                )}
               </YStack>
             </Skeleton>
             <Skeleton
               show={loadingStats}
               colorMode={skeletonColorScheme}
             >
-              <DropDownMenu items={["Monthly", "3 Months", "6 Months"]}>
+              <DropDownMenu items={["Bi-Weekly", "1 Month", "3 Months", "6 Months", "12 Months"]}>
                 <Button
-                  width={"$11"}
+                  // width={"$12"}
                   fontFamily={"$mono"}
                   fontWeight={500}
                   fontSize={"$4"}
@@ -197,16 +203,16 @@ const Stats = () => {
             </XStack>
             <Skeleton colorMode={skeletonColorScheme}>
               <>
-            <Text
-              alignSelf="center"
-              fontFamily={"$mono"}
-              fontWeight={600}
-              fontSize={"$5"}
-            >
-              Weight per Rep
-            </Text>
-            <LineChartView />
-            </>
+                <Text
+                  alignSelf="center"
+                  fontFamily={"$mono"}
+                  fontWeight={600}
+                  fontSize={"$5"}
+                >
+                  Weight per Rep
+                </Text>
+                <LineChartView />
+              </>
             </Skeleton>
           </Skeleton.Group>
         </YStack>
@@ -329,7 +335,15 @@ const MiniLineChartView = ({ label }: { label: string }) => {
   );
 };
 
-const DropDownMenu = ({ children, items, setExerciseName }: { children: any; items: string[] , setExerciseName?: any }) => {
+const DropDownMenu = ({
+  children,
+  items,
+  setExerciseName,
+}: {
+  children: any;
+  items: string[];
+  setExerciseName?: any;
+}) => {
   const handleSelect = (item: string) => {
     if (setExerciseName) {
       setExerciseName(item);
@@ -349,7 +363,10 @@ const DropDownMenu = ({ children, items, setExerciseName }: { children: any; ite
       >
         {items.map((item, index) => {
           return (
-            <DropdownMenu.Item key={index.toString()} onSelect={()=>handleSelect(item)}>
+            <DropdownMenu.Item
+              key={index.toString()}
+              onSelect={() => handleSelect(item)}
+            >
               <DropdownMenu.ItemTitle>{item}</DropdownMenu.ItemTitle>
             </DropdownMenu.Item>
           );

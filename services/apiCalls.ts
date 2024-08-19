@@ -707,6 +707,7 @@ export const getUserExercises = async (userId: string) => {
   try {
     const response = await axios.get(`${API_URL}/user/exercises/all?userID=${userId}`);
     const data = response.data;
+    console.log(data);
     return data as string[];
   } catch (error) {
     // If an error occurs during the API request, re-throw it
@@ -726,21 +727,23 @@ export const getExerciseStats = async (
     const data = response.data;
     const sessionsData = data.sessions;
 
-    const sessionsSets : Types.ExerciseSet[][] = Object.entries(sessionsData).map(
-      ([sessionId, session]: [string, any]) => ([{
-        reps: session.reps,
-        weight: session.weight,
-        date: sessionId.split("session")[1],
-      }])
+    const sessionSetStats : Types.SessionSetStats[] = Object.entries(sessionsData).map(
+      ([sessionId, session]: [string, any]) => ({
+        reps: session.reps as number[],
+        weight: session.weight as number[],
+        date: new Date(Number(sessionId.split("session")[1].substring(1))).toISOString(),
+      })
     );
+
+    sessionSetStats.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    
 
     const exerciseStat : Types.ExerciseStats = {
       name: exerciseName,
       muscle: data.muscle,
       PR: data.PR,
-      sessionsSets: sessionsSets,
+      sessionSetStats: sessionSetStats,
     };
-    console.log(exerciseStat['sessionsSets']['reps']);
     return exerciseStat;
   } catch (error) {
     throw error;

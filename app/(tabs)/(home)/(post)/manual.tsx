@@ -27,16 +27,27 @@ import { useShakeAnimation } from "@/components/auth/shakeAnimation";
 import Animated from "react-native-reanimated";
 
 const ManualPost = () => {
-  const [startDate, setStartDate] = useState(new Date(new Date().getTime() - 60 * 60 * 1000));
-  const [endDate, setEndDate] = useState(new Date());
+  // const [startDate, setStartDate] = useState(new Date(new Date().getTime() - 60 * 60 * 1000));
+  // const [endDate, setEndDate] = useState(new Date());
   const [startOpen, setStartOpen] = useState(false);
   const [endOpen, setEndOpen] = useState(false);
-  const { exercises, setExercises } = useContext(ExercisesContext);
+  const {
+    exercises,
+    setExercises,
+    location,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    setLocation,
+    workoutName,
+    setWorkoutName,
+  } = useContext(ExercisesContext);
   const [loading, setLoading] = useState(false);
   const colorMode = useColorScheme();
   const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
-  const [workoutName, setWorkoutName] = useState("");
-  const [location, setLocation] = useState("");
+  // const [workoutName, setWorkoutName] = useState("");
+  // const [location, setLocation] = useState("");
   const locationPlaceholder = "Earth, Milky Way Galaxy";
   const { user } = useUser();
   const [error, setError] = useState(false);
@@ -74,8 +85,8 @@ const ManualPost = () => {
       console.log("Error posting");
       return;
     }
-
-    const sessionKey = `${user?.id}session_${new Date().getTime()}`;
+    console.log(startDate);
+    const sessionKey = `${user?.id}session_${startDate.getTime()}`;
     const session = {
       sessionKey: sessionKey,
       sessionData: {
@@ -160,9 +171,11 @@ const ManualPost = () => {
             <XStack
               alignItems="center"
               justifyContent="space-between"
-              
             >
-              <ListItem borderBottomLeftRadius={'$5'} borderBottomRightRadius={'$5'}>
+              <ListItem
+                borderBottomLeftRadius={"$5"}
+                borderBottomRightRadius={"$5"}
+              >
                 <Text fontFamily={"$mono"}>End Time</Text>
                 <TouchableOpacity onPress={() => setEndOpen(true)}>
                   <Text
@@ -182,18 +195,16 @@ const ManualPost = () => {
             key={i}
           />
         ))}
-        <YGroup
-          width={"100%"}
-        >
+        <YGroup width={"100%"}>
           <TouchableOpacity onPress={() => router.push("/(exercisesModal)")}>
-              <ListItem
-                fontFamily={"$mono"}
-                color={"#00cccc"}
-                fontWeight={"$15"}
-                borderRadius={"$3"}
-              >
-                Add Exercise
-              </ListItem>
+            <ListItem
+              fontFamily={"$mono"}
+              color={"#00cccc"}
+              fontWeight={"$15"}
+              borderRadius={"$3"}
+            >
+              Add Exercise
+            </ListItem>
           </TouchableOpacity>
           {/* <Button alignSelf="center"  borderRadius={"$5"} height="$3" size="$8" fontSize={"$5"} fontFamily="$mono" backgroundColor={"#00cccc"} mt={20}>
             Post
@@ -226,7 +237,7 @@ const ManualPost = () => {
                     fontWeight={"$7"}
                     fontSize={"$5"}
                     fontFamily={"$mono"}
-                    col={'white'}
+                    col={"white"}
                   >
                     Post
                   </Button.Text>

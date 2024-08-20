@@ -304,6 +304,10 @@ export const getFollowingSessions = async (userID: string) => {
     const sessions = await Promise.all(
       data.map(async (sessionData: any) => {
         const sessionId = sessionData.sessionID as string;
+        const likes: Types.User[] = await Promise.all(
+          sessionData.likes.map((like: string) => getUser(like))
+        );
+        // console.log(sessionData.likes);
         const session: Types.Session = {
           id: sessionId,
           name: sessionData.name,
@@ -328,7 +332,7 @@ export const getFollowingSessions = async (userID: string) => {
           }) as Types.Exercise[],
           duration: sessionData.duration,
           comments: sessionData.comments,
-          likes: sessionData.likes,
+          likes: likes,
           numLikes: sessionData.numLikes,
           userLiked: sessionData.likes.includes(userID),
         };
@@ -727,7 +731,7 @@ export const getExerciseStats = async (
     const data = response.data;
     const sessionsData = data.sessions;
 
-    const sessionSetStats : Types.SessionSetStats[] = Object.entries(sessionsData).map(
+    const sessionSetStats: Types.SessionSetStats[] = Object.entries(sessionsData).map(
       ([sessionId, session]: [string, any]) => ({
         reps: session.reps as number[],
         weight: session.weight as number[],
@@ -736,17 +740,16 @@ export const getExerciseStats = async (
     );
 
     sessionSetStats.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    
-
-    const exerciseStat : Types.ExerciseStats = {
+    const exerciseStat: Types.ExerciseStats = {
       name: exerciseName,
       muscle: data.muscle,
       PR: data.PR,
-      sessionSetStats: sessionSetStats,
+      sessionsSetStats: sessionSetStats,
     };
     return exerciseStat;
   } catch (error) {
     throw error;
+    console.log('error from getExerciseStats', error);
   }
 };
 

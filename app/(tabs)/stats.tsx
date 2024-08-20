@@ -25,57 +25,32 @@ import * as Types from "../../types";
 import { Skeleton } from "moti/skeleton";
 const { width, height } = Dimensions.get("screen");
 
-// const test: Types.ExerciseStats = {
-//   name: "Band bench press",
-//   muscle: "Chest",
-//   PR: 205,
-//   sessionsSets: [
-//     [
-//       { reps: 3, weight: 80, date: "2022-01-01" },
-//       { reps: 3, weight: 85 },
-//       { reps: 3, weight: 90 },
-//     ],
-//     [
-//       { reps: 3, weight: 80, date: "2022-01-01" },
-//       { reps: 3, weight: 85 },
-//       { reps: 3, weight: 90 },
-//     ],
-//     [
-//       { reps: 3, weight: 80, date: "2022-01-01" },
-//       { reps: 3, weight: 85 },
-//       { reps: 3, weight: 90 },
-//     ],
-//   ],
-// };
+const data1 = [
+  { value: 0 },
+  { value: null },
+  { value: 50 },
+  { value: 40 },
+  { value: 18 },
+  { value: 38 },
+];
 
-// const tes2: Types.ExerciseStats = {
-//   name: "Barbell curl",
-//   muscle: "Biceps",
-//   PR: 90,
-//   sessionsSets: [
-//     [
-//       { reps: 3, weight: 80, date: "2022-01-01" },
-//       { reps: 3, weight: 85 },
-//       { reps: 3, weight: 90 },
-//     ],
-//     [
-//       { reps: 3, weight: 80, date: "2022-01-01" },
-//       { reps: 3, weight: 85 },
-//       { reps: 3, weight: 90 },
-//     ],
-//     [
-//       { reps: 3, weight: 80, date: "2022-01-01" },
-//       { reps: 3, weight: 85 },
-//       { reps: 3, weight: 90 },
-//     ],
-//   ],
-// };
+const testdata = [
+  { date: "2024-08-13", value: 60.90909090909091 },
+  { date: "2024-08-14" },
+  { date: "2024-08-15" },
+  { date: "2024-08-16", value: 61.25 },
+  { date: "2024-08-17" },
+  { date: "2024-08-18" },
+  { date: "2024-08-19", value: 63.541666666666664 },
+];
 
 const Stats = () => {
   const { user } = useUser();
   const skeletonColorScheme = useColorScheme() == "dark" ? "dark" : "light";
+  const theme = useTheme();
+  const lightGray = theme.gray11.val;
+  const accent = "#00cccc";
 
-  const data = [{ value: 0 }, { value: 135 }, { value: 165 }, { value: 185 }, { value: 225 }];
   const [exerciseList, setExerciseList] = useState<string[]>([]);
   const [exercise, setExercise] = useState<Types.ExerciseStats | null>(null);
   const [exerciseName, setExerciseName] = useState<string>("");
@@ -84,50 +59,62 @@ const Stats = () => {
   const [loadingStats, setLoadingStats] = useState(true);
 
   const [dateRange, setDateRange] = useState("Bi-Weekly");
+  const [graphData, setGraphData] = useState<Types.GraphsData>({
+    repsPoints: [],
+    weightPoints: [],
+    wprPoints: [],
+  });
 
   useEffect(() => {
     fetchUserExcercises();
-    setLoadingStats(true);
   }, []);
 
   const fetchUserExcercises = async () => {
-    setLoadingNames(true);
     try {
       if (user) {
         const exercises = await getUserExercises(user?.id);
         setExerciseList(exercises);
-        setExerciseName(exercises[0]);
-        // fetchExerciseStat();
+        const firstExercise = exercises[0];
+        setExerciseName(firstExercise);
+        await fetchExerciseStat(firstExercise);
       }
     } catch (error) {
       console.log(error);
     }
-    await new Promise((resolve) => setTimeout(resolve, 1000));
     setLoadingNames(false);
   };
 
-  const fetchExerciseStat = async () => {
+  const fetchExerciseStat = async (exerciseName: string) => {
     setLoadingStats(true);
     try {
       if (!user) return;
-      console.log(exerciseName);
       const exerciseStats = await getExerciseStats(user?.id, exerciseName);
       setExercise(exerciseStats);
-      console.log(exerciseStats);
+      fetchGraphData("Bi-Weekly", exerciseStats.sessionsSetStats);
     } catch (error) {
       console.log(error);
     }
-    setLoadingStats(false);
   };
 
-  // useEffect(() => {
-  //   fetchExerciseStat(exerciseName);
-  // }, [exerciseName]);
+  const fetchGraphData = (range: string, sessionsSetStats: Types.SessionSetStats[]) => {
+    // console.log(sessionsSetStats);
+    const repsPoints = generateDates(range, sessionsSetStats, "Reps");
+    const weightPoints = generateDates(range, sessionsSetStats, "Weight");
+    const wprPoints = generateDates(range, sessionsSetStats, "WPR");
+    // setGraphData({ repsPoints: repsPoints, weightPoints: weightPoints, wprPoints: wprPoints });
+    console.log(wprPoints);
+    setGraphData({
+      repsPoints: repsPoints,
+      weightPoints: weightPoints,
+      wprPoints: wprPoints,
+    });
+    setLoadingStats(false);
+  };
 
   return (
     <PortalProvider>
       <ScrollView backgroundColor={"$background"}>
-        <Button onPress={() => fetchExerciseStat()}>test</Button>
+        {/* <Button onPress={() => fetchExerciseStat()}>test</Button> */}
         <YStack
           backgroundColor={"$background"}
           padding="$3"
@@ -164,21 +151,21 @@ const Stats = () => {
                     </XStack>
                   </DropDownMenu>
                 </TouchableOpacity>
-                {!loadingStats && (
-                  <Text
-                    fontFamily={"$mono"}
-                    col={"$gray11"}
-                  >
-                    {"PR: " + exercise?.PR + " lbs"}
-                  </Text>
-                )}
+
+                <Text
+                  fontFamily={"$mono"}
+                  col={"$gray11"}
+                  height={"$1"}
+                >
+                  {!loadingStats && "PR: " + (exercise && exercise?.PR) + " lbs"}
+                </Text>
               </YStack>
             </Skeleton>
             <Skeleton
               show={loadingStats}
               colorMode={skeletonColorScheme}
             >
-              <DropDownMenu items={["Bi-Weekly", "1 Month", "3 Months", "6 Months", "12 Months"]}>
+              <DropDownMenu items={["Bi-Weekly", "1 Month", "3 Months", "6 Months", "1 Year"]}>
                 <Button
                   // width={"$12"}
                   fontFamily={"$mono"}
@@ -195,13 +182,26 @@ const Stats = () => {
           <Skeleton.Group show={loadingStats}>
             <XStack justifyContent="space-between">
               <Skeleton colorMode={skeletonColorScheme}>
-                <MiniLineChartView label="Reps" />
+                {graphData.repsPoints.length > 0 ? (
+                  <MiniLineChartView
+                    label="Reps"
+                    data={graphData.repsPoints}
+                  />
+                ) : null}
               </Skeleton>
               <Skeleton colorMode={skeletonColorScheme}>
-                <MiniLineChartView label="Weight" />
+                {graphData.weightPoints.length > 0 ? (
+                  <MiniLineChartView
+                    label="Weight"
+                    data={graphData.weightPoints}
+                  />
+                ) : null}
               </Skeleton>
             </XStack>
-            <Skeleton colorMode={skeletonColorScheme}>
+            <Skeleton
+              colorMode={skeletonColorScheme}
+              show={false}
+            >
               <>
                 <Text
                   alignSelf="center"
@@ -211,7 +211,48 @@ const Stats = () => {
                 >
                   Weight per Rep
                 </Text>
-                <LineChartView />
+                <View
+                  // width={width}
+                  // overflow="hidden"
+                  alignSelf="center"
+                  alignItems="center"
+                  mr={50}
+                >
+                  {graphData.wprPoints.length > 0 && (
+                    // graphData.wprPoints.map((point, index) => (
+                    //   <Text key={index}>{point.value + ' ' + point.date}</Text>
+                    // ))
+                    <LineChart
+                      data={graphData.wprPoints}
+                      areaChart
+                      isAnimated
+                      animateOnDataChange
+                      animationDuration={750}
+                      onDataChangeAnimationDuration={300}
+                      interpolateMissingValues
+                      width={width - 80} // Adjust this value as needed
+                      height={height / 3}
+                      adjustToWidth
+                      hideDataPoints
+                      // spacing={70}
+                      color1={accent}
+                      startFillColor1={accent}
+                      endFillColor1={accent}
+                      startOpacity={0.85}
+                      endOpacity={0.1}
+                      initialSpacing={0}
+                      noOfSections={4}
+                      // hideRules
+                      yAxisThickness={0}
+                      yAxisLabelWidth={50}
+                      rulesType="solid"
+                      rulesColor={"rgba(255,255,255,0.5)"}
+                      yAxisTextStyle={{ color: lightGray }}
+                      yAxisLabelSuffix="lbs"
+                      xAxisColor={lightGray}
+                    />
+                  )}
+                </View>
               </>
             </Skeleton>
           </Skeleton.Group>
@@ -221,60 +262,60 @@ const Stats = () => {
   );
 };
 
-const LineChartView = () => {
-  const theme = useTheme();
-  const lightGray = theme.gray11.val;
-  const accent = "#00cccc";
+// const LineChartView = () => {
+//   const theme = useTheme();
+//   const lightGray = theme.gray11.val;
+//   const accent = "#00cccc";
 
-  const data1 = [
-    { value: 70, date: "1 Apr" },
-    { value: 36, label: "5 Apr", labelTextStyle: { color: lightGray, width: 60 } },
-    { value: 50, label: "10 Apr", labelTextStyle: { color: lightGray, width: 60 } },
-    { value: 40, label: "15 Apr", labelTextStyle: { color: lightGray, width: 60 } },
-    { value: 18, label: "20 Apr", labelTextStyle: { color: lightGray, width: 60 } },
-    { value: 38, date: "25 Apr" },
-  ];
-  return (
-    <View
-      // width={width}
-      // overflow="hidden"
-      alignSelf="center"
-      alignItems="center"
-      mr={30}
-    >
-      <LineChart
-        areaChart
-        isAnimated
-        animateOnDataChange
-        animationDuration={750}
-        onDataChangeAnimationDuration={300}
-        interpolateMissingValues
-        width={width - 56} // Adjust this value as needed
-        height={height / 3}
-        adjustToWidth
-        data={data1}
-        hideDataPoints
-        // spacing={70}
-        color1={accent}
-        startFillColor1={accent}
-        endFillColor1={accent}
-        startOpacity={0.85}
-        endOpacity={0.1}
-        initialSpacing={0}
-        noOfSections={4}
-        yAxisThickness={0}
-        yAxisLabelWidth={25}
-        rulesType="solid"
-        rulesColor={"rgba(255,255,255,0.5)"}
-        yAxisTextStyle={{ color: lightGray }}
-        // yAxisLabelSuffix="lbs"
-        xAxisColor={lightGray}
-      />
-    </View>
-  );
-};
+//   const data1 = [
+//     { value: 70, date: "1 Apr" },
+//     { value: null, label: "5 Apr", labelTextStyle: { color: lightGray, width: 60 } },
+//     { value: 50, label: "10 Apr", labelTextStyle: { color: lightGray, width: 60 } },
+//     { value: 40, label: "15 Apr", labelTextStyle: { color: lightGray, width: 60 } },
+//     { value: 18, label: "20 Apr", labelTextStyle: { color: lightGray, width: 60 } },
+//     { value: 38, date: "25 Apr" },
+//   ];
+//   return (
+//     <View
+//       // width={width}
+//       // overflow="hidden"
+//       alignSelf="center"
+//       alignItems="center"
+//       mr={30}
+//     >
+//       <LineChart
+//         areaChart
+//         isAnimated
+//         animateOnDataChange
+//         animationDuration={750}
+//         onDataChangeAnimationDuration={300}
+//         interpolateMissingValues
+//         width={width - 56} // Adjust this value as needed
+//         height={height / 3}
+//         adjustToWidth
+//         data={data1}
+//         hideDataPoints
+//         // spacing={70}
+//         color1={accent}
+//         startFillColor1={accent}
+//         endFillColor1={accent}
+//         startOpacity={0.85}
+//         endOpacity={0.1}
+//         initialSpacing={0}
+//         noOfSections={4}
+//         yAxisThickness={0}
+//         yAxisLabelWidth={25}
+//         rulesType="solid"
+//         rulesColor={"rgba(255,255,255,0.5)"}
+//         yAxisTextStyle={{ color: lightGray }}
+//         // yAxisLabelSuffix="lbs"
+//         xAxisColor={lightGray}
+//       />
+//     </View>
+//   );
+// };
 
-const MiniLineChartView = ({ label }: { label: string }) => {
+const MiniLineChartView = ({ label, data }: { label: string; data: Types.GraphPoint[] }) => {
   const theme = useTheme();
   const accent = "#00cccc";
 
@@ -313,8 +354,8 @@ const MiniLineChartView = ({ label }: { label: string }) => {
         width={width / 2.25} // Adjust this value as needed
         height={width / 2.25}
         adjustToWidth
-        data={data1}
-        hideDataPoints
+        data={data}
+        // hideDataPoints
         // spacing={35}
         color1={accent}
         startFillColor1={accent}
@@ -377,3 +418,45 @@ const DropDownMenu = ({
 };
 
 export default Stats;
+
+const generateDates = (
+  range: string,
+  sessionsSetStats: Types.SessionSetStats[],
+  graphType: string
+): Types.GraphPoint[] => {
+  const date = new Date();
+  const data: Types.GraphPoint[] = [];
+  let initialPointFlag = false;
+  switch (range) {
+    case "Bi-Weekly":
+      for (let i = 13; i >= 0; i--) {
+        const newDate = new Date(date);
+        newDate.setDate(newDate.getDate() - i);
+        const dateString = newDate.toISOString().split("T")[0];
+        let value = null;
+        sessionsSetStats.forEach((sessionSetStats: Types.SessionSetStats) => {
+          if (sessionSetStats.date.split("T")[0] === dateString) {
+            initialPointFlag = true;
+            if (graphType === "Reps") {
+              value = sessionSetStats.reps.reduce((a: number, b: number) => a + b, 0);
+            } else if (graphType === "Weight") {
+              value = Math.max(...sessionSetStats.weight);
+            } else if (graphType === "WPR") {
+              value =
+                sessionSetStats.weight.reduce(function (r, a, i) {
+                  return r + a * sessionSetStats.reps[i];
+                }, 0) / sessionSetStats.reps.reduce((a: number, b: number) => a + b, 0);
+            }
+          }
+        });
+        if (initialPointFlag) {
+          if (value) {
+            data.push({ value: value, date: dateString } as Types.GraphPoint);
+          } else {
+            i > 0 && data.push({ date: dateString } as Types.GraphPoint);
+          }
+        }
+      }
+  }
+  return data;
+};

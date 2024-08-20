@@ -51,7 +51,7 @@ export type ExerciseStats = {
   name: string;
   muscle: string;
   PR: number;
-  sessionSetStats: SessionSetStats[];
+  sessionsSetStats: SessionSetStats[];
 };
 
 export type SessionSetStats = {
@@ -60,6 +60,19 @@ export type SessionSetStats = {
   date: string;
 }
 
+
+
+export type GraphsData = {
+  repsPoints : GraphPoint[],
+  weightPoints : GraphPoint[],
+  wprPoints: GraphPoint[],
+}
+
+export type GraphPoint = {
+  value: number;
+  date: string;
+  label? : string
+}
 
 // export type Exercise = {
 //     name: string;

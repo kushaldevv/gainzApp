@@ -429,7 +429,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                       <LinearGradient
                         width={'100%'}
                         height={
-                          (currDayDuration / highestDuration!) * 155
+                          (currDayDuration / highestDuration!) * 150
                         }
                         borderRadius="$5"
                         colors={

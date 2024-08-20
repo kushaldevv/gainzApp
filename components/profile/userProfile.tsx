@@ -1,26 +1,29 @@
-import { getUserFollowingList, getUserProfile } from "@/services/apiCalls";
+import { getUserFollowingList, getUserProfile, updateName } from "@/services/apiCalls";
 import { formatSessionDate, formatSessionTime, getPastSevenDays } from "@/services/utilities";
 import * as Types from "@/types";
-import { ArrowUpRight, Dumbbell, LogOut, UserCheck, UserPlus } from "@tamagui/lucide-icons";
-import { router, usePathname } from "expo-router";
+import { useUser } from "@clerk/clerk-expo";
+import { ArrowUpRight, CheckSquare, Dumbbell, UserCheck, UserPlus } from "@tamagui/lucide-icons";
+import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
-import { Avatar, Button, Circle, Spinner, Text, View, XStack, YStack } from "tamagui";
+import { Avatar, Circle, Input, Text, View, XStack, YStack } from "tamagui";
 import { LinearGradient } from "tamagui/linear-gradient";
 import ContextMenuView from "./contextMenu";
-import { useClerk, useUser } from "@clerk/clerk-expo";
 import DropDownMenu from "./dropDownMenu";
 
 const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
   const colorMode = useColorScheme();
-  const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
+  const gradientColor = colorMode === "dark" ? "#006666" : "#4d9999";
   const skeletonColorScheme = useColorScheme() == "dark" ? "dark" : "light";
   const [userProfile, setUserProfile] = useState<Types.UserProfile | null>(null);
   const [following, setFollowing] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
   const { user } = useUser();
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedName, setEditedName] = useState("");
+  const [userProfileName, setUserProfileName] = useState("");
   useEffect(() => {
     fetchUserProfile();
   }, [userProfile?.id]);
@@ -37,6 +40,8 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
           }
         }
         setUserProfile(userProfileData);
+        setEditedName(userProfileData.name);
+        setUserProfileName(userProfileData.name);
       } catch (error) {
         console.error("Error fetching user profile: ", error);
       }
@@ -69,6 +74,35 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
       });
     }
   };
+
+  const handleSessionsPresss = () => {
+    if (!userProfile) return;
+
+    if (userProfile.randomPr) {
+      router.push({
+        pathname: isPublicProfile ? "/sessions" : "profile/sessions",
+        params: {
+          userID: userID,
+        },
+      });
+    }
+  };
+
+  const postNewName = async (newName: string) => {
+    try {
+      if (!(newName === userProfileName)) {
+        console.log("newName: ", newName);
+        console.log("API call");
+        await updateName(user?.id!, newName);
+        setUserProfileName(newName);
+      }
+    } catch (error) {
+      console.error("Error changing the user's name: ", error);
+    } finally {
+      setIsEditing(false);
+    }
+  };
+
   return (
     <YStack
       flex={1}
@@ -83,12 +117,12 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
           pt="$2"
           pb="$3"
         >
-          <Skeleton
-            radius={"round"}
-            colorMode={skeletonColorScheme}
-          >
-            <View>
-              <ContextMenuView label={"Update picture"}>
+          <View>
+            <ContextMenuView label={"Update picture"}>
+              <Skeleton
+                radius={"round"}
+                colorMode={skeletonColorScheme}
+              >
                 <Circle
                   size="$8"
                   backgroundColor={"$background"}
@@ -104,35 +138,63 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                     <Avatar.Fallback backgroundColor="$blue10" />
                   </Avatar>
                 </Circle>
-              </ContextMenuView>
+              </Skeleton>
+            </ContextMenuView>
 
-              {following != null && !loading && (
-                <TouchableOpacity style={{ position: "absolute", right: -13, bottom: -2 }}>
-                  <DropDownMenu>
-                    <Circle
-                      size="$3"
-                      backgroundColor={"$gray3"}
-                    >
-                      {following ? <UserCheck size="$1" /> : <UserPlus size="$1" />}
-                    </Circle>
-                  </DropDownMenu>
-                </TouchableOpacity>
-              )}
-            </View>
-          </Skeleton>
+            {following != null && !loading && (
+              <TouchableOpacity style={{ position: "absolute", right: -13, bottom: -2 }}>
+                <DropDownMenu
+                  setFollowing={setFollowing}
+                  action={following ? "Unfollow" : "Follow"}
+                  userId1={user?.id!}
+                  userId2={userID}
+                >
+                  <Circle
+                    size="$3"
+                    backgroundColor={"$gray3"}
+                  >
+                    {following ? <UserCheck size="$1" /> : <UserPlus size="$1" />}
+                  </Circle>
+                </DropDownMenu>
+              </TouchableOpacity>
+            )}
+          </View>
           <YStack gap="$4">
             <Skeleton colorMode={skeletonColorScheme}>
-              <ContextMenuView label={"Update name"}>
-                <Text
-                  fontWeight="$11"
-                  fontFamily={"$mono"}
-                  fontSize="$8"
-                  width={"$15"}
-                  minHeight={"$2"}
+              <XStack
+                ml="$-3.5"
+                mb="$-2.5"
+                alignItems="center"
+              >
+                <ContextMenuView
+                  label={"Update name"}
+                  setIsEditing={setIsEditing}
                 >
-                  {userProfile?.name}
-                </Text>
-              </ContextMenuView>
+                  <Input
+                    fontWeight="$11"
+                    fontFamily={"$mono"}
+                    fontSize="$8"
+                    width={"$16"}
+                    minHeight={"$2"}
+                    backgroundColor={"$colorTransparent"}
+                    borderRadius={"$6"}
+                    borderColor={isEditing ? "$borderColorFocus" : "$colorTransparent"}
+                    disabled={!isEditing}
+                    onChangeText={(text) => setEditedName(text)}
+                  >
+                    {userProfile?.name}
+                  </Input>
+                </ContextMenuView>
+                {isEditing && (
+                  <TouchableOpacity onPress={() => postNewName(editedName)}>
+                    <CheckSquare
+                      size={"$1"}
+                      ml="$3"
+                      col={"$green10"}
+                    />
+                  </TouchableOpacity>
+                )}
+              </XStack>
             </Skeleton>
             <Skeleton colorMode={skeletonColorScheme}>
               <XStack
@@ -245,15 +307,15 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                     fontFamily={"$mono"}
                     fontSize="$9"
                     fontWeight="700"
-                    col="$color"
+                    col="white"
                   >
-                    {userProfile?.randomPr.pr || '0'}
+                    {userProfile?.randomPr.pr || "0"}
                   </Text>
                   <Text
                     fontFamily={"$mono"}
                     fontSize="$6"
                     fontWeight="500"
-                    col="$color"
+                    col="white"
                     mt="$2"
                   >
                     lbs
@@ -261,12 +323,12 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                 </XStack>
                 <Text
                   fontFamily={"$mono"}
-                  fontSize="$5"
-                  fontWeight="400"
-                  col="$color"
+                  fontSize="$4"
+                  fontWeight="500"
+                  col="white"
                   textAlign="center"
                 >
-                  {userProfile?.randomPr.name || 'No PRs yet'}
+                  {userProfile?.randomPr.name || "No PRs yet"}
                 </Text>
               </LinearGradient>
             </Skeleton>
@@ -291,7 +353,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
               size={"$7"}
               zIndex={1}
             >
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => handleSessionsPresss()}>
                 <LinearGradient
                   width={"$5"}
                   height={"$5"}
@@ -315,7 +377,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
               fontSize={"$9"}
               fontWeight="600"
             >
-              Your activity
+              {userID == user?.id ? "Your" : "Their"} Activity
             </Text>
             {userProfile?.highestDuration.date ? (
               <XStack
@@ -352,72 +414,47 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
               bottom="$3"
               alignSelf="center"
             >
-              {getPastSevenDays().map((day, index) => (
-                <YStack
-                  key={index}
-                  gap="$2"
-                  alignItems="center"
-                  justifyContent="flex-end"
-                >
-                  <LinearGradient
+              {getPastSevenDays().map((day, index) => {
+                const highestDuration = userProfile?.highestDuration.duration;
+                const currDayDuration = userProfile?.recentSessions[day][0]?.duration;
+                return (
+                  <YStack
+                    key={index}
+                    gap="$2"
                     width={38}
-                    height={
-                      userProfile?.recentSessions[day][0]?.duration
-                        ? userProfile?.recentSessions[day][0]?.duration / 60
-                        : 0
-                    }
-                    borderRadius="$5"
-                    colors={
-                      userProfile?.highestDuration.duration ==
-                      userProfile?.recentSessions[day][0]?.duration
-                        ? ["$background", "$background"]
-                        : ["#00cccc", gradientColor]
-                    }
-                    start={[1, 0]}
-                    end={[0, 1]}
-                  ></LinearGradient>
-                  <Text
-                    fontSize={"$2"}
-                    fontFamily={"$mono"}
-                    themeInverse
-                    fontWeight="500"
+                    alignItems="center"
+                    justifyContent="flex-end"
                   >
-                    {day}
-                  </Text>
-                </YStack>
-              ))}
+                    {currDayDuration && (
+                      <LinearGradient
+                        width={'100%'}
+                        height={
+                          (currDayDuration / highestDuration!) * 150
+                        }
+                        borderRadius="$5"
+                        colors={
+                          highestDuration == currDayDuration
+                            ? ["$background", "$background"]
+                            : ["#00cccc", gradientColor]
+                        }
+                        start={[1, 0]}
+                        end={[0, 1]}
+                      ></LinearGradient>
+                    )}
+                    <Text
+                      fontSize={"$2"}
+                      fontFamily={"$mono"}
+                      themeInverse
+                      fontWeight="500"
+                    >
+                      {day}
+                    </Text>
+                  </YStack>
+                );
+              })}
             </XStack>
           </YStack>
         </Skeleton>
-        {/* {userID == user?.id && (
-          <Skeleton
-            colorMode={skeletonColorScheme}
-            radius={14}
-          >
-            <Button
-              backgroundColor={"$colorTransparent"}
-              borderColor={"#00cccc"}
-              borderWidth={1}
-              fontFamily={"$mono"}
-              fontWeight={600}
-              fontSize={"$5"}
-              color="#00cccc"
-              borderRadius="$6"
-              onPress={() => {
-                signOut();
-                setShowSpinner(true);
-              }}
-            >
-              Log out
-              {showSpinner && (
-                <Spinner
-                  size="small"
-                  color={"#00cccc"}
-                />
-              )}
-            </Button>
-          </Skeleton>
-        )} */}
       </Skeleton.Group>
     </YStack>
   );

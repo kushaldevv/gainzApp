@@ -1,11 +1,11 @@
-import React from 'react'
+import React from "react";
 import * as DropdownMenu from "zeego/dropdown-menu";
-import { MoreHorizontal } from '@tamagui/lucide-icons';
-import { TouchableOpacity } from '@gorhom/bottom-sheet';
+import { MoreHorizontal } from "@tamagui/lucide-icons";
+import { TouchableOpacity } from "@gorhom/bottom-sheet";
 
 const DropDownMenu = () => {
-    return (
-      <DropdownMenu.Root>
+  return (
+    <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         <TouchableOpacity>
           <MoreHorizontal />
@@ -24,16 +24,16 @@ const DropDownMenu = () => {
           <DropdownMenu.ItemTitle>Delete</DropdownMenu.ItemTitle>
           <DropdownMenu.ItemIcon
             ios={{
-              name: 'trash', // required
+              name: "trash", // required
               pointSize: 18,
               weight: "semibold",
-              scale: "medium"
+              scale: "medium",
             }}
           />
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
-    )
-  }
-  
-  export default DropDownMenu;
+  );
+};
+
+export default DropDownMenu;

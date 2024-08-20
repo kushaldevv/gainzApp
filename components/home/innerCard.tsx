@@ -1,101 +1,30 @@
-import React, { useState } from "react";
-import * as Types from "../../types";
-import { BookOpen, X, Weight } from "@tamagui/lucide-icons";
+import React, { Children, useState } from "react";
+import { Dimensions, useColorScheme } from "react-native";
 import Svg, { Path } from "react-native-svg";
-import { XStack, YStack, SizableText, Circle, View, ScrollView, useTheme } from "tamagui";
+import { ScrollView, SizableText, useTheme, View, XStack, YStack, Image, Circle } from "tamagui";
 import { LinearGradient } from "tamagui/linear-gradient";
-import { TouchableOpacity, useColorScheme } from "react-native";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-// const DetailView = () => {
-//   return (
-//     <YStack>
-//       <SizableText
-//         size={"$5"}
-//         fontFamily={"$mono"}
-//         fontWeight={700}
-//       >
-//         Details
-//       </SizableText>
-//     </YStack>
-//   );
-// };
-
-// const DefaultView = ({ exercises }: Types.InnerCardProps) => {
-//   return (
-//     <ScrollView>
-//       {exercises.map((exercise, index) => (
-//         <YStack
-//           key={index}
-//           pt={"$2.5"}
-//           paddingHorizontal={"$2.5"}
-//         >
-//           <XStack
-//             backgroundColor={"$gray4"}
-//             borderRadius={"$5"}
-//             height={"$6"}
-//             p="$2.5"
-//             gap="$2"
-//             alignItems="center"
-//           >
-//             <View
-//               width={"$5"}
-//               height={"$5"}
-//               backgroundColor={"#00cccc"}
-//               borderRadius={"$3"}
-//             />
-//             <YStack
-//               justifyContent="center"
-//               width={"$12"}
-//             >
-//               <SizableText
-//                 size={"$2"}
-//                 fontFamily={"$mono"}
-//                 fontWeight={600}
-//               >
-//                 {exercise.name}
-//               </SizableText>
-//             </YStack>
-//             <TouchableOpacity onPress={}>
-//               <Circle
-//                 size={"$2.5"}
-//                 backgroundColor={"#00cccc"}
-//               >
-//                 <BookOpen
-//                   size={18}
-//                   alignContent="center"
-//                   fill="#00cccc"
-//                 />
-//               </Circle>
-//             </TouchableOpacity>
-//           </XStack>
-//         </YStack>
-//       ))}
-//     </ScrollView>
-//   );
-// };
+import * as Types from "../../types";
+import ExerciseAccordion from "../post/accordionItem";
+import Carousel from "react-native-reanimated-carousel";
+import { useSharedValue } from "react-native-reanimated";
+import { X } from "@tamagui/lucide-icons";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+const width = Dimensions.get("screen").width;
 
 const InnerCard = ({ exercises }: Types.InnerCardProps) => {
-  const theme = useTheme();
   const colorMode = useColorScheme();
-  const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
-  const [showDetails, setShowDetails] = useState(false);
-  const [detailExercise, setDetailExercise] = useState<Types.Exercise | null>(null);
+  const gradientColor = colorMode === "dark" ? "#006666" : "#4d9999";
+  const width = Dimensions.get("screen").width;
+  const [index, setIndex] = useState(0);
   return (
     <XStack
-      height={"$15"}
+      height={"$16"}
       justifyContent="space-between"
+      overflow="hidden"
     >
-      {/* <YStack
-        width={"22.5%"}
-        height={"$15"}
-        backgroundColor={"#00cccc"}
-        borderRadius={"$6"}
-        p={"$3"}
-      > */}
       <LinearGradient
         width={"22.5%"}
-        height={"$15"}
+        height={"$16"}
         p={"$3"}
         borderRadius="$6"
         colors={["#00cccc", gradientColor]}
@@ -103,10 +32,10 @@ const InnerCard = ({ exercises }: Types.InnerCardProps) => {
         end={[0, 1]}
       >
         <View
-          height={"$5"}
+          height={"$4"}
           backgroundColor={"#009999"}
           borderRadius={"$3"}
-          p="$1.5"
+          p="$2"
         >
           <Svg viewBox="0 0 512 512">
             <Path
@@ -123,12 +52,14 @@ const InnerCard = ({ exercises }: Types.InnerCardProps) => {
           pt="$3"
           col="white"
         >
-          {exercises
-            .map((exercise) => exercise.reps)
-            .reduce((a, b) => a + b.reduce((c, d) => c + d, 0), 0)}
+          {exercises.reduce(
+            (totalAcc, exercise) =>
+              totalAcc + exercise.sets.reduce((setAcc, set) => setAcc + set.reps, 0),
+            0
+          )}
         </SizableText>
         <SizableText
-          size={"$8"}
+          size={"$7"}
           fontFamily={"$mono"}
           fontWeight={400}
           alignSelf="center"
@@ -140,174 +71,59 @@ const InnerCard = ({ exercises }: Types.InnerCardProps) => {
       </LinearGradient>
 
       <YStack
-        width={"75%"}
-        height={"$15"}
         backgroundColor={"$gray3"}
         borderRadius={"$6"}
+        overflow="hidden"
       >
-        {showDetails ? (
-          <YStack p="$3">
-            <SizableText
-              size={"$4"}
-              fontFamily={"$mono"}
-              fontWeight={700}
-              alignSelf="center"
-            >
-              {detailExercise?.name}
-            </SizableText>
-            <ScrollView
-              pt="$1"
-              height={"$13"}
-            >
-              <YStack gap="$3">
-                {detailExercise?.weight.map((weight, index) => (
-                  <XStack
-                    key={index}
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <XStack alignItems="center">
-                      <Circle
-                        size={"$2"}
-                        backgroundColor={"$color"}
-                      >
-                        <SizableText
-                          size={"$2"}
-                          fontFamily={"$mono"}
-                          fontWeight={700}
-                          themeInverse
-                        >
-                          {index + 1}
-                        </SizableText>
-                      </Circle>
-                      <SizableText
-                        size={"$4"}
-                        fontFamily={"$mono"}
-                        fontWeight={700}
-                        pl="$3"
-                        w={"$8"}
-                      >
-                        {weight + " lbs"}
-                      </SizableText>
-                    </XStack>
-                    <SizableText
-                      size={"$4"}
-                      fontFamily={"$mono"}
-                      fontWeight={700}
-                      pr="$5"
-                    >
-                      {"X"}
-                    </SizableText>
-                    <SizableText
-                      size={"$4"}
-                      fontFamily={"$mono"}
-                      fontWeight={700}
-                      pl="$4"
-                      w={"$8"}
-                    >
-                      {detailExercise?.reps[index] + "  reps"}
-                    </SizableText>
-                  </XStack>
-                ))}
-              </YStack>
-            </ScrollView>
-            <TouchableOpacity
-              onPress={() => setShowDetails(false)}
-              style={{ padding: 15, position: "absolute", right: 0 }}
-            >
-              <X
-                size={18}
-                alignContent="center"
-                fill="#00cccc"
-              />
-            </TouchableOpacity>
-          </YStack>
-        ) : (
-          <ScrollView>
-            {exercises.map((exercise, index) => (
-              <YStack
-                key={index}
-                pt={"$3"}
-                paddingHorizontal={"$2.5"}
-              >
-                <XStack
-                  backgroundColor={"$gray4"}
-                  borderRadius={"$5"}
-                  height={"$6"}
-                  p="$2.5"
-                  gap="$2"
-                  alignItems="center"
-                >
-                  <View
-                    width={"$5"}
-                    height={"$5"}
-                    // borderColor={"#00cccc"}
-                    // borderWidth={"$0.5"}
-                    // borderRadius={"$3"}
-                    // backgroundColor={"#00cccc"}
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <FontAwesome6
-                      name="weight-hanging"
-                      size={40}
-                      color={theme.gray12.val}
+        <GestureHandlerRootView>
+          <Carousel
+            width={width * 0.75 - 20}
+            data={[1, 2]} // Two items: ScrollView and Image
+            onScrollEnd={(index) => setIndex(index)}
+            panGestureHandlerProps={{
+              activeOffsetX: [-10, 10],
+            }}
+            renderItem={({ index }) =>
+              index === 0 ? (
+                <ScrollView paddingVertical="$2">
+                  {exercises.map((exercise, idx) => (
+                    <ExerciseAccordion
+                      exercise={exercise}
+                      inCard={true}
+                      key={idx}
                     />
-                    <SizableText
-                      size={"$1"}
-                      fontFamily={"$mono"}
-                      fontWeight={800}
-                      col={theme.gray7.val}
-                      pos="absolute"
-                    >
-                      {Math.max(...exercise.weight)}
-                    </SizableText>
-                    <SizableText
-                      size={"$1"}
-                      fontFamily={"$mono"}
-                      fontWeight={500}
-                      col={theme.gray7.val}
-                      pos="absolute"
-                      pt="$4.5"
-                    >
-                      {"lb"}
-                    </SizableText>
-                  </View>
-                  <YStack
-                    justifyContent="center"
-                    width={"$12"}
-                  >
-                    <SizableText
-                      size={"$2"}
-                      fontFamily={"$mono"}
-                      fontWeight={600}
-                    >
-                      {exercise.name}
-                    </SizableText>
-                  </YStack>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setDetailExercise(exercise);
-                      setShowDetails(true);
-                    }}
-                  >
-                    <Circle
-                      size={"$2.5"}
-                      backgroundColor={"#00cccc"}
-                    >
-                      <BookOpen
-                        size={18}
-                        alignContent="center"
-                        fill="#00cccc"
-                        col={"white"}
-                      />
-                    </Circle>
-                  </TouchableOpacity>
-                </XStack>
-              </YStack>
-            ))}
-          </ScrollView>
-        )}
+                  ))}
+                </ScrollView>
+              ) : (
+                <Image
+                  width="100%"
+                  height="100%"
+                  alignSelf="center"
+                  source={{
+                    uri: "https://anettemossbacher.com/wp-content/media/bengal-tiger-portrait-face.jpg",
+                  }}
+                />
+              )
+            }
+          />
+        </GestureHandlerRootView>
+        <XStack
+          pos={"absolute"}
+          alignSelf="center"
+          bottom={"$2"}
+          gap="$2"
+        >
+          <Circle
+            size={"$0.75"}
+            backgroundColor={index == 0 ? "$gray12" : "$gray10"}
+            opacity={index == 0 ? 0.8 : 0.6}
+          />
+          <Circle
+            size={"$0.75"}
+            backgroundColor={index == 1 ? "$gray12" : "$gray10"}
+            opacity={index == 0 ? 0.8 : 0.6}
+          />
+        </XStack>
       </YStack>
     </XStack>
   );

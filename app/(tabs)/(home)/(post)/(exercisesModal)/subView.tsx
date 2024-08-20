@@ -9,9 +9,9 @@ import * as Types from "@/types";
 
 const SubView = () => {
   const params = useLocalSearchParams();
-  const { exercise } = params;
+  const { muscle } = params;
   const query = ((params.query as string) || "").toLowerCase().trim();
-  const targetMuscleExercises = Object.keys((gainzExercises as any)[exercise as string]);
+  const targetMuscleExercises = Object.keys((gainzExercises as any)[muscle as string]);
   const { exercises, setExercises } = useContext(ExercisesContext);
 
   const handleExercisePress = (exercise: string) => {
@@ -19,9 +19,11 @@ const SubView = () => {
       if (exercises.some((e) => e.name === exerciseName)) {
         return;
       }
-      const newExercise: Types.ExerciseViewProp = {
+      const newExercise: Types.Exercise = {
         name: exerciseName,
-        set: [],
+        muscle: muscle as string,
+        sets: [],
+        PR: 0,
       };
       setExercises([...exercises, newExercise]);
     };

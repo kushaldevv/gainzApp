@@ -335,6 +335,7 @@ export const getFollowingSessions = async (userID: string) => {
           likes: likes,
           numLikes: sessionData.numLikes,
           userLiked: sessionData.likes.includes(userID),
+          image: sessionData.image,
         };
         return session;
       })
@@ -736,9 +737,11 @@ export const getExerciseStats = async (
         reps: session.reps as number[],
         weight: session.weight as number[],
         date: new Date(Number(sessionId.split("session")[1].substring(1))).toISOString(),
+        image: session.image,
       })
     );
-
+    // console.log(sessionSetStats)
+    // Sort sessionSetStats by date
     sessionSetStats.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     const exerciseStat: Types.ExerciseStats = {
       name: exerciseName,
@@ -749,7 +752,7 @@ export const getExerciseStats = async (
     return exerciseStat;
   } catch (error) {
     throw error;
-    console.log('error from getExerciseStats', error);
+    console.log("error from getExerciseStats", error);
   }
 };
 

@@ -3,10 +3,18 @@ import { getMuscleColor } from "@/services/utilities";
 import { useUser } from "@clerk/clerk-expo";
 import { ChevronDown, X } from "@tamagui/lucide-icons";
 import React, { useEffect, useState } from "react";
-import { Dimensions, TouchableOpacity, useColorScheme } from "react-native";
+import {
+  Dimensions,
+  Modal,
+  Pressable,
+  TouchableOpacity,
+  useColorScheme,
+  StyleSheet,
+} from "react-native";
 import { LineChart } from "react-native-gifted-charts";
 import {
   Button,
+  Circle,
   H4,
   H5,
   Label,
@@ -19,6 +27,7 @@ import {
   View,
   XStack,
   YStack,
+  Image,
 } from "tamagui";
 import * as DropdownMenu from "zeego/dropdown-menu";
 import * as Types from "../../types";
@@ -65,6 +74,9 @@ const Stats = () => {
     wprPoints: [],
   });
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalImage, setModalImage] = useState("");
+
   useEffect(() => {
     fetchUserExcercises();
   }, []);
@@ -102,7 +114,6 @@ const Stats = () => {
     const weightPoints = generateDates(range, sessionsSetStats, "Weight");
     const wprPoints = generateDates(range, sessionsSetStats, "WPR");
     // setGraphData({ repsPoints: repsPoints, weightPoints: weightPoints, wprPoints: wprPoints });
-    console.log(wprPoints);
     setGraphData({
       repsPoints: repsPoints,
       weightPoints: weightPoints,
@@ -113,7 +124,10 @@ const Stats = () => {
 
   return (
     <PortalProvider>
-      <ScrollView backgroundColor={"$background"}>
+      <ScrollView
+        backgroundColor={"$background"}
+        scrollEnabled={false}
+      >
         {/* <Button onPress={() => fetchExerciseStat()}>test</Button> */}
         <YStack
           backgroundColor={"$background"}
@@ -181,7 +195,11 @@ const Stats = () => {
           </XStack>
           <Skeleton.Group show={loadingStats}>
             <XStack justifyContent="space-between">
-              <Skeleton colorMode={skeletonColorScheme}>
+              <Skeleton
+                width={width / 2.25}
+                height={width / 2}
+                colorMode={skeletonColorScheme}
+              >
                 {graphData.repsPoints.length > 0 ? (
                   <MiniLineChartView
                     label="Reps"
@@ -189,7 +207,11 @@ const Stats = () => {
                   />
                 ) : null}
               </Skeleton>
-              <Skeleton colorMode={skeletonColorScheme}>
+              <Skeleton
+                width={width / 2.25}
+                height={width / 2}
+                colorMode={skeletonColorScheme}
+              >
                 {graphData.weightPoints.length > 0 ? (
                   <MiniLineChartView
                     label="Weight"
@@ -200,7 +222,8 @@ const Stats = () => {
             </XStack>
             <Skeleton
               colorMode={skeletonColorScheme}
-              show={false}
+              width={"100%"}
+              height={height / 3 + 50}
             >
               <>
                 <Text
@@ -230,10 +253,14 @@ const Stats = () => {
                       animationDuration={750}
                       onDataChangeAnimationDuration={300}
                       interpolateMissingValues
-                      width={width - 80} // Adjust this value as needed
+                      width={width - 80}
                       height={height / 3}
                       adjustToWidth
-                      hideDataPoints
+                      // hideDataPoints
+                      textShiftY={-10}
+                      textColor1={theme.color.val}
+                      dataPointsColor={theme.color.val}
+                      dataPointsRadius={5}
                       // spacing={70}
                       color1={accent}
                       startFillColor1={accent}
@@ -250,6 +277,12 @@ const Stats = () => {
                       yAxisTextStyle={{ color: lightGray }}
                       yAxisLabelSuffix="lbs"
                       xAxisColor={lightGray}
+                      onPress={(item: any, index: number) => {
+                        setModalImage(item.image);
+                        if (item.image) {
+                          setModalVisible(true);
+                        }
+                      }}
                     />
                   )}
                 </View>
@@ -258,6 +291,55 @@ const Stats = () => {
           </Skeleton.Group>
         </YStack>
       </ScrollView>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        {/* <View style={styles.centeredView}> */}
+        <View
+          flex={1}
+          alignItems="center"
+          justifyContent="center"
+          padding="$4"
+          backgroundColor={"rgba(0,0,0,0.75)"}
+        >
+          {/* <View> */}
+          <Image
+            width="100%"
+            height="50%"
+            alignSelf="center"
+            source={{
+              uri: modalImage,
+            }}
+            borderWidth="$1"
+            borderRadius={"$5"}
+            borderColor={"$color"}
+          />
+
+          <TouchableOpacity
+            style={{ marginTop: 15 }}
+            onPress={() => setModalVisible(!modalVisible)}
+          >
+            <View
+              borderRadius={"$8"}
+              overflow="hidden"
+            >
+              <Text
+                fontFamily={"$mono"}
+                fontWeight={600}
+                backgroundColor={accent}
+                p="$3"
+              >
+                Dismiss
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </PortalProvider>
   );
 };
@@ -317,20 +399,12 @@ const Stats = () => {
 
 const MiniLineChartView = ({ label, data }: { label: string; data: Types.GraphPoint[] }) => {
   const theme = useTheme();
+  const lowestValue = Math.min(...data.map((point) => (point.value ? point.value : 9999)));
   const accent = "#00cccc";
-
-  const data1 = [
-    { value: 70 },
-    { value: 36 },
-    { value: 50 },
-    { value: 40 },
-    { value: 18 },
-    { value: 38 },
-  ];
   return (
     <YStack
       width={width / 2.25}
-      height={width / 2.25}
+      height={width / 2}
       overflow="hidden"
       backgroundColor={"$gray2"}
       alignItems="center"
@@ -341,7 +415,7 @@ const MiniLineChartView = ({ label, data }: { label: string; data: Types.GraphPo
         fontWeight={600}
         fontSize={"$5"}
       >
-        {label}
+        {label} {label === "Reps" ? "" : "(lbs)"}
       </Text>
       <LineChart
         endSpacing={0}
@@ -352,10 +426,11 @@ const MiniLineChartView = ({ label, data }: { label: string; data: Types.GraphPo
         onDataChangeAnimationDuration={300}
         interpolateMissingValues
         width={width / 2.25} // Adjust this value as needed
-        height={width / 2.25}
+        height={width / 2}
         adjustToWidth
         data={data}
         // hideDataPoints
+        dataPointsColor={theme.color.val}
         // spacing={35}
         color1={accent}
         startFillColor1={accent}
@@ -368,9 +443,9 @@ const MiniLineChartView = ({ label, data }: { label: string; data: Types.GraphPo
         xAxisLabelsHeight={0}
         hideRules
         rulesColor={"rgba(255,255,255,0.5)"}
-        // yAxisTextStyle={{ color: lightGray }}
-        // yAxisLabelSuffix="lbs"
-        // xAxisColor={lightGray}
+        textShiftY={-10}
+        textColor1={theme.color.val}
+        yAxisOffset={label === "Reps" ? 0 : lowestValue - 10}
       />
     </YStack>
   );
@@ -434,9 +509,11 @@ const generateDates = (
         newDate.setDate(newDate.getDate() - i);
         const dateString = newDate.toISOString().split("T")[0];
         let value = null;
+        let image: string | undefined = undefined;
         sessionsSetStats.forEach((sessionSetStats: Types.SessionSetStats) => {
           if (sessionSetStats.date.split("T")[0] === dateString) {
             initialPointFlag = true;
+            if (sessionSetStats.image) image = sessionSetStats.image;
             if (graphType === "Reps") {
               value = sessionSetStats.reps.reduce((a: number, b: number) => a + b, 0);
             } else if (graphType === "Weight") {
@@ -451,7 +528,15 @@ const generateDates = (
         });
         if (initialPointFlag) {
           if (value) {
-            data.push({ value: value, date: dateString } as Types.GraphPoint);
+            if (graphType === "Reps" || graphType === "Weight") {
+              data.push({
+                value: value,
+                dataPointText: value,
+                date: dateString,
+              } as Types.GraphPoint);
+            } else {
+              data.push({ value: value, dataPointText: value.toFixed(1), date: dateString, image: image } as Types.GraphPoint);
+            }
           } else {
             i > 0 && data.push({ date: dateString } as Types.GraphPoint);
           }
@@ -460,3 +545,47 @@ const generateDates = (
   }
   return data;
 };
+
+// const styles = StyleSheet.create({
+//   centeredView: {
+//     flex: 1,
+//     justifyContent: "center",
+//     alignItems: "center",
+//     marginTop: 22,
+//   },
+//   modalView: {
+//     margin: 20,
+//     backgroundColor: "white",
+//     borderRadius: 20,
+//     padding: 35,
+//     alignItems: "center",
+//     shadowColor: "#000",
+//     shadowOffset: {
+//       width: 0,
+//       height: 2,
+//     },
+//     shadowOpacity: 0.25,
+//     shadowRadius: 4,
+//     elevation: 5,
+//   },
+//   button: {
+//     borderRadius: 20,
+//     padding: 10,
+//     elevation: 2,
+//   },
+//   buttonOpen: {
+//     backgroundColor: "#F194FF",
+//   },
+//   buttonClose: {
+//     backgroundColor: "#2196F3",
+//   },
+//   textStyle: {
+//     color: "white",
+//     fontWeight: "bold",
+//     textAlign: "center",
+//   },
+//   modalText: {
+//     marginBottom: 15,
+//     textAlign: "center",
+//   },
+// });

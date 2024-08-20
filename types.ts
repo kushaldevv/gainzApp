@@ -33,6 +33,7 @@ export type Session = {
   likes: User[];
   numLikes: number;
   userLiked: boolean;
+  image? : string;
 };
 
 export type Exercise = {
@@ -58,6 +59,7 @@ export type SessionSetStats = {
   reps: number[];
   weight: number[];
   date: string;
+  image? : string;
 }
 
 
@@ -69,9 +71,11 @@ export type GraphsData = {
 }
 
 export type GraphPoint = {
-  value: number;
+  value?: number;
   date: string;
-  label? : string
+  dataPointText?: string;
+  image? : string;
+  // label? : string
 }
 
 // export type Exercise = {
@@ -90,6 +94,7 @@ export type CardProps = {
 
 export type InnerCardProps = {
   exercises: Exercise[];
+  image?: string;
 };
 
 export type Comment = {

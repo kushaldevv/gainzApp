@@ -29,17 +29,25 @@ export default function HomeLayout() {
         headerStyle: {
           backgroundColor: backgroundColor,
         },
-        // headerTitleStyle: { color: headerTintColor },
+        headerTitleStyle: { color: headerTintColor },
         headerTintColor: headerTintColor,
-        headerTitle(props) {
-          return <Text fontSize={"$7"} style={{ fontFamily: "HansonBold"}} color={headerTintColor}>GAINZ</Text>;
-        },
       }}
     >
       <Stack.Screen
         name="index"
         options={{
           title: "Home",
+          headerTitle(props) {
+            return (
+              <Text
+                fontSize={"$7"}
+                style={{ fontFamily: "HansonBold" }}
+                color={headerTintColor}
+              >
+                GAINZ
+              </Text>
+            );
+          },
           headerLeft: () => (
             <TouchableOpacity onPress={handleSearchPress}>
               <UserRoundSearch
@@ -153,6 +161,12 @@ export default function HomeLayout() {
         name="sessions"
         options={{
           title: "Sessions",
+        }}
+      />
+      <Stack.Screen
+        name="userStats"
+        options={{
+          title: "Statistics",
         }}
       />
     </Stack>

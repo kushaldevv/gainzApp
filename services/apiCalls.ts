@@ -297,12 +297,19 @@ export const getUserProfile = async (userID: string): Promise<Types.UserProfile>
   }
 };
 
-export const getFollowingSessions = async (userID: string) => {
+export const getSessions = async (userID: string, followingFlag: boolean, userLikedId: string) => {
   try {
-    const response = await axios.get(`${API_URL}/user/following/sessions?userID=${userID}`);
+    let url = ''
+    if (followingFlag) {
+      url = `${API_URL}/user/following/sessions?userID=${userID}`
+    } else {
+      url =`${API_URL}/user/sessions?userID=${userID}`
+      
+    }
+    const response = await axios.get(url);
     const data = response.data;
 
-    const sessions = await Promise.all(
+    const sessions : Types.Session[] = await Promise.all(
       data.map(async (sessionData: any) => {
         const sessionId = sessionData.sessionID as string;
         const likes: Types.User[] = await Promise.all(
@@ -335,7 +342,7 @@ export const getFollowingSessions = async (userID: string) => {
           comments: sessionData.comments,
           likes: likes,
           numLikes: sessionData.numLikes,
-          userLiked: sessionData.likes.includes(userID),
+          userLiked: sessionData.likes.includes(userLikedId),
           image: sessionData.image,
         };
         return session;
@@ -344,43 +351,6 @@ export const getFollowingSessions = async (userID: string) => {
     return sessions;
   } catch (error) {
     console.error(error);
-  }
-};
-
-export const getUserSessions = async (sessionUserID: string, userID: string) => {
-  try {
-    const response = await axios.get(`${API_URL}/user/sessions?userID=${sessionUserID}`);
-    const data = response.data;
-    const user = (await getUser(sessionUserID)) as Types.User;
-
-    const sessions = await Promise.all(
-      Object.entries(data).map(async ([sessionID, sessionData]: [string, any]) => {
-        const likes: Types.User[] = await Promise.all(
-          sessionData.likes.map((like: string) => getUser(like))
-        );
-
-        const exercises = await getExercisesInfo(sessionID);
-
-        const session: Types.Session = {
-          id: sessionID,
-          name: sessionData.name as string,
-          user: user,
-          location: sessionData.location as string,
-          date: sessionData.date as string,
-          exercises: exercises,
-          duration: sessionData.duration as number,
-          comments: sessionData.comments,
-          likes: likes,
-          numLikes: sessionData.numLikes as number,
-          userLiked: sessionData.likes.includes(userID),
-        };
-        return session;
-      })
-    );
-    return sessions;
-  } catch (error) {
-    console.log("getting user sessions", error);
-    throw error;
   }
 };
 

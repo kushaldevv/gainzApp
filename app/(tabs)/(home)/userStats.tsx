@@ -2,10 +2,14 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { useUser } from '@clerk/clerk-expo';
 import StatsView from '@/components/stats/statsView';
+import { useLocalSearchParams } from 'expo-router';
 const Stats = () => {
-  const {user} = useUser();
+  const params = useLocalSearchParams();
+  const { userID} = params;
   return (
-    <StatsView userID={user?.id as string} />
+    <>
+    <StatsView userID={userID as string} />
+    </>
   )
 }
 

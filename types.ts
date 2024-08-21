@@ -164,3 +164,10 @@ export type PieChartData = {
   gradientCenterColor?: string;
   focused: boolean;
 };
+
+export type TimerContextType = {
+  time: number;
+  setTime: React.Dispatch<React.SetStateAction<number>>;
+  isRunning: boolean;
+  setIsRunning: React.Dispatch<React.SetStateAction<boolean>>;
+}

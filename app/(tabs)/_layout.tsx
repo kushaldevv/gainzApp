@@ -7,7 +7,7 @@ import {
 import { Redirect, Tabs,  } from "expo-router";
 import { useColorScheme,  } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-
+import { Text } from "tamagui";
 export default function Layout() {
   const { isSignedIn } = useAuth();
 

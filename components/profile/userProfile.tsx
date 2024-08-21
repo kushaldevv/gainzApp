@@ -7,7 +7,14 @@ import {
 import { formatSessionDate, formatSessionTime, getPastSevenDays } from "@/services/utilities";
 import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
-import { ArrowUpRight, CheckSquare, Dumbbell, UserCheck, UserPlus } from "@tamagui/lucide-icons";
+import {
+  ArrowUpRight,
+  CheckSquare,
+  Dumbbell,
+  UserCheck,
+  UserPlus,
+  ClipboardList,
+} from "@tamagui/lucide-icons";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import React, { useEffect, useRef, useState } from "react";
@@ -17,18 +24,8 @@ import { LinearGradient } from "tamagui/linear-gradient";
 import ContextMenuView from "./contextMenu";
 import DropDownMenu from "./dropDownMenu";
 import { PieChart } from "react-native-gifted-charts";
+import Entypo from "@expo/vector-icons/Entypo";
 
-const pieData = [
-  {
-    value: 47,
-    color: "#009FFF",
-    gradientCenterColor: "#006DFF",
-    focused: true,
-  },
-  { value: 40, color: "#93FCF8", gradientCenterColor: "#3BE9DE" },
-  { value: 16, color: "#BDB2FA", gradientCenterColor: "#8F80F3" },
-  { value: 3, color: "#FFA5BA", gradientCenterColor: "#FF7F97" },
-];
 const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
   const colorMode = useColorScheme();
   const gradientColor = colorMode === "dark" ? "#006666" : "#4d9999";
@@ -102,6 +99,23 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
     if (userProfile.randomPr) {
       router.push({
         pathname: isPublicProfile ? "/sessions" : "profile/sessions",
+        params: {
+          userID: userID,
+        },
+      });
+    }
+  };
+
+  const handleStatsPresss = () => {
+    if (!userProfile) return;
+
+    if (user?.id == userID) {
+      router.push({
+        pathname: "stats",
+      });
+    } else {
+      router.push({
+        pathname: isPublicProfile ? "/userStats" : "profile/stats",
         params: {
           userID: userID,
         },
@@ -285,8 +299,8 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                     showGradient
                     sectionAutoFocus
                     radius={68}
-                    innerRadius={45}
-                    innerCircleColor={"#232B5D"}
+                    // innerRadius={45}
+                    // innerCircleColor={"#232B5D"}
                     // centerLabelComponent={() => {
                     //   return (
                     //     <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -296,6 +310,35 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                     //   );
                     // }}
                   />
+                )}
+                {!loading && (
+                  <Circle
+                    pos={"absolute"}
+                    right={"$-1.5"}
+                    top={"$-2"}
+                    backgroundColor={"$background"}
+                    size={"$5"}
+                    zIndex={1}
+                  >
+                    <TouchableOpacity onPress={() => handleStatsPresss()}>
+                      <LinearGradient
+                        width={"$3.5"}
+                        height={"$3.5"}
+                        alignItems="center"
+                        justifyContent="center"
+                        borderRadius="$10"
+                        colors={["#00cccc", gradientColor]}
+                        start={[1, 0]}
+                        end={[0, 1]}
+                      >
+                        <Entypo
+                          size={18}
+                          name="bar-graph"
+                          color={"white"}
+                        />
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  </Circle>
                 )}
                 <XStack
                   alignSelf="center"

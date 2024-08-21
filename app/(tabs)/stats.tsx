@@ -77,6 +77,8 @@ const Stats = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalImage, setModalImage] = useState("");
 
+  const [showGraphs, setShowGraphs] = useState(true);
+
   useEffect(() => {
     fetchUserExcercises();
   }, []);
@@ -96,11 +98,22 @@ const Stats = () => {
     setLoadingNames(false);
   };
 
+  useEffect(() => {
+    if (exerciseName) {
+      fetchExerciseStat(exerciseName);
+    }
+  }, [exerciseName]);
+
   const fetchExerciseStat = async (exerciseName: string) => {
     setLoadingStats(true);
     try {
       if (!user) return;
       const exerciseStats = await getExerciseStats(user?.id, exerciseName);
+      if (exerciseStats.sessionsSetStats.length < 4) {
+        setShowGraphs(false);
+      } else {
+        setShowGraphs(true);
+      }
       setExercise(exerciseStats);
       fetchGraphData("Bi-Weekly", exerciseStats.sessionsSetStats);
     } catch (error) {
@@ -179,7 +192,7 @@ const Stats = () => {
               show={loadingStats}
               colorMode={skeletonColorScheme}
             >
-              <DropDownMenu items={["Bi-Weekly", "1 Month", "3 Months", "6 Months", "1 Year"]}>
+              { showGraphs ? <DropDownMenu items={["Bi-Weekly", "1 Month", "3 Months", "6 Months", "1 Year"]}>
                 <Button
                   // width={"$12"}
                   fontFamily={"$mono"}
@@ -190,7 +203,7 @@ const Stats = () => {
                 >
                   {dateRange}
                 </Button>
-              </DropDownMenu>
+              </DropDownMenu> : null}
             </Skeleton>
           </XStack>
           <Skeleton.Group show={loadingStats}>
@@ -200,7 +213,7 @@ const Stats = () => {
                 height={width / 2}
                 colorMode={skeletonColorScheme}
               >
-                {graphData.repsPoints.length > 0 ? (
+                {showGraphs && graphData.repsPoints.length > 0 ? (
                   <MiniLineChartView
                     label="Reps"
                     data={graphData.repsPoints}
@@ -212,7 +225,7 @@ const Stats = () => {
                 height={width / 2}
                 colorMode={skeletonColorScheme}
               >
-                {graphData.weightPoints.length > 0 ? (
+                { showGraphs && graphData.weightPoints.length > 0 ? (
                   <MiniLineChartView
                     label="Weight"
                     data={graphData.weightPoints}
@@ -232,7 +245,7 @@ const Stats = () => {
                   fontWeight={600}
                   fontSize={"$5"}
                 >
-                  Weight per Rep
+                  {showGraphs ? 'Weight per Rep' : "Not enough Data"}
                 </Text>
                 <View
                   // width={width}
@@ -241,7 +254,7 @@ const Stats = () => {
                   alignItems="center"
                   mr={50}
                 >
-                  {graphData.wprPoints.length > 0 && (
+                  {showGraphs && graphData.wprPoints.length > 0 && (
                     // graphData.wprPoints.map((point, index) => (
                     //   <Text key={index}>{point.value + ' ' + point.date}</Text>
                     // ))
@@ -313,7 +326,7 @@ const Stats = () => {
             height="50%"
             alignSelf="center"
             source={{
-              uri: modalImage,
+              uri: modalImage ,
             }}
             borderWidth="$1"
             borderRadius={"$5"}

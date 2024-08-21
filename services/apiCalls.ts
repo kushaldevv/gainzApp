@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as Types from "@/types";
+import { useTheme } from "tamagui";
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 /**
@@ -756,13 +757,77 @@ export const getExerciseStats = async (
   }
 };
 
-interface ExerciseSession {
-  reps: number[];
-  weight: number[];
-}
+/**
+ * Returns a list of PieData objects representing the exercises a user has completed.
+ *
+ * @param userId - The unique identifier of a user.
+ * @returns A Promise that resolves when a user's exercises are retrieved
+ * @throws Will throw an error if the API request fails.
+ */
+export const getPieChartData = async (userId: string, theme: any) => {
+  try {
+    // Make a GET request to fetch the pie chart data
+    const response = await axios.get(`${API_URL}/user/pie-chart?userID=${userId}`);
+    const data = response.data; // map
+    const pieDataLst = [] as Types.PieChartData[];
 
-interface ExerciseData {
-  muscle: string;
-  PR: number;
-  sessions: Record<string, ExerciseSession>;
-}
+    // dictionary
+    // go thru each kv pair, create a pieData object, add to list
+    Object.entries(data).forEach(([key, value]) => {
+      switch (key) {
+        case "Arms":
+          pieDataLst.push({
+            value: value as number,
+            color: theme.blue10.val,
+            gradientCenterColor: theme.blue9.val,
+            focused: false,
+          });
+          break;
+        case "Back":
+          pieDataLst.push({
+            value: value as number,
+            color: theme.green10.val,
+            gradientCenterColor: theme.green9.val,
+            focused: false,
+          });
+          break;
+        case "Chest":
+          pieDataLst.push({
+            value: value as number,
+            color: theme.orange10.val,
+            gradientCenterColor: theme.orange9.val,
+            focused: false,
+          });
+          break;
+        case "Legs":
+          pieDataLst.push({
+            value: value as number,
+            color: theme.red10.val,
+            gradientCenterColor: theme.red9.val,
+            focused: false,
+          });
+          break;
+        case "Abs":
+          pieDataLst.push({
+            value: value as number,
+            color: theme.purple10.val,
+            gradientCenterColor: theme.purple9.val,
+            focused: false,
+          });
+          break;
+        case "Other":
+          pieDataLst.push({
+            value: value as number,
+            color: theme.gray10.val,
+            gradientCenterColor: theme.gray9.val,
+            focused: false,
+          });
+          break;
+      }
+    });
+    return pieDataLst;
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+    throw error;
+  }
+};

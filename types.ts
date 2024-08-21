@@ -33,7 +33,7 @@ export type Session = {
   likes: User[];
   numLikes: number;
   userLiked: boolean;
-  image? : string;
+  image?: string;
 };
 
 export type Exercise = {
@@ -59,24 +59,22 @@ export type SessionSetStats = {
   reps: number[];
   weight: number[];
   date: string;
-  image? : string;
-}
-
-
+  image?: string;
+};
 
 export type GraphsData = {
-  repsPoints : GraphPoint[],
-  weightPoints : GraphPoint[],
-  wprPoints: GraphPoint[],
-}
+  repsPoints: GraphPoint[];
+  weightPoints: GraphPoint[];
+  wprPoints: GraphPoint[];
+};
 
 export type GraphPoint = {
   value?: number;
   date: string;
   dataPointText?: string;
-  image? : string;
+  image?: string;
   // label? : string
-}
+};
 
 // export type Exercise = {
 //     name: string;
@@ -154,8 +152,15 @@ export type ExercisesContextType = {
   setStartDate: React.Dispatch<React.SetStateAction<Date>>;
   endDate: Date;
   setEndDate: React.Dispatch<React.SetStateAction<Date>>;
-  location: string,
-  setLocation: React.Dispatch<React.SetStateAction<string>>,
-  workoutName: string,
-  setWorkoutName: React.Dispatch<React.SetStateAction<string>>,
+  location: string;
+  setLocation: React.Dispatch<React.SetStateAction<string>>;
+  workoutName: string;
+  setWorkoutName: React.Dispatch<React.SetStateAction<string>>;
+};
+
+export type PieChartData = {
+  value: number;
+  color: string;
+  gradientCenterColor?: string;
+  focused: boolean;
 };

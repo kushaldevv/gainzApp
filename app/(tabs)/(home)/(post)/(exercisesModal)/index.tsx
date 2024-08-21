@@ -18,6 +18,7 @@ const ExercisesModal = () => {
       p="$3"
       pb="$5"
       backgroundColor={"$gray3"}
+      flex={1}
     >
       <ScrollView borderRadius={"$3"}>
         <YGroup

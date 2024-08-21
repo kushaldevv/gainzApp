@@ -1,4 +1,9 @@
-import { getUserFollowingList, getUserProfile, updateName } from "@/services/apiCalls";
+import {
+  getPieChartData,
+  getUserFollowingList,
+  getUserProfile,
+  updateName,
+} from "@/services/apiCalls";
 import { formatSessionDate, formatSessionTime, getPastSevenDays } from "@/services/utilities";
 import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
@@ -7,11 +12,23 @@ import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import React, { useEffect, useRef, useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
-import { Avatar, Circle, Input, Text, View, XStack, YStack } from "tamagui";
+import { Avatar, Circle, Input, Text, useTheme, View, XStack, YStack } from "tamagui";
 import { LinearGradient } from "tamagui/linear-gradient";
 import ContextMenuView from "./contextMenu";
 import DropDownMenu from "./dropDownMenu";
+import { PieChart } from "react-native-gifted-charts";
 
+const pieData = [
+  {
+    value: 47,
+    color: "#009FFF",
+    gradientCenterColor: "#006DFF",
+    focused: true,
+  },
+  { value: 40, color: "#93FCF8", gradientCenterColor: "#3BE9DE" },
+  { value: 16, color: "#BDB2FA", gradientCenterColor: "#8F80F3" },
+  { value: 3, color: "#FFA5BA", gradientCenterColor: "#FF7F97" },
+];
 const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
   const colorMode = useColorScheme();
   const gradientColor = colorMode === "dark" ? "#006666" : "#4d9999";
@@ -20,10 +37,12 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
   const [following, setFollowing] = useState<boolean | null>(null);
   const [loading, setLoading] = useState(true);
   const { user } = useUser();
+  const theme = useTheme();
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState("");
   const [userProfileName, setUserProfileName] = useState("");
+  const [pieChartData, setPieChartData] = useState<Types.PieChartData[]>([]);
   useEffect(() => {
     fetchUserProfile();
   }, [userProfile?.id]);
@@ -33,12 +52,14 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
     if (userID) {
       try {
         const userProfileData = await getUserProfile(userID);
+        const pieData = await getPieChartData(userID, theme);
         if (user) {
           if (user.id != userID) {
             const followingListData = await getUserFollowingList(user.id);
             setFollowing(followingListData.includes(userID));
           }
         }
+        setPieChartData(pieData);
         setUserProfile(userProfileData);
         setEditedName(userProfileData.name);
         setUserProfileName(userProfileData.name);
@@ -241,7 +262,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
         </XStack>
 
         <XStack justifyContent="space-between">
-          <View width={"56.5%"}>
+          <View width={"52%"}>
             <Skeleton
               colorMode={skeletonColorScheme}
               radius={26}
@@ -252,29 +273,94 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                 opacity={colorMode == "dark" ? 1 : 0.925}
                 alignItems="center"
                 p="$3"
-                height={"$13"}
+                pt="$2"
+                height={"$15"}
+                justifyContent="flex-start"
+                gap="$1.5"
               >
-                <Text fontSize="$10">🔥</Text>
-                <Text
-                  fontFamily={"$mono"}
-                  fontSize="$9"
-                  fontWeight="900"
-                  col="$background"
+                {pieChartData.length > 0 && (
+                  <PieChart
+                    data={pieChartData}
+                    // donut
+                    showGradient
+                    sectionAutoFocus
+                    radius={68}
+                    innerRadius={45}
+                    innerCircleColor={"#232B5D"}
+                    // centerLabelComponent={() => {
+                    //   return (
+                    //     <View style={{ justifyContent: "center", alignItems: "center" }}>
+
+                    //       {/* <Text textAlign="center" style={{ fontSize: 14, color: "white" }}>Muscle Group</Text> */}
+                    //     </View>
+                    //   );
+                    // }}
+                  />
+                )}
+                <XStack
+                  alignSelf="center"
+                  gap="$1"
                 >
-                  {userProfile?.streak}
-                </Text>
-                <Text
-                  fontFamily={"$mono"}
-                  fontSize="$8"
-                  fontWeight="400"
-                  col="$background"
+                  {[
+                    { name: "Arms", color: "$blue10" },
+                    { name: "Back", color: "$green10" },
+                    { name: "Chest", color: "$orange10" },
+                  ].map((item: { name: string; color: string }) => (
+                    <XStack
+                      key={item.name}
+                      gap="$1.5"
+                      alignItems="center"
+                    >
+                      <Circle
+                        size={10}
+                        backgroundColor={item.color}
+                      />
+                      <Text
+                        themeInverse
+                        fontFamily={"$mono"}
+                        fontSize={12}
+                        fontWeight="400"
+                        w="$3"
+                      >
+                        {item.name}
+                      </Text>
+                    </XStack>
+                  ))}
+                </XStack>
+                <XStack
+                  alignSelf="center"
+                  gap="$1"
                 >
-                  {"Day Streak"}
-                </Text>
+                  {[
+                    { name: "Legs", color: "$red10" },
+                    { name: "Abs", color: "$purple10" },
+                    { name: "Other", color: "$gray10" },
+                  ].map((item: { name: string; color: string }) => (
+                    <XStack
+                      key={item.name}
+                      gap="$1.5"
+                      alignItems="center"
+                    >
+                      <Circle
+                        size={10}
+                        backgroundColor={item.color}
+                      />
+                      <Text
+                        themeInverse
+                        fontFamily={"$mono"}
+                        fontSize={12}
+                        fontWeight="400"
+                        w="$3"
+                      >
+                        {item.name}
+                      </Text>
+                    </XStack>
+                  ))}
+                </XStack>
               </View>
             </Skeleton>
           </View>
-          <View width={"40%"}>
+          <View width={"44.5%"}>
             <Skeleton
               colorMode={skeletonColorScheme}
               radius={26}
@@ -286,49 +372,25 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                 end={[0, 1]}
                 alignItems="center"
                 p="$3"
-                gap="$2"
-                height={"$13"}
+                height={"$15"}
               >
-                <Circle
-                  backgroundColor={"white"}
-                  size="$4.5"
-                  mb="$1.5"
-                >
-                  <Dumbbell
-                    size="$1.5"
-                    col={"black"}
-                  />
-                </Circle>
-                <XStack
-                  alignItems="center"
-                  gap="$1.5"
-                >
-                  <Text
-                    fontFamily={"$mono"}
-                    fontSize="$9"
-                    fontWeight="700"
-                    col="white"
-                  >
-                    {userProfile?.randomPr.pr || "0"}
-                  </Text>
-                  <Text
-                    fontFamily={"$mono"}
-                    fontSize="$6"
-                    fontWeight="500"
-                    col="white"
-                    mt="$2"
-                  >
-                    lbs
-                  </Text>
-                </XStack>
+                <Text fontSize="$12">🔥</Text>
                 <Text
                   fontFamily={"$mono"}
-                  fontSize="$4"
-                  fontWeight="500"
+                  fontSize="$11"
+                  fontWeight="900"
                   col="white"
-                  textAlign="center"
+                  mt="$-1"
                 >
-                  {userProfile?.randomPr.name || "No PRs yet"}
+                  {userProfile?.streak}
+                </Text>
+                <Text
+                  fontFamily={"$mono"}
+                  fontSize="$8"
+                  fontWeight="600"
+                  col="white"
+                >
+                  {"Day Streak"}
                 </Text>
               </LinearGradient>
             </Skeleton>
@@ -427,10 +489,8 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                   >
                     {currDayDuration && (
                       <LinearGradient
-                        width={'100%'}
-                        height={
-                          (currDayDuration / highestDuration!) * 150
-                        }
+                        width={"100%"}
+                        height={(currDayDuration / highestDuration!) * 150}
                         borderRadius="$5"
                         colors={
                           highestDuration == currDayDuration

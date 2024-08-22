@@ -1,30 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from "react";
+import BackgroundTimer from "react-native-background-timer";
 import {
-    Button,
-    Input,
-    ListItem,
-    ScrollView,
-    Separator,
-    Spinner,
-    Text,
-    XStack,
-    YGroup,
-    YStack,
-  } from "tamagui";
-import { useTimer } from './timeContext'
-import BackgroundTimer from 'react-native-background-timer';
-
-
+  Text
+} from "tamagui";
+import { useTimer } from "./timeContext";
 
 const StopWatch = () => {
-//   const [time, setTime] = useState(0);
-//   const [isRunning, setIsRunning] = useState(false);
+  //   const [time, setTime] = useState(0);
+  //   const [isRunning, setIsRunning] = useState(false);
   const { time, setTime, isRunning } = useTimer();
 
   useEffect(() => {
     if (isRunning) {
       BackgroundTimer.runBackgroundTimer(() => {
-        setTime(prevTime => prevTime + 1);
+        setTime((prevTime) => prevTime + 1);
       }, 1000);
     } else {
       BackgroundTimer.stopBackgroundTimer();
@@ -53,29 +42,31 @@ const StopWatch = () => {
   // Seconds calculation
   const seconds = time % 60;
 
-//   // Method to start and stop timer
-//   const startStop = () => {
-//     setIsRunning(!isRunning);
-//   };
+  //   // Method to start and stop timer
+  //   const startStop = () => {
+  //     setIsRunning(!isRunning);
+  //   };
 
-//   // Method to reset timer back to 0
-//   const reset = () => {
-//     setTime(0);
-//   };
+  //   // Method to reset timer back to 0
+  //   const reset = () => {
+  //     setTime(0);
+  //   };
 
   return (
-        <>
-        <Text fontFamily={"$mono"} fontSize={"$13"} fontWeight={500}>
-        {hours.toString().padStart(2, "0")}:
-        {minutes.toString().padStart(2, "0")}:
-        {seconds.toString().padStart(2, "0")}
-        </Text>
-
-        {/* <Button onPress={startStop}>{isRunning ? "Stop" : "Start"}</Button>
-        <Button onPress={reset}>Reset</Button> */}
-        </>
-       
-  )
-}
+    <Text
+      fontSize={"$14"}
+      adjustsFontSizeToFit
+      numberOfLines={1}
+      style={{ fontFamily: "OswaldRegular" }}
+      fontWeight={500}
+      lineHeight={0}
+      alignSelf="center"
+      
+    >
+      {hours.toString().padStart(2, "0")}:{minutes.toString().padStart(2, "0")}:
+      {seconds.toString().padStart(2, "0")}
+    </Text>
+  );
+};
 
 export default StopWatch;

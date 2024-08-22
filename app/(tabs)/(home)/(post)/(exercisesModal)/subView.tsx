@@ -9,7 +9,7 @@ import * as Types from "@/types";
 
 const SubView = () => {
   const params = useLocalSearchParams();
-  const { muscle } = params;
+  const { muscle, source } = params;
   const query = ((params.query as string) || "").toLowerCase().trim();
   const targetMuscleExercises = Object.keys((gainzExercises as any)[muscle as string]);
   const { exercises, setExercises } = useContext(ExercisesContext);
@@ -28,8 +28,9 @@ const SubView = () => {
       setExercises([...exercises, newExercise]);
     };
     addExercise(exercise);
-    router.replace({
-      pathname: "manual",
+    
+    router.navigate({
+      pathname: source as string || "manual",
     });
   };
 

@@ -1,6 +1,6 @@
 import gainzExercises from "@/services/GainzExercises.json";
 import { ChevronRight } from "@tamagui/lucide-icons";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
 import {
   ListItem,
@@ -12,6 +12,8 @@ import {
 const targetMuscles = Object.keys(gainzExercises);
 
 const ExercisesModal = () => {
+  const params = useLocalSearchParams();
+  const {source } = params;
 
   return (
     <View
@@ -37,6 +39,7 @@ const ExercisesModal = () => {
                     pathname: "subView",
                     params: {
                       muscle: target,
+                      source: source as string
                     },
                   });
                   // handleDismissModalPress();

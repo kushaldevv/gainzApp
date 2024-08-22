@@ -85,7 +85,6 @@ const ManualPost = () => {
       console.log("Error posting");
       return;
     }
-    console.log(startDate);
     const sessionKey = `${user?.id}session_${startDate.getTime()}`;
     const session = {
       sessionKey: sessionKey,
@@ -108,7 +107,6 @@ const ManualPost = () => {
         },
       })),
     };
-    console.log(session);
     try {
       if (user) await appendSession(user.id, session);
     } catch (error) {

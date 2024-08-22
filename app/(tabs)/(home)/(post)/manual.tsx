@@ -2,7 +2,7 @@ import { daysFull, formatSessionDate } from "@/services/utilities";
 import * as Types from "@/types";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { router } from "expo-router";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import DatePicker from "react-native-date-picker";
 import {
   Button,
@@ -16,7 +16,7 @@ import {
   YGroup,
   YStack,
 } from "tamagui";
-import { ExercisesContext } from "./_layout";
+import { useExercises } from "@/components/post/exercisesContext";
 import ExerciseAccordion from "@/components/post/accordionItem";
 import { isLoaded } from "expo-font";
 import { LinearGradient } from "tamagui/linear-gradient";
@@ -27,8 +27,6 @@ import { useShakeAnimation } from "@/components/auth/shakeAnimation";
 import Animated from "react-native-reanimated";
 
 const ManualPost = () => {
-  // const [startDate, setStartDate] = useState(new Date(new Date().getTime() - 60 * 60 * 1000));
-  // const [endDate, setEndDate] = useState(new Date());
   const [startOpen, setStartOpen] = useState(false);
   const [endOpen, setEndOpen] = useState(false);
   const {
@@ -42,7 +40,7 @@ const ManualPost = () => {
     setLocation,
     workoutName,
     setWorkoutName,
-  } = useContext(ExercisesContext);
+  } = useExercises();
   const [loading, setLoading] = useState(false);
   const colorMode = useColorScheme();
   const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
@@ -52,6 +50,13 @@ const ManualPost = () => {
   const { user } = useUser();
   const [error, setError] = useState(false);
   const shake = useShakeAnimation(error);
+
+  useEffect(() => {
+    setStartDate(new Date(new Date(new Date().getTime() - 60 * 60 * 1000)));
+    setEndDate(new Date());
+  }, [])
+  
+  
 
   const validatePost = () => {
     if (exercises.length === 0) {
@@ -72,6 +77,16 @@ const ManualPost = () => {
       });
     });
     return output;
+  };
+
+  const reset = () => {
+    setExercises([]);
+    setStartDate(new Date());
+    setEndDate(new Date());
+    setLocation("");
+    setWorkoutName("");
+    setLoading(false);
+    setError(false);
   };
 
   const onPressPost = async () => {
@@ -109,14 +124,16 @@ const ManualPost = () => {
     };
     try {
       if (user) await appendSession(user.id, session);
+      setLoading(false);
+      reset();
+      router.replace({
+        pathname: "session",
+        params: { sessionIdParam: sessionKey },
+      });
     } catch (error) {
       console.log(error);
     }
-    setLoading(false);
-    router.replace({
-      pathname: "session",
-      params: { sessionIdParam: sessionKey },
-    });
+
   };
 
   return (

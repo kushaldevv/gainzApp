@@ -21,7 +21,7 @@ import {
   Portal,
   PortalProvider,
 } from "tamagui";
-import { ExercisesContext } from "./_layout";
+import { useExercises } from "@/components/post/exercisesContext";
 import ExerciseAccordion from "@/components/post/accordionItem";
 import { isLoaded } from "expo-font";
 import { LinearGradient } from "tamagui/linear-gradient";
@@ -35,19 +35,14 @@ import { Check, Pause, Play, Scale, Scroll } from "@tamagui/lucide-icons";
 import PauseFinishAlert from "@/components/post/pauseFinishAlert";
 import { useTimer } from "@/components/post/timeContext";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-
+import BackgroundTimer from "react-native-background-timer";
 const LivePost = () => {
-  const [startDate, setStartDate] = useState(new Date(new Date().getTime() - 60 * 60 * 1000));
-  const [endDate, setEndDate] = useState(new Date());
-  const [startOpen, setStartOpen] = useState(false);
-  const [endOpen, setEndOpen] = useState(false);
-  const { exercises, setExercises } = useContext(ExercisesContext);
+  const [startDate, setStartDate] = useState(new Date());
+  const { exercises, setExercises, location, setLocation, workoutName, setWorkoutName } =
+    useExercises();
   const [loading, setLoading] = useState(false);
   const colorMode = useColorScheme();
   const gradientColor = colorMode === "dark" ? "#006666" : "#33e6e6";
-  const [workoutName, setWorkoutName] = useState("");
-  const [location, setLocation] = useState("");
-  const workoutPlaceholder = daysFull[new Date().getDay()] + "'s workout";
   const locationPlaceholder = "Earth, Milky Way Galaxy";
   const { user } = useUser();
   const [error, setError] = useState(false);
@@ -55,6 +50,9 @@ const LivePost = () => {
   const { time, setTime, isRunning, setIsRunning } = useTimer();
 
   const startStopTimer = () => {
+    if (time === 0) {
+      setStartDate(new Date());
+    }
     if (isRunning == true) {
       setIsRunning(false);
     } else {
@@ -65,6 +63,10 @@ const LivePost = () => {
   const reset = () => {
     setTime(0);
     setIsRunning(false);
+    setExercises([]);
+    setLocation("");
+    setWorkoutName("");
+    setStartDate(new Date());
   };
 
   const validatePost = () => {
@@ -90,8 +92,7 @@ const LivePost = () => {
 
   const onPressPost = async () => {
     setLoading(true);
-    // close alert box and stop timer
-    // setShowAlert(false);
+
     setIsRunning(false);
     if (!isLoaded || !validatePost()) {
       setLoading(false);
@@ -101,7 +102,6 @@ const LivePost = () => {
       console.log("Error posting");
       return;
     }
-
     const sessionKey = `${user?.id}session_${startDate.getTime()}`;
     const session = {
       sessionKey: sessionKey,
@@ -125,20 +125,26 @@ const LivePost = () => {
       })),
     };
 
-    if (user) await appendSession(user.id, session);
-
-    setLoading(false);
-    // router.replace('/(tabs)/(home)/index');
+    try {
+      if (user) await appendSession(user.id, session);
+      setLoading(false);
+      reset();
+      router.replace({
+        pathname: "session",
+        params: { sessionIdParam: sessionKey },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <PortalProvider>
       <YStack
         backgroundColor={"$background"}
-        gap={"$4"}
         padding={"$3"}
         pt={"$0"}
         flex={1}
-        justifyContent="space-between"
+        justifyContent={"space-between"}
       >
         <YStack>
           <StopWatch />
@@ -147,7 +153,7 @@ const LivePost = () => {
               <Input
                 borderWidth="$0"
                 fontFamily={"$mono"}
-                placeholder={workoutPlaceholder}
+                placeholder={daysFull[startDate.getDay()] + "'s workout"}
                 value={workoutName} // Bind the input value to the state
                 onChangeText={setWorkoutName} // Update the state when the input value changes
               ></Input>
@@ -164,45 +170,56 @@ const LivePost = () => {
             {/* <Button onPress={reset}>Reset</Button> */}
           </YGroup>
 
-          <YStack
-            gap={"$3"}
-            pt={"$3"}
+          <ScrollView
+            mt={exercises.length > 0 ? "$3" : "$0"}
+            height={exercises.length > 0 ? "40%" : "0%"}
+            backgroundColor={"$gray2"}
+            borderRadius={"$3"}
           >
-            {exercises.map((exercise: Types.Exercise, i: number) => (
-              <ExerciseAccordion
-                exercise={exercise}
-                key={i}
-              />
-            ))}
-            {isRunning && (
-              <TouchableOpacity
-                onPress={() => {
-                  router.push({
-                    pathname: "/(exercisesModal)",
-                    params: { source: "live" },
-                  });
-                }}
-                style={{
-                  paddingTop: 0,
-                }}
+            <YStack
+              gap={"$3"}
+              p="$2"
+            >
+              {exercises.map((exercise: Types.Exercise, i: number) => (
+                <ExerciseAccordion
+                  exercise={exercise}
+                  key={i}
+                />
+              ))}
+            </YStack>
+          </ScrollView>
+          {
+            <TouchableOpacity
+              onPress={() => {
+                if (!isRunning) {
+                  startStopTimer();
+                }
+                router.push({
+                  pathname: "/(exercisesModal)",
+                  params: { source: "live" },
+                });
+              }}
+              style={{
+                paddingTop: 12,
+              }}
+            >
+              <ListItem
+                fontFamily={"$mono"}
+                color={"#00cccc"}
+                fontWeight={"$15"}
+                borderRadius={"$3"}
               >
-                <ListItem
-                  fontFamily={"$mono"}
-                  color={"#00cccc"}
-                  fontWeight={"$15"}
-                  borderRadius={"$3"}
-                >
-                  Add Exercise
-                </ListItem>
-              </TouchableOpacity>
-            )}
-          </YStack>
+                Add Exercise
+              </ListItem>
+            </TouchableOpacity>
+          }
         </YStack>
 
         <XStack
           gap="$3"
           // pos={"absolute"}
           // bottom={"$4"}
+          mt="$3"
           alignSelf="center"
         >
           {!isRunning && time > 0 && (
@@ -221,20 +238,21 @@ const LivePost = () => {
                 animation={"100ms"}
                 animatePresence
                 onPress={() => {
-                  // onPressPost();
+                  onPressPost();
                 }}
               >
-                <FontAwesome5
-                  name="flag-checkered"
-                  size={28}
-                />
-                {/* <Text
-                  fontFamily={"$mono"}
-                  fontWeight={700}
-                  fontSize={"$5"}
-                >
-                  Finish
-                </Text> */}
+                {loading ? (
+                  <Spinner
+                    size="small"
+                    color="white"
+                  />
+                ) : (
+                  <FontAwesome5
+                    name="flag-checkered"
+                    size={28}
+                    color="white"
+                  />
+                )}
               </LinearGradient>
             </Animated.View>
           )}

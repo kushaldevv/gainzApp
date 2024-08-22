@@ -11,7 +11,8 @@ import { useColorScheme } from "react-native";
 import "react-native-reanimated";
 import tokenCache from "../services/tokenCache";
 import { TimerProvider } from "@/components/post/timeContext";
-
+import { ExercisesProvider } from "@/components/post/exercisesContext";
+import { View, Text } from "tamagui";
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 if (!publishableKey) {
   throw new Error(
@@ -83,9 +84,11 @@ function RootLayoutNav() {
         publishableKey={publishableKey}
       >
         <ClerkLoaded>
-          <TimerProvider>
-            <Slot />
-          </TimerProvider>
+          <ExercisesProvider>
+            <TimerProvider>
+              <Slot />
+            </TimerProvider>
+          </ExercisesProvider>
         </ClerkLoaded>
       </ClerkProvider>
     </TamaguiProvider>

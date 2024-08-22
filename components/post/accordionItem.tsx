@@ -21,7 +21,7 @@ import {
   Label,
 } from "tamagui";
 import * as Types from "@/types";
-import { ExercisesContext } from "@/app/(tabs)/(home)/(post)/_layout";
+import { useExercises } from "@/components/post/exercisesContext";
 import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 import { getMuscleColor } from "@/services/utilities";
 
@@ -79,7 +79,7 @@ export default function ExerciseAccordion({
     const newVal = !openIcon;
     setOpenIcon(newVal);
   };
-  const { exercises, setExercises } = useContext(ExercisesContext);
+  const { exercises, setExercises } = useExercises();
 
   const deleteExercise = (exerciseName: string) => {
     const updatedExercises = exercises.filter((exercise) => exercise.name !== exerciseName);

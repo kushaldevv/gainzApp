@@ -4,7 +4,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { ListItem, ScrollView, YGroup, View, YStack } from "tamagui";
 import { ChevronRight } from "@tamagui/lucide-icons";
 import gainzExercises from "@/services/GainzExercises.json";
-import { ExercisesContext } from "../_layout";
+import { useExercises } from "@/components/post/exercisesContext";
 import * as Types from "@/types";
 
 const SubView = () => {
@@ -12,7 +12,7 @@ const SubView = () => {
   const { muscle, source } = params;
   const query = ((params.query as string) || "").toLowerCase().trim();
   const targetMuscleExercises = Object.keys((gainzExercises as any)[muscle as string]);
-  const { exercises, setExercises } = useContext(ExercisesContext);
+  const { exercises, setExercises } = useExercises()
 
   const handleExercisePress = (exercise: string) => {
     const addExercise = (exerciseName: string) => {

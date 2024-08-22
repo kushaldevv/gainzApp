@@ -8,7 +8,7 @@ import { useTimer } from "./timeContext";
 const StopWatch = () => {
   //   const [time, setTime] = useState(0);
   //   const [isRunning, setIsRunning] = useState(false);
-  const { time, setTime, isRunning } = useTimer();
+  const { time, setTime, isRunning } = useTimer();  
 
   useEffect(() => {
     if (isRunning) {
@@ -24,15 +24,6 @@ const StopWatch = () => {
     };
   }, [isRunning, setTime]);
 
-  // useEffect(() => {
-  //   let intervalId: ReturnType<typeof setInterval> | undefined;
-  //   if (isRunning) {
-  //       // setting time from 0 to 1 every 1 second using javascript setInterval method
-  //       intervalId = setInterval(() => setTime(time + 1), 1000);
-  //   }
-  //   return () => clearInterval(intervalId);
-  // })
-
   // Hours calculation
   const hours = Math.floor(time / 3600);
 
@@ -41,16 +32,6 @@ const StopWatch = () => {
 
   // Seconds calculation
   const seconds = time % 60;
-
-  //   // Method to start and stop timer
-  //   const startStop = () => {
-  //     setIsRunning(!isRunning);
-  //   };
-
-  //   // Method to reset timer back to 0
-  //   const reset = () => {
-  //     setTime(0);
-  //   };
 
   return (
     <Text

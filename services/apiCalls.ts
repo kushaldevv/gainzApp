@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as Types from "@/types";
+import { useTheme } from "tamagui";
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 /**
@@ -296,14 +297,25 @@ export const getUserProfile = async (userID: string): Promise<Types.UserProfile>
   }
 };
 
-export const getFollowingSessions = async (userID: string) => {
+export const getSessions = async (userID: string, followingFlag: boolean, userLikedId: string) => {
   try {
-    const response = await axios.get(`${API_URL}/user/following/sessions?userID=${userID}`);
+    let url = ''
+    if (followingFlag) {
+      url = `${API_URL}/user/following/sessions?userID=${userID}`
+    } else {
+      url =`${API_URL}/user/sessions?userID=${userID}`
+      
+    }
+    const response = await axios.get(url);
     const data = response.data;
 
-    const sessions = await Promise.all(
+    const sessions : Types.Session[] = await Promise.all(
       data.map(async (sessionData: any) => {
         const sessionId = sessionData.sessionID as string;
+        const likes: Types.User[] = await Promise.all(
+          sessionData.likes.map((like: string) => getUser(like))
+        );
+        // console.log(sessionData.likes);
         const session: Types.Session = {
           id: sessionId,
           name: sessionData.name,
@@ -328,9 +340,10 @@ export const getFollowingSessions = async (userID: string) => {
           }) as Types.Exercise[],
           duration: sessionData.duration,
           comments: sessionData.comments,
-          likes: sessionData.likes,
+          likes: likes,
           numLikes: sessionData.numLikes,
-          userLiked: sessionData.likes.includes(userID),
+          userLiked: sessionData.likes.includes(userLikedId),
+          image: sessionData.image,
         };
         return session;
       })
@@ -338,43 +351,6 @@ export const getFollowingSessions = async (userID: string) => {
     return sessions;
   } catch (error) {
     console.error(error);
-  }
-};
-
-export const getUserSessions = async (sessionUserID: string, userID: string) => {
-  try {
-    const response = await axios.get(`${API_URL}/user/sessions?userID=${sessionUserID}`);
-    const data = response.data;
-    const user = (await getUser(sessionUserID)) as Types.User;
-
-    const sessions = await Promise.all(
-      Object.entries(data).map(async ([sessionID, sessionData]: [string, any]) => {
-        const likes: Types.User[] = await Promise.all(
-          sessionData.likes.map((like: string) => getUser(like))
-        );
-
-        const exercises = await getExercisesInfo(sessionID);
-
-        const session: Types.Session = {
-          id: sessionID,
-          name: sessionData.name as string,
-          user: user,
-          location: sessionData.location as string,
-          date: sessionData.date as string,
-          exercises: exercises,
-          duration: sessionData.duration as number,
-          comments: sessionData.comments,
-          likes: likes,
-          numLikes: sessionData.numLikes as number,
-          userLiked: sessionData.likes.includes(userID),
-        };
-        return session;
-      })
-    );
-    return sessions;
-  } catch (error) {
-    console.log("getting user sessions", error);
-    throw error;
   }
 };
 
@@ -727,36 +703,101 @@ export const getExerciseStats = async (
     const data = response.data;
     const sessionsData = data.sessions;
 
-    const sessionSetStats : Types.SessionSetStats[] = Object.entries(sessionsData).map(
+    const sessionSetStats: Types.SessionSetStats[] = Object.entries(sessionsData).map(
       ([sessionId, session]: [string, any]) => ({
         reps: session.reps as number[],
         weight: session.weight as number[],
         date: new Date(Number(sessionId.split("session")[1].substring(1))).toISOString(),
+        image: session.image,
       })
     );
-
+    // console.log(sessionSetStats)
+    // Sort sessionSetStats by date
     sessionSetStats.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    
-
-    const exerciseStat : Types.ExerciseStats = {
+    const exerciseStat: Types.ExerciseStats = {
       name: exerciseName,
       muscle: data.muscle,
       PR: data.PR,
-      sessionSetStats: sessionSetStats,
+      sessionsSetStats: sessionSetStats,
     };
     return exerciseStat;
   } catch (error) {
     throw error;
+    console.log("error from getExerciseStats", error);
   }
 };
 
-interface ExerciseSession {
-  reps: number[];
-  weight: number[];
-}
+/**
+ * Returns a list of PieData objects representing the exercises a user has completed.
+ *
+ * @param userId - The unique identifier of a user.
+ * @returns A Promise that resolves when a user's exercises are retrieved
+ * @throws Will throw an error if the API request fails.
+ */
+export const getPieChartData = async (userId: string, theme: any) => {
+  try {
+    // Make a GET request to fetch the pie chart data
+    const response = await axios.get(`${API_URL}/user/pie-chart?userID=${userId}`);
+    const data = response.data; // map
+    const pieDataLst = [] as Types.PieChartData[];
 
-interface ExerciseData {
-  muscle: string;
-  PR: number;
-  sessions: Record<string, ExerciseSession>;
-}
+    // dictionary
+    // go thru each kv pair, create a pieData object, add to list
+    Object.entries(data).forEach(([key, value]) => {
+      switch (key) {
+        case "Arms":
+          pieDataLst.push({
+            value: value as number,
+            color: theme.blue10.val,
+            gradientCenterColor: theme.blue9.val,
+            focused: false,
+          });
+          break;
+        case "Back":
+          pieDataLst.push({
+            value: value as number,
+            color: theme.green10.val,
+            gradientCenterColor: theme.green9.val,
+            focused: false,
+          });
+          break;
+        case "Chest":
+          pieDataLst.push({
+            value: value as number,
+            color: theme.orange10.val,
+            gradientCenterColor: theme.orange9.val,
+            focused: false,
+          });
+          break;
+        case "Legs":
+          pieDataLst.push({
+            value: value as number,
+            color: theme.red10.val,
+            gradientCenterColor: theme.red9.val,
+            focused: false,
+          });
+          break;
+        case "Abs":
+          pieDataLst.push({
+            value: value as number,
+            color: theme.purple10.val,
+            gradientCenterColor: theme.purple9.val,
+            focused: false,
+          });
+          break;
+        case "Other":
+          pieDataLst.push({
+            value: value as number,
+            color: theme.gray10.val,
+            gradientCenterColor: theme.gray9.val,
+            focused: false,
+          });
+          break;
+      }
+    });
+    return pieDataLst;
+  } catch (error) {
+    // If an error occurs during the API request, re-throw it
+    throw error;
+  }
+};

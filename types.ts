@@ -33,6 +33,7 @@ export type Session = {
   likes: User[];
   numLikes: number;
   userLiked: boolean;
+  image?: string;
 };
 
 export type Exercise = {
@@ -51,15 +52,29 @@ export type ExerciseStats = {
   name: string;
   muscle: string;
   PR: number;
-  sessionSetStats: SessionSetStats[];
+  sessionsSetStats: SessionSetStats[];
 };
 
 export type SessionSetStats = {
   reps: number[];
   weight: number[];
   date: string;
-}
+  image?: string;
+};
 
+export type GraphsData = {
+  repsPoints: GraphPoint[];
+  weightPoints: GraphPoint[];
+  wprPoints: GraphPoint[];
+};
+
+export type GraphPoint = {
+  value?: number;
+  date: string;
+  dataPointText?: string;
+  image?: string;
+  // label? : string
+};
 
 // export type Exercise = {
 //     name: string;
@@ -77,6 +92,7 @@ export type CardProps = {
 
 export type InnerCardProps = {
   exercises: Exercise[];
+  image?: string;
 };
 
 export type Comment = {
@@ -136,8 +152,22 @@ export type ExercisesContextType = {
   setStartDate: React.Dispatch<React.SetStateAction<Date>>;
   endDate: Date;
   setEndDate: React.Dispatch<React.SetStateAction<Date>>;
-  location: string,
-  setLocation: React.Dispatch<React.SetStateAction<string>>,
-  workoutName: string,
-  setWorkoutName: React.Dispatch<React.SetStateAction<string>>,
+  location: string;
+  setLocation: React.Dispatch<React.SetStateAction<string>>;
+  workoutName: string;
+  setWorkoutName: React.Dispatch<React.SetStateAction<string>>;
 };
+
+export type PieChartData = {
+  value: number;
+  color: string;
+  gradientCenterColor?: string;
+  focused: boolean;
+};
+
+export type TimerContextType = {
+  time: number;
+  setTime: React.Dispatch<React.SetStateAction<number>>;
+  isRunning: boolean;
+  setIsRunning: React.Dispatch<React.SetStateAction<boolean>>;
+}

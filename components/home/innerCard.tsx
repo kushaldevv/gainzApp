@@ -11,7 +11,7 @@ import { X } from "@tamagui/lucide-icons";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 const width = Dimensions.get("screen").width;
 
-const InnerCard = ({ exercises }: Types.InnerCardProps) => {
+const InnerCard = ({ exercises, image }: Types.InnerCardProps) => {
   const colorMode = useColorScheme();
   const gradientColor = colorMode === "dark" ? "#006666" : "#4d9999";
   const width = Dimensions.get("screen").width;
@@ -78,7 +78,7 @@ const InnerCard = ({ exercises }: Types.InnerCardProps) => {
         <GestureHandlerRootView>
           <Carousel
             width={width * 0.75 - 20}
-            data={[1, 2]} // Two items: ScrollView and Image
+            data={image ? [1, 2] : [1]} // Two items: ScrollView and Image
             onScrollEnd={(index) => setIndex(index)}
             panGestureHandlerProps={{
               activeOffsetX: [-10, 10],
@@ -100,30 +100,34 @@ const InnerCard = ({ exercises }: Types.InnerCardProps) => {
                   height="100%"
                   alignSelf="center"
                   source={{
-                    uri: "https://anettemossbacher.com/wp-content/media/bengal-tiger-portrait-face.jpg",
+                    uri:
+                      image ||
+                      "https://anettemossbacher.com/wp-content/media/bengal-tiger-portrait-face.jpg",
                   }}
                 />
               )
             }
           />
         </GestureHandlerRootView>
-        <XStack
-          pos={"absolute"}
-          alignSelf="center"
-          bottom={"$2"}
-          gap="$2"
-        >
-          <Circle
-            size={"$0.75"}
-            backgroundColor={index == 0 ? "$gray12" : "$gray10"}
-            opacity={index == 0 ? 0.8 : 0.6}
-          />
-          <Circle
-            size={"$0.75"}
-            backgroundColor={index == 1 ? "$gray12" : "$gray10"}
-            opacity={index == 0 ? 0.8 : 0.6}
-          />
-        </XStack>
+        {image && (
+          <XStack
+            pos={"absolute"}
+            alignSelf="center"
+            bottom={"$2"}
+            gap="$2"
+          >
+            <Circle
+              size={"$0.75"}
+              backgroundColor={index == 0 ? "$gray12" : "$gray10"}
+              opacity={index == 0 ? 0.8 : 0.6}
+            />
+            <Circle
+              size={"$0.75"}
+              backgroundColor={index == 1 ? "$gray12" : "$gray10"}
+              opacity={index == 0 ? 0.8 : 0.6}
+            />
+          </XStack>
+        )}
       </YStack>
     </XStack>
   );

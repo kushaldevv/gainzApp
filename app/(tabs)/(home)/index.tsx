@@ -1,5 +1,5 @@
 import Card from "@/components/home/card";
-import { getFollowingSessions, getUser, getUserSessions } from "@/services/apiCalls";
+import { getSessions, getUser } from "@/services/apiCalls";
 import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
 import React, { useEffect, useState } from "react";
@@ -18,9 +18,10 @@ const Cards = ({ userId }: { userId?: string }) => {
   const fetchSessions = async () => {
     try {
       const placeHolderSessions: Types.Session[] = [];
-      const data = userId
-        ? await getUserSessions(userId, user?.id!)
-        : (await getFollowingSessions(user?.id as string)) || placeHolderSessions;
+      const data =
+        (userId
+          ? await getSessions(userId as string, false, user?.id as string)
+          : await getSessions(user?.id as string, true, user?.id as string)) || [];
       setSessions([...data]);
     } catch (error) {
       console.error("Error fetching sessions:", error);
@@ -84,7 +85,7 @@ const Cards = ({ userId }: { userId?: string }) => {
           </View>
         </ScrollView>
       </YStack>
-       <PostFAB visible={userId === undefined ? true : false}/>
+      <PostFAB visible={userId === undefined ? true : false} />
     </PaperProvider>
   );
 };

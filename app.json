@@ -32,7 +32,7 @@
       [
         "expo-font",
         {
-
+          "fonts": ["./assets/fonts/Hanson-Bold.ttf"]
         }
       ]
     ],

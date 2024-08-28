@@ -2,7 +2,8 @@ import { BellDot, Search, UserRoundSearch, X } from "@tamagui/lucide-icons";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
-import { Input, useTheme, XStack } from "tamagui";
+import { Input, useTheme, XStack, Text } from "tamagui";
+
 export default function HomeLayout() {
   const colorScheme = useColorScheme();
   const theme = useTheme();
@@ -36,6 +37,17 @@ export default function HomeLayout() {
         name="index"
         options={{
           title: "Home",
+          headerTitle(props) {
+            return (
+              <Text
+                fontSize={"$7"}
+                style={{ fontFamily: "HansonBold" }}
+                color={headerTintColor}
+              >
+                GAINZ
+              </Text>
+            );
+          },
           headerLeft: () => (
             <TouchableOpacity onPress={handleSearchPress}>
               <UserRoundSearch
@@ -149,6 +161,12 @@ export default function HomeLayout() {
         name="sessions"
         options={{
           title: "Sessions",
+        }}
+      />
+      <Stack.Screen
+        name="userStats"
+        options={{
+          title: "Statistics",
         }}
       />
     </Stack>

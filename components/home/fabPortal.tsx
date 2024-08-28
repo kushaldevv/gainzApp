@@ -29,14 +29,14 @@ const PostFAB = ({visible}: {visible: boolean}) => {
               label: 'Live Workout',
               color: tintColor,
               style: {shadowOpacity:0.2, backgroundColor: '#edf7f7'},
-              onPress: () => router.push('/live'),
+              onPress: () => router.navigate('/live'),
             },
             {
               icon: 'pencil',
               label: 'Manual Workout',
               color: tintColor,
               style: {shadowOpacity:0.2, backgroundColor: '#edf7f7'},
-              onPress: () => router.push('/manual'),
+              onPress: () => router.navigate('/manual'),
             }
           ]}
           onStateChange={onStateChange}

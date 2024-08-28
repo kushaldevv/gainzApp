@@ -10,7 +10,9 @@ import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import "react-native-reanimated";
 import tokenCache from "../services/tokenCache";
-
+import { TimerProvider } from "@/components/post/timeContext";
+import { ExercisesProvider } from "@/components/post/exercisesContext";
+import { View, Text } from "tamagui";
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 if (!publishableKey) {
   throw new Error(
@@ -29,7 +31,7 @@ declare module "@tamagui/core" {
 
 export {
   // Catch any errors thrown by the Layout component.
-  ErrorBoundary
+  ErrorBoundary,
 } from "expo-router";
 
 // export const unstable_settings = {
@@ -42,7 +44,9 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    // SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    HansonBold: require("../assets/fonts/Hanson-Bold.ttf"),
+    OswaldRegular: require("../assets/fonts/Oswald-Regular.ttf"),
     ...FontAwesome.font,
   });
 
@@ -71,10 +75,20 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   return (
-    <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
-      <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+    <TamaguiProvider
+      config={tamaguiConfig}
+      defaultTheme={colorScheme!}
+    >
+      <ClerkProvider
+        tokenCache={tokenCache}
+        publishableKey={publishableKey}
+      >
         <ClerkLoaded>
-          <Slot />
+          <ExercisesProvider>
+            <TimerProvider>
+              <Slot />
+            </TimerProvider>
+          </ExercisesProvider>
         </ClerkLoaded>
       </ClerkProvider>
     </TamaguiProvider>

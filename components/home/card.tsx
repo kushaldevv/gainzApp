@@ -339,7 +339,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
           </XStack>
         </Skeleton>
         <Skeleton colorMode={skeletonColorScheme}>
-          <InnerCard exercises={initialSession.exercises} />
+          <InnerCard exercises={initialSession.exercises} image={initialSession.image} />
         </Skeleton>
         <XStack
           justifyContent="space-between"

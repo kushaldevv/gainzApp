@@ -104,8 +104,9 @@ export function formatSessionDate(isoString: string) {
         return "$red10"; // Legs
   
       case "Abs":
-      case "Cardio":
-        return "$yellow10"; // Core/Cardio
+        return "$purple10"; // Core/Abs
+      // case "Cardio":
+      //   return "$yellow10"; // Core/Cardio
   
       case "Chest":
         return "$orange10"; // Chest

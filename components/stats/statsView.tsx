@@ -179,7 +179,7 @@ const StatsView = ({ userID }: { userID: string }) => {
                 height={width / 2}
                 colorMode={skeletonColorScheme}
               >
-                {showGraphs && graphData.repsPoints.length > 0 ? (
+                {showGraphs && graphData.repsPoints.length > 3 ? (
                   <MiniLineChartView
                     label="Reps"
                     data={graphData.repsPoints}
@@ -191,7 +191,7 @@ const StatsView = ({ userID }: { userID: string }) => {
                 height={width / 2}
                 colorMode={skeletonColorScheme}
               >
-                {showGraphs && graphData.weightPoints.length > 0 ? (
+                {showGraphs && graphData.weightPoints.length > 3 ? (
                   <MiniLineChartView
                     label="Weight"
                     data={graphData.weightPoints}
@@ -220,7 +220,7 @@ const StatsView = ({ userID }: { userID: string }) => {
                   alignItems="center"
                   mr={50}
                 >
-                  {showGraphs && graphData.wprPoints.length > 0 && (
+                  {showGraphs && graphData.wprPoints.length > 3 && (
                     // graphData.wprPoints.map((point, index) => (
                     //   <Text key={index}>{point.value + ' ' + point.date}</Text>
                     // ))

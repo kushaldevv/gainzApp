@@ -31,7 +31,8 @@ const StatsView = ({ userID }: { userID: string }) => {
   const [exerciseName, setExerciseName] = useState<string>("");
 
   const [loadingNames, setLoadingNames] = useState(true);
-  const [loadingStats, setLoadingStats] = useState(true);
+  // 
+  const [loadingStats, setLoadingStats] = useState(false);
 
   const [dateRange, setDateRange] = useState("Bi-Weekly");
   const [graphData, setGraphData] = useState<Types.GraphsData>({
@@ -89,8 +90,6 @@ const StatsView = ({ userID }: { userID: string }) => {
     const repsPoints = generateDates(range, sessionsSetStats, "Reps");
     const weightPoints = generateDates(range, sessionsSetStats, "Weight");
     const wprPoints = generateDates(range, sessionsSetStats, "WPR");
-    // setGraphData({ repsPoints: repsPoints, weightPoints: weightPoints, wprPoints: wprPoints });
-    // console.log(weightPoints)
     setGraphData({
       repsPoints: repsPoints,
       weightPoints: weightPoints,
@@ -105,7 +104,6 @@ const StatsView = ({ userID }: { userID: string }) => {
         backgroundColor={"$background"}
         scrollEnabled={false}
       >
-        {/* <Button onPress={() => fetchExerciseStat()}>test</Button> */}
         <YStack
           backgroundColor={"$background"}
           padding="$3"
@@ -179,7 +177,7 @@ const StatsView = ({ userID }: { userID: string }) => {
                 height={width / 2}
                 colorMode={skeletonColorScheme}
               >
-                {showGraphs && graphData.repsPoints.length > 0 ? (
+                {showGraphs && graphData.repsPoints.length > 3 ? (
                   <MiniLineChartView
                     label="Reps"
                     data={graphData.repsPoints}
@@ -191,7 +189,7 @@ const StatsView = ({ userID }: { userID: string }) => {
                 height={width / 2}
                 colorMode={skeletonColorScheme}
               >
-                {showGraphs && graphData.weightPoints.length > 0 ? (
+                {showGraphs && graphData.weightPoints.length > 3 ? (
                   <MiniLineChartView
                     label="Weight"
                     data={graphData.weightPoints}
@@ -215,12 +213,12 @@ const StatsView = ({ userID }: { userID: string }) => {
                 </Text>
                 <View
                   // width={width}
-                  // overflow="hidden"
-                  alignSelf="center"
-                  alignItems="center"
-                  mr={50}
+                  // overflow='visible'
+                  // alignSelf="center"
+                  // alignItems="center"
+                  // mr={50}
                 >
-                  {showGraphs && graphData.wprPoints.length > 0 && (
+                  {showGraphs && graphData.wprPoints.length > 3 && (
                     // graphData.wprPoints.map((point, index) => (
                     //   <Text key={index}>{point.value + ' ' + point.date}</Text>
                     // ))
@@ -234,19 +232,21 @@ const StatsView = ({ userID }: { userID: string }) => {
                       interpolateMissingValues
                       width={width - 80}
                       height={height / 3}
+                      
                       adjustToWidth
                       // hideDataPoints
-                      textShiftY={-10}
+                      textShiftY={-6}
                       textColor1={theme.color.val}
                       dataPointsColor={theme.color.val}
                       dataPointsRadius={5}
-                      // spacing={70}
+                      // spacing={70}ad
                       color1={accent}
                       startFillColor1={accent}
                       endFillColor1={accent}
                       startOpacity={0.85}
                       endOpacity={0.1}
-                      initialSpacing={0}
+                      initialSpacing={6}
+                      
                       noOfSections={4}
                       // hideRules
                       yAxisThickness={0}
@@ -254,6 +254,7 @@ const StatsView = ({ userID }: { userID: string }) => {
                       rulesType="solid"
                       rulesColor={"rgba(255,255,255,0.5)"}
                       yAxisTextStyle={{ color: lightGray }}
+                      
                       yAxisLabelSuffix="lbs"
                       xAxisColor={lightGray}
                       onPress={(item: any, index: number) => {
@@ -417,7 +418,8 @@ const MiniLineChartView = ({ label, data }: { label: string; data: Types.GraphPo
         endFillColor1={accent}
         startOpacity={0.85}
         endOpacity={0.1}
-        initialSpacing={0}
+        initialSpacing={6}
+        yAxisExtraHeight={-5}
         yAxisThickness={0}
         yAxisLabelWidth={0}
         xAxisLabelsHeight={0}
@@ -479,18 +481,23 @@ const generateDates = (
 ): Types.GraphPoint[] => {
   const date = new Date();
   const data: Types.GraphPoint[] = [];
-  let initialPointFlag = false;
+
+  // let initialPointFlag = false;
+  let firstPointIndex = -1;
+  let lastPointIndex = -1;
   switch (range) {
     case "Bi-Weekly":
       for (let i = 13; i >= 0; i--) {
         const newDate = new Date(date);
         newDate.setDate(newDate.getDate() - i);
         const dateString = newDate.toISOString().split("T")[0];
-        let value = null;
+        let value : number = 0;
         let image: string | undefined = undefined;
         sessionsSetStats.forEach((sessionSetStats: Types.SessionSetStats) => {
           if (sessionSetStats.date.split("T")[0] === dateString) {
-            initialPointFlag = true;
+            // initialPointFlag = true;
+            if (firstPointIndex === -1) firstPointIndex = i;
+            lastPointIndex = i;
             if (sessionSetStats.image) image = sessionSetStats.image;
             if (graphType === "Reps") {
               value = sessionSetStats.reps.reduce((a: number, b: number) => a + b, 0);
@@ -504,18 +511,18 @@ const generateDates = (
             }
           }
         });
-        if (initialPointFlag) {
+        // if (firstPointIndex != -1) {
           if (value) {
             if (graphType === "Reps" || graphType === "Weight") {
               data.push({
                 value: value,
-                dataPointText: value,
+                dataPointText: value.toFixed(2),
                 date: dateString,
               } as Types.GraphPoint);
             } else {
               data.push({
                 value: value,
-                dataPointText: value.toFixed(1),
+                dataPointText: value.toFixed(2),
                 date: dateString,
                 image: image,
               } as Types.GraphPoint);
@@ -523,52 +530,9 @@ const generateDates = (
           } else {
             i > 0 && data.push({ date: dateString } as Types.GraphPoint);
           }
-        }
+          // data = data.slice(firstPointIndex, lastPointIndex + 1);
+        // }
       }
   }
-  return data;
+  return data.slice(14 - firstPointIndex - 1, 14 - lastPointIndex);
 };
-
-// const styles = StyleSheet.create({
-//   centeredView: {
-//     flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//     marginTop: 22,
-//   },
-//   modalView: {
-//     margin: 20,
-//     backgroundColor: "white",
-//     borderRadius: 20,
-//     padding: 35,
-//     alignItems: "center",
-//     shadowColor: "#000",
-//     shadowOffset: {
-//       width: 0,
-//       height: 2,
-//     },
-//     shadowOpacity: 0.25,
-//     shadowRadius: 4,
-//     elevation: 5,
-//   },
-//   button: {
-//     borderRadius: 20,
-//     padding: 10,
-//     elevation: 2,
-//   },
-//   buttonOpen: {
-//     backgroundColor: "#F194FF",
-//   },
-//   buttonClose: {
-//     backgroundColor: "#2196F3",
-//   },
-//   textStyle: {
-//     color: "white",
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   modalText: {
-//     marginBottom: 15,
-//     textAlign: "center",
-//   },
-// });

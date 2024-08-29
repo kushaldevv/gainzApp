@@ -3,10 +3,12 @@ import { getSessions, getUser } from "@/services/apiCalls";
 import * as Types from "@/types";
 import { useUser } from "@clerk/clerk-expo";
 import React, { useEffect, useState } from "react";
-import { RefreshControl } from "react-native";
-import { ScrollView, Spinner, View, YStack } from "tamagui";
+import { Dimensions, RefreshControl } from "react-native";
+import {Text, Button, Input, ScrollView, Spinner, View, YStack } from "tamagui";
 import PostFAB from "@/components/home/fabPortal";
 import { PaperProvider } from "react-native-paper";
+import { FlashList } from "@shopify/flash-list";
+import axios from "axios";
 
 const Cards = ({ userId }: { userId?: string }) => {
   const [sessions, setSessions] = useState<Types.Session[]>([]);
@@ -63,7 +65,28 @@ const Cards = ({ userId }: { userId?: string }) => {
         backgroundColor={"$background"}
       >
         {spinner && <Spinner marginVertical="$3" />}
-        <ScrollView
+        
+
+        {!refreshing &&
+        <View flex={1} h={Dimensions.get("screen").height} w={Dimensions.get("screen").width}>
+          <FlashList
+          data = {sessions}
+            renderItem = {({item}) => (
+              <Card session={item} loading={false} userDetails={userDetails} />
+            )}
+            estimatedItemSize={5}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+              />
+            }
+          >
+
+          </FlashList>
+          </View>
+        }
+        {/* <ScrollView
           width={"100%"}
           refreshControl={
             <RefreshControl
@@ -83,7 +106,7 @@ const Cards = ({ userId }: { userId?: string }) => {
                 />
               ))}
           </View>
-        </ScrollView>
+        </ScrollView> */}
       </YStack>
       <PostFAB visible={userId === undefined ? true : false} />
     </PaperProvider>

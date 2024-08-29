@@ -297,6 +297,7 @@ export const getUserProfile = async (userID: string): Promise<Types.UserProfile>
   }
 };
 
+
 export const getSessions = async (userID: string, followingFlag: boolean, userLikedId: string) => {
   try {
     let url = ''
@@ -683,7 +684,6 @@ export const getUserExercises = async (userId: string) => {
   try {
     const response = await axios.get(`${API_URL}/user/exercises/all?userID=${userId}`);
     const data = response.data;
-    console.log(data);
     return data as string[];
   } catch (error) {
     // If an error occurs during the API request, re-throw it
@@ -711,8 +711,6 @@ export const getExerciseStats = async (
         image: session.image,
       })
     );
-    // console.log(sessionSetStats)
-    // Sort sessionSetStats by date
     sessionSetStats.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     const exerciseStat: Types.ExerciseStats = {
       name: exerciseName,
@@ -722,9 +720,14 @@ export const getExerciseStats = async (
     };
     return exerciseStat;
   } catch (error) {
-    throw error;
     console.log("error from getExerciseStats", error);
   }
+  return {
+    name: '',
+    muscle: '',
+    PR: 0,
+    sessionsSetStats: [],
+  };
 };
 
 /**

@@ -218,6 +218,7 @@ const Card = ({ session: initialSession, loading, userDetails: user }: Types.Car
         backgroundColor={"$gray1"}
         p="$3"
         gap="$2"
+        mb="$2"
       >
         <XStack
           gap="$3"

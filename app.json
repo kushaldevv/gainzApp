@@ -32,12 +32,22 @@
       [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/Hanson-Bold.ttf"]
+          "fonts": [
+            "./assets/fonts/Hanson-Bold.ttf"
+          ]
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "a8c46b26-a39c-4920-8432-e048fc407c1b"
+      }
     }
   }
 }

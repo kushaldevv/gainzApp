@@ -43,6 +43,8 @@ const StatsView = ({ userID }: { userID: string }) => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalImage, setModalImage] = useState("");
+  const [modalDate, setModalDate] = useState<string>('');
+  const [modalWeight, setModalWeight] = useState<string>('');
 
   const [showGraphs, setShowGraphs] = useState(true);
 
@@ -254,11 +256,12 @@ const StatsView = ({ userID }: { userID: string }) => {
                       rulesType="solid"
                       rulesColor={"rgba(255,255,255,0.5)"}
                       yAxisTextStyle={{ color: lightGray }}
-                      
                       yAxisLabelSuffix="lbs"
                       xAxisColor={lightGray}
                       onPress={(item: any, index: number) => {
                         setModalImage(item.image);
+                        setModalDate(item.date);
+                        setModalWeight(item.value.toFixed(1));
                         if (item.image) {
                           setModalVisible(true);
                         }
@@ -287,7 +290,8 @@ const StatsView = ({ userID }: { userID: string }) => {
           padding="$4"
           backgroundColor={"rgba(0,0,0,0.75)"}
         >
-          {/* <View> */}
+          <Text fontFamily={'$mono'} fontWeight={700}>{'Date: ' + modalDate}</Text>
+          <Text fontFamily={'$mono'} fontWeight={700} mb='$2'>{'Weight: ' + modalWeight +'lb'}</Text>
           <Image
             width="100%"
             height="50%"
@@ -516,13 +520,13 @@ const generateDates = (
             if (graphType === "Reps" || graphType === "Weight") {
               data.push({
                 value: value,
-                dataPointText: value.toFixed(2),
+                dataPointText: value.toFixed(1),
                 date: dateString,
               } as Types.GraphPoint);
             } else {
               data.push({
                 value: value,
-                dataPointText: value.toFixed(2),
+                dataPointText: value.toFixed(1),
                 date: dateString,
                 image: image,
               } as Types.GraphPoint);

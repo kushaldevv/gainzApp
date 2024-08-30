@@ -14,12 +14,13 @@ import {
   UserCheck,
   UserPlus,
   ClipboardList,
+  Scroll,
 } from "@tamagui/lucide-icons";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import React, { useEffect, useRef, useState } from "react";
-import { TouchableOpacity, useColorScheme } from "react-native";
-import { Avatar, Circle, Input, Text, useTheme, View, XStack, YStack } from "tamagui";
+import { TouchableOpacity, useColorScheme, RefreshControl} from "react-native";
+import { Avatar, Circle, Input, ScrollView, Text, useTheme, View, XStack, YStack } from "tamagui";
 import { LinearGradient } from "tamagui/linear-gradient";
 import ContextMenuView from "./contextMenu";
 import DropDownMenu from "./dropDownMenu";
@@ -115,7 +116,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
       });
     } else {
       router.push({
-        pathname: isPublicProfile ? "/userStats" : "profile/stats",
+        pathname: isPublicProfile ? "/userStats" : "profile/userStats",
         params: {
           userID: userID,
         },
@@ -138,19 +139,40 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
     }
   };
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    try {
+      console.log("refreshing");
+      await fetchUserProfile();
+    } catch (error) {
+      console.error("Error refreshing sessions:", error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
   return (
+      <ScrollView 
+        backgroundColor="$background"
+        refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          
+        />
+      }>
     <YStack
       flex={1}
-      p="$3"
-      backgroundColor="$background"
-      gap="$3"
+      p="$3"      
     >
       <Skeleton.Group show={loading}>
         <XStack
           alignItems="center"
           gap="$6"
           pt="$2"
-          pb="$3"
+          pb="$6"
         >
           <View>
             <ContextMenuView label={"Update picture"}>
@@ -275,7 +297,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
           </YStack>
         </XStack>
 
-        <XStack justifyContent="space-between">
+        <XStack justifyContent="space-between" pb='$3'>
           <View width={"52%"}>
             <Skeleton
               colorMode={skeletonColorScheme}
@@ -292,7 +314,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                 justifyContent="flex-start"
                 gap="$1.5"
               >
-                {pieChartData.length > 0 && (
+                {pieChartData.length > 0 ? (
                   <PieChart
                     data={pieChartData}
                     // donut
@@ -310,7 +332,7 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
                     //   );
                     // }}
                   />
-                )}
+                ) : <Text col='$background'>No Workouts</Text>}
                 {!loading && (
                   <Circle
                     pos={"absolute"}
@@ -559,7 +581,8 @@ const UserProfile = ({ userID, isPublicProfile }: Types.UserProfileProps) => {
           </YStack>
         </Skeleton>
       </Skeleton.Group>
-    </YStack>
+      </YStack>
+      </ScrollView>
   );
 };
 

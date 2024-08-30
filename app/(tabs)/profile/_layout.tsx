@@ -70,6 +70,12 @@ export default function ProfileLayout() {
           title: "Sessions",
         }}
       />
+            <Stack.Screen
+        name="userStats"
+        options={{
+          title: "Stats",
+        }}
+      />
     </Stack>
   );
 }

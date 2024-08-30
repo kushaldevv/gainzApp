@@ -22,9 +22,11 @@
     "@react-native-masked-view/masked-view": "0.3.1",
     "@react-native-menu/menu": "^1.1.2",
     "@react-navigation/native": "^6.0.2",
+    "@shopify/flash-list": "1.6.4",
     "@tamagui/config": "^1.101.7",
     "@tamagui/lucide-icons": "^1.101.7",
     "axios": "^1.7.2",
+    "eas-cli": "^11.0.2",
     "expo": "~51.0.17",
     "expo-constants": "~16.0.2",
     "expo-dev-client": "~4.0.25",
@@ -55,8 +57,7 @@
     "react-native-svg": "^14.1.0",
     "react-native-web": "~0.19.10",
     "tamagui": "^1.101.7",
-    "zeego": "^1.10.0",
-    "@shopify/flash-list": "1.6.4"
+    "zeego": "^1.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

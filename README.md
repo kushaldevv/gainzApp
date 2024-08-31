@@ -1,6 +1,6 @@
 <h1 align="center" id="title">Gainz Gym App</h1>
 
-<p align="center"><img src="https://socialify.git.ci/kushaldevv/gainzApp/image?language=1&amp;name=1&amp;owner=1&amp;stargazers=1&amp;theme=Auto" alt="project-image"></p>
+<p align="center"><img src="https://socialify.git.ci/kushaldevv/gainzApp/image?name=1&owner=1&pattern=Charlie%20Brown&stargazers=1&theme=Auto"></p>
 
 <p id="description">A React Native/Expo mobile application focused on fitness tracking and social networking. The app allows users to track their workouts connect with other fitness enthusiasts and share their progress.</p>
 
